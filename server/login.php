@@ -6,6 +6,7 @@
   include_once "./loginService.php";
   include_once "./loginSQL.php";
 
+  
   $loginWebService = new LoginWebService();
  
   	function clean_input($data) {
@@ -19,14 +20,57 @@
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   	
-  	$userName = $_POST['username'];
+  	$userName = $_POST['email'];
   	$password = $_POST["password"];
 
   	$userName = clean_input($userName);
   	$password = clean_input($password);
 
   	$login = $loginWebService -> checkLogingetUserDetails($userName, $password);
-  	echo $login;
+  	
+
+    if ($login == "fail")
+    {
+       
+          if ($userName=="" || $password=="")
+          {
+           echo " <script>
+                  var txt;
+                  var r = confirm('All fields are required, Please try again.');
+                  if(r==true || r==false)
+                  {
+                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/index.php'; 
+                  }
+                 </script>
+
+
+          ";
+          }
+          else 
+          {
+                   echo " <script>
+                  var txt;
+                  var r = confirm('wrong credentials, please try again.');
+                  if(r==true || r==false)
+                  {
+                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/index.php'; 
+                  }
+                 </script>
+
+
+          ";
+          }
+
+    }
+    else if ($login != "fail")
+    {
+      echo "<script> window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/trial.html'</script>";
+        //echo $login;
+    }
+        
+
+
+
 
   }
 

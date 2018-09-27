@@ -3,10 +3,10 @@
 
 	    // Database details
 
-	    private $host = "handson-mysql";
+	    private $host = "localhost";
 	    private $db_name = "fordFanatics";
-	    private $username = "kumar";
-	    private $password = "kumar";
+	    private $username = "admin";
+	    private $password = "monarchs";
 
 	    public function getConnection(){
 
