@@ -122,34 +122,7 @@
                         <div class="col-sm-6 credentialsWrapper">
                             <h2>Sign In</h2>
                             <form method="POST" action="./server/login.php">
-                                <div class="invalidField">
-                                <?php
-                                    if(isset($_GET["status"]))
-                                    {
-                                        if($_GET["status"]=='Unsuccessful')
-                                        {
-                                            echo 'Invalid username or password!';
-                                        }
-                                        else if($_GET["status"]=='notloggedin')
-                                        {
-                                            echo 'You are not signed in. Please Sign In';
-                                        }
-                                        else if($_GET["status"]=='nocaptcha')
-                                        {
-                                            echo 'Please verify captcha. Try again.';
-                                        }
-                                        else if($_GET["status"]=='signout')
-                                        {
-                                            session_start();
-                                            unset($_SESSION['loggedIn']);
-                                            unset($_SESSION['emailid']);
-                                            unset($_SESSION['userid']);
-                                            session_unset();
-                                            session_destroy();
-                                        }
-                                    }
-                                ?>
-                                </div>
+
                                 <div class="input-group emailWrapper">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                     <input id="email" type="text" class="form-control" name="email" placeholder="Email" >

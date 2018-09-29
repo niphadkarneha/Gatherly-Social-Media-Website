@@ -28,7 +28,10 @@
 
   	$login = $loginWebService -> checkLogingetUserDetails($userName, $password);
   	
-
+    if(!isset($_SESSION))
+  {
+    session_start();
+  }
     if ($login == "fail")
     {
        
@@ -64,7 +67,7 @@
     }
     else if ($login != "fail")
     {
-      echo "<script> window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/trial.html'</script>";
+      echo "<script> window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/mainpage.php'</script>";
         //echo $login;
     }
         

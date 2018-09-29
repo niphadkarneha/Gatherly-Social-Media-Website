@@ -1,10 +1,9 @@
 <?php
-include "./connect.php";
-include_once "./loginSQL.php";
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
-
+include_once "connect.php";
+include_once "loginSQL.php";
 class LoginWebService{
 
   public function checkLogingetUserDetails($email_id, $password)
@@ -20,6 +19,11 @@ class LoginWebService{
     if ($result->num_rows > 0) {
 
         while($row = $result->fetch_assoc()) {
+              if(!isset($_SESSION))
+              {
+                  session_start();
+              }
+
               $_SESSION['UserName']=$row['UserName'];
               $_SESSION['FirstName'] = $row['FirstName'];
               $_SESSION['LastName'] = $row['LastName'];
@@ -27,6 +31,7 @@ class LoginWebService{
               $_SESSION['Status'] = $row['Status'];
               $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
               $_SESSION['Password'] = $row['Password'];
+              $_SESSION['UserId'] = $row['ID'];
               $array[]= $_SESSION;
 
         }
@@ -37,6 +42,59 @@ class LoginWebService{
     }
     $conn->close();
     return json_encode($array);
+
+  }
+
+  public function writePostToDB($userId, $message)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $writeToDB = $sql_service->postToDB($userId, $message);
+
+    $result = $conn->query($writeToDB);
+
+    $conn->close();
+    return "write to db called";
+
+  }
+
+  public function getAllGlobalPosts(){
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getAllPosts = $sql_service->getGlobalPostsSQL();
+
+    $result = $conn->query($getAllPosts);
+
+    if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+              if(!isset($_SESSION))
+              {
+                  session_start();
+              }
+              
+              $_SESSION['messageId']=$row['messageId'];
+              $_SESSION['message'] = $row['message'];
+              $_SESSION['UserId'] = $row['UserId'];
+              $_SESSION['TimeOfPost'] = $row['TimeOfPost'];
+              $array[]= $_SESSION;
+
+        }
+
+        $conn->close();
+        return $array;
+
+
+
+
+    }
+
+
 
   }
 

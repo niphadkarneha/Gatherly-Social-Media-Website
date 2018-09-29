@@ -12,6 +12,21 @@ class LoginSqlService{
       return $sql;
     }
 
+  public function postToDB($userId, $message){
+
+  	$sql = "INSERT INTO fordFanatics.posts (message, UserId) VALUES ('$message', '$userId')";
+  	return $sql;
+
+  }
+
+  //sql to get all of the posts
+  public function getGlobalPostsSQL()
+  {
+  	$sql = "SELECT * FROM fordFanatics.posts ORDER by TimeOfPost DESC";
+  	return $sql;
+  }
+
+
 }
   
 
