@@ -40,7 +40,7 @@
 
 	   		   $login = $loginWebService -> writePostToDB($userId, $cleanedMessage);
 
-
+	   		   echo "<script> window.location.href ='http://qav2.cs.odu.edu/fordFanatics/mainpage.php'</script>";
 
 
  		}

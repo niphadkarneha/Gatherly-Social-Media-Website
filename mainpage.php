@@ -3,6 +3,7 @@
 <title>Gatherly</title>
 <head>
   <link rel="shortcut icon" type="image/jpg" href="icons/g.jpg">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +32,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
   <div class="pull-right">
+  <form method="post" action="logout.php">
     <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
+  </form>
 </div>
   </div>
  </div>
@@ -165,6 +168,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
       $loginWebService = new LoginWebService();
 
       $login = $loginWebService -> getAllGlobalPosts();
+      $var = 1;
     //   // $fixed = json_decode($login);
       // echo gettype($login);
  
@@ -172,7 +176,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   {
          foreach($login as $i => $item) {
            //echo $login[$i]['message'];
-          
+          //echo $login[$i]['MessageUserId'];
+          $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['MessageUserId']);
+          //var_dump($getPosterDetails);
          echo "<div class='w3-container w3-card w3-white w3-round w3-margin'><br>";
          echo "<span class='w3-right w3-opacity'>" . $login[$i]['TimeOfPost'] . "</span>";
          echo "<h4>  First Last </h4><br>";
@@ -202,6 +208,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 </div>
 
 <script>
+
+  document.getElementById("logout").onclick = function(){
+
+    alert("logout pressed.");
+  };
 
       function myFunction(id) {
           var x = document.getElementById(id);

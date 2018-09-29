@@ -60,6 +60,43 @@ class LoginWebService{
 
   }
 
+  public function getPosterDetails($userId){
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getPoster = $sql_service->matchPostWithUser($userId);
+
+    $result = $conn->query($getPoster);
+
+     if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+             
+             if(!isset($_SESSION)){
+
+                session_start();
+
+             }
+
+              $_SESSION['PostFirstName']=$row['FirstName'];
+              $_SESSION['PostLastName'] = $row['LastName'];
+              $_SESSION['MessageUserId'] = $row['UserId'];
+              //$_SESSION['TimeOfPost'] = $row['TimeOfPost'];
+              $array[]= $_SESSION;
+
+        }
+
+        $conn->close();
+        return $array;
+
+
+     }
+
+
+  }
+
   public function getAllGlobalPosts(){
 
     $database_connection = new DatabaseConnection();
@@ -77,7 +114,7 @@ class LoginWebService{
               {
                   session_start();
               }
-              
+
               $_SESSION['messageId']=$row['messageId'];
               $_SESSION['message'] = $row['message'];
               $_SESSION['UserId'] = $row['UserId'];
@@ -89,19 +126,13 @@ class LoginWebService{
         $conn->close();
         return $array;
 
-
-
-
     }
-
-
 
   }
 
-
-
-
 }
+
+
 
 
 

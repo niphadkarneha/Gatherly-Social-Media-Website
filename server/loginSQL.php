@@ -26,6 +26,12 @@ class LoginSqlService{
   	return $sql;
   }
 
+  public function matchPostWithUser($userId)
+  {
+  	$sql = "SELECT * FROM fordFanatics.user WHERE ID='$userId'";
+  	return $sql;
+  }
+
 
 }
   
