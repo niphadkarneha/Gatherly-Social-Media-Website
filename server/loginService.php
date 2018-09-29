@@ -77,14 +77,16 @@ class LoginWebService{
              if(!isset($_SESSION)){
 
                 session_start();
-
-             }
-
+              }
+              
               $_SESSION['PostFirstName']=$row['FirstName'];
               $_SESSION['PostLastName'] = $row['LastName'];
-              $_SESSION['MessageUserId'] = $row['UserId'];
+              $_SESSION['EachMessageUserId'] = $row['ID'];
               //$_SESSION['TimeOfPost'] = $row['TimeOfPost'];
-              $array[]= $_SESSION;
+             
+
+              $array[]= $_SESSION; 
+
 
         }
 
@@ -117,7 +119,7 @@ class LoginWebService{
 
               $_SESSION['messageId']=$row['messageId'];
               $_SESSION['message'] = $row['message'];
-              $_SESSION['UserId'] = $row['UserId'];
+              $_SESSION['MessageUserId'] = $row['UserId'];
               $_SESSION['TimeOfPost'] = $row['TimeOfPost'];
               $array[]= $_SESSION;
 

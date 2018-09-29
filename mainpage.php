@@ -175,13 +175,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   if(!empty($login))
   {
          foreach($login as $i => $item) {
-           //echo $login[$i]['message'];
-          //echo $login[$i]['MessageUserId'];
+           //echo $login[$i]['MessageUserId'];
+         // echo $_SESSION['MessageUserId'];
           $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['MessageUserId']);
-          //var_dump($getPosterDetails);
+        // var_dump($getPosterDetails);
          echo "<div class='w3-container w3-card w3-white w3-round w3-margin'><br>";
          echo "<span class='w3-right w3-opacity'>" . $login[$i]['TimeOfPost'] . "</span>";
-         echo "<h4>  First Last </h4><br>";
+         echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
          echo "<p>" . $login[$i]['message'] ."</p>";
          echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-Loveit'></i>love it</button>"; 
          echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-comment'></i>  Comment</button>"; 
@@ -209,10 +209,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
 <script>
 
-  document.getElementById("logout").onclick = function(){
+   document.getElementById("logout").onclick = function(){
 
-    alert("logout pressed.");
-  };
+     location.href = "http://qav2.cs.odu.edu/fordFanatics/server/logout.php";
+ };
 
       function myFunction(id) {
           var x = document.getElementById(id);

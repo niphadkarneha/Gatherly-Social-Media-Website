@@ -32,7 +32,7 @@
  		if(isset($_SESSION['UserId']))
  		{
 			   $userId = $_SESSION['UserId'];
-
+			   echo "user id: " . $userId;
 			   $uncleanedMessage = $_GET['postMessage'];
 	    	   $cleanedMessage = clean_input($uncleanedMessage);
 	    	   echo $userId;
