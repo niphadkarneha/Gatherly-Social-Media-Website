@@ -32,7 +32,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
   <div class="pull-right">
-  <form method="post" action="logout.php">
+  <form method="post" action="server/logout.php">
     <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
   </form>
 </div>
@@ -57,8 +57,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
           <p>Last Name: <?php echo $_SESSION['LastName']; ?> </p>
           <p>Phone no: <?php echo "Not yet"; ?> </p>
           </div>
-          <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
+          <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo2" class="w3-hide w3-container">
+            <h3>Groups you belong</h3>
+            <ul>
+            <li>fordFanatics</li>
+            <li>tesla mavericks</li>
+            <li>Chevy enthusiast</li>
+            </ul>
+          </div>
+          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Create a group</button>
+          <div id="Demo3" class="w3-hide w3-container">
             <div class="modal fade" id="createChannel" role="dialog">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -107,12 +116,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
           </div>
           
-          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>My Events</button>
-          <div id="Demo3"class="w3-hide w3-container">
-          <p>Some other text..</p>
+          <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>My Events</button>
+          <div id="Demo4"class="w3-hide w3-container">
+          <p>Fall break</p>
           </div>
-          <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
-          <div id="Demo4" class="w3-hide w3-container">
+          <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
+          <div id="Demo5" class="w3-hide w3-container">
+            <img src="icons/g.jpg" alt="Trulli" width="250" height="250">
           </div>
         </div>      
       </div>
@@ -132,19 +142,23 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
     
     <!-- Middle Column -->
     <div class="w3-col m7">
-    
+  
       <div class="w3-row-padding">
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">Share something with the world</h6>
-              <input type="text" id="postMessage"  placeholder="Whats on your mind" contenteditable="true" class="w3-border w3-padding">
-              <button onclick="postButtonClicked()" type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i>Send</button> 
+              
+                <form method="POST" action="server/writePost.php">
+                    <input type="text" id="postMessage" name="postMessage" placeholder="Whats on your mind" contenteditable="true" class="w3-border w3-padding">
+                    <button name="postTheMessage" type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i>Post</button> 
+              </form>
+
             </div>
           </div>
         </div>
       </div>
-      
+  
 <!--       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <span class="w3-right w3-opacity">1 min</span>
         <h4>Tom Mater</h4><br>
