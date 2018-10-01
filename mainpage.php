@@ -159,13 +159,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
         </div>
       </div>
   
-<!--       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <span class="w3-right w3-opacity">1 min</span>
-        <h4>Tom Mater</h4><br>
-        <p>Same here</p>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-Loveit"></i>love it</button> 
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
-      </div> -->
+
       <?php
 
       
@@ -183,14 +177,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
       $login = $loginWebService -> getAllGlobalPosts();
       $var = 1;
-    //   // $fixed = json_decode($login);
-      // echo gettype($login);
- 
+
   if(!empty($login))
   {
          foreach($login as $i => $item) {
-           //echo $login[$i]['MessageUserId'];
-         // echo $_SESSION['MessageUserId'];
           $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['MessageUserId']);
         // var_dump($getPosterDetails);
          echo "<div class='w3-container w3-card w3-white w3-round w3-margin'><br>";
@@ -206,8 +196,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   else{
     echo "no posts to be displayed.";
   }
-
-
 
       ?>
 
@@ -250,52 +238,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
         }
     }
 
-    function postButtonClicked(){
-
-        var postMessage = document.getElementById("postMessage").value;
-
-        if (postMessage == "")
-        {
-          alert("Post Message cannot be empty");
-        }
-        else{
-          location.href = "http://qav2.cs.odu.edu/fordFanatics/server/writePost.php?postMessage="+postMessage;
-
-        }
-
-    }
-
 </script>
 
 </body>
 </html> 
-
-<?php
-// //enables error reporting
-// ini_set('display_startup_errors', 1);
-// ini_set('display_errors', 1);
-// error_reporting(-1);
-// include_once "./server/loginService.php";
-// include_once "./server/loginSQL.php";
-
-// if(!isset($_SESSION))
-//   {
-//     session_start();
-//   }
-
-//   $userId = $_SESSION['UserId'];
-
-//   $loginWebService = new LoginWebService();
-
-//   $login = $loginWebService -> getAllGlobalPosts();
-//   // $fixed = json_decode($login);
-//   echo gettype($login);
- 
-//   // var_dump($fixed);
-//   foreach($login as $i => $item) {
-//       echo $login[$i]['message']."<br>";
-//      // echo $fixed[$i];
-//   }
-  //$variables["thelistitems"][0]["memo"]
-
-?>

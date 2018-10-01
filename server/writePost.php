@@ -19,8 +19,6 @@
 	// echo "it is here";
 	  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-	  
-
 	  	if(isset($_POST['postMessage']))
 	  	{	
 
