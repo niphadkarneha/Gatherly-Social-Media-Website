@@ -89,7 +89,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
                 
 
                 $groupName = $MyloginWebService ->getGroupName($userGroupIds[$i]);
-                $_SESSION['groupIdClicked' . $i] = $userGroupIds[$i];
+
                 //echo $groupName;
                 echo "<form method='post' action='groupsPage.php'>";
                 echo "<input type='hidden' id='groupName' name='groupName' value='$userGroupIds[$i]'>";
@@ -101,11 +101,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
 
       ?>
-            
-
-<!--             <button class="w3-button w3-block w3-theme-l1 w3-left-align">Global</button> </br>
-            <button class="w3-button w3-block w3-theme-l1 w3-left-align">Music</button>  </br>
-            <button class="w3-button w3-block w3-theme-l1 w3-left-align">Sports</button> </br> -->
             </ul>
           </div>
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Create a group</button>
@@ -191,10 +186,51 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
 
 
-
-     <div id='AllGlobalPosts'>
+<div id='GroupPosts'>
      
- <?php  
+  <?php
+
+
+   function my_simple_crypt( $string, $action = 'e' ) {
+        // you may change these values to your own
+        $secret_key = 'my_simple_secret_key';
+        $secret_iv = 'my_simple_secret_iv';
+
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $key = hash( 'sha256', $secret_key );
+        $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+
+        if( $action == 'e' ) {
+            $output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
+        }
+        else if( $action == 'd' ){
+            $output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
+        }
+
+        return $output;
+    }
+
+
+
+    if(!isset($_SESSION))
+    {
+           session_start();
+     }
+
+
+     if(isset($_POST['groupName']))
+      {
+        $_SESSION['groupIdInSession'] = $_POST['groupName'];
+        $groupId = $_SESSION['groupIdInSession'];
+     }
+      else if (isset($_GET['groupId']))
+      {
+         //echo "it is in groupid get request";
+          $groupId = my_simple_crypt($_GET['groupId'], 'd');
+      }
+
+
      echo  "<div class='w3-col m7'>";
   
      echo  "<div class='w3-row-padding'>";
@@ -204,7 +240,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
      echo  "<h6 class='w3-opacity'>Share something with the world</h6>";
               
                 echo "<form method='POST' action='server/writePost.php'>";
-                echo "<input type='text' id='postMessage' name='postMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
+                echo "<input type='hidden' id='groupId' name='groupId' value='$groupId'>";
+                echo "<input type='text' id='postMessage' name='groupPost' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
                 echo "<button name='postTheMessage' type='submit' class='w3-button w3-theme'><i class='fa fa-pencil'></i>Post</button> ";
                 echo "</form>";
 
@@ -226,22 +263,24 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
       $userId = $_SESSION['UserId'];
 
       $loginWebService = new LoginWebService();
-
-      $login = $loginWebService -> getAllGlobalPosts();
+     // echo "group id : " . $groupId;
+      $login = $loginWebService -> getGroupPosts($groupId);
       $var = 1;
       
-       
+      
+
+       //var_dump($login);
       if(!empty($login))
       {
        
 
          foreach($login as $i => $item) {
-              $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['MessageUserId']);
+              $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['groupMessageUserId']);
             // var_dump($getPosterDetails);
              echo "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'><br>";
-             echo "<span class='w3-right w3-opacity'>" . $login[$i]['TimeOfPost'] . "</span>";
+             echo "<span class='w3-right w3-opacity'>" . $login[$i]['groupTimeOfPost'] . "</span>";
              echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
-             echo "<p>" . $login[$i]['message'] ."</p>";
+             echo "<p>" . $login[$i]['groupMessage'] ."</p>";
              echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-Loveit'></i>love it</button>"; 
              echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-comment'></i>  Comment</button>"; 
              echo " </div>";
@@ -258,7 +297,22 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
       
 
    echo  "</div>";
-  ?>    
+
+
+
+
+
+
+
+
+
+
+
+
+  ?>
+
+
+
 </div>
 <br>
 
@@ -311,6 +365,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
     function globalClicked(){
 
     location.href = "http://qav2.cs.odu.edu/fordFanatics/mainpage.php";
+    //   alert("global clicked.");
+
+    // var x = document.getElementById("AllGlobalPosts");
+    // if (x.style.display === "none") {
+    //     x.style.display = "block";
+    // } else {
+    //     x.style.display = "none";
+    // }
+
+
+
     }
 
 

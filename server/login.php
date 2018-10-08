@@ -5,7 +5,7 @@
   session_start();
   include_once "./loginService.php";
   include_once "./loginSQL.php";
-
+  include_once "connect.php";
   
   $loginWebService = new LoginWebService();
  
@@ -20,14 +20,18 @@
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   	
-  	$userName = $_POST['email'];
-  	$password = $_POST["password"];
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+  	$userName = mysqli_real_escape_string($conn, $_POST['email']);// $_POST['email'];
+  	$password = mysqli_real_escape_string($conn, $_POST['password']); // $_POST["password"];
 
   	$userName = clean_input($userName);
   	$password = clean_input($password);
 
-  	$login = $loginWebService -> checkLogingetUserDetails($userName, $password);
-  	
+  	$login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
+  	$conn->close();
+
     if(!isset($_SESSION))
   {
     session_start();

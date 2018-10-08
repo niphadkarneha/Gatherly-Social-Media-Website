@@ -1,3 +1,11 @@
+<style type="text/css">
+	.responsive{
+		width: 100%;
+		height: auto;
+	}
+
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -14,7 +22,14 @@
 		<link rel="stylesheet" href="register_site.css">
 	</head>
 	<body>
-<div class="split left">
+
+	<div class="split left">
+		<div class="centered">
+		<img src="icons/gLogo.png" alt="Gatherly" class="responsive">
+		<!-- <link  type="image/png" href="icons/gLogo.png"> -->
+		</div>
+		</div>	
+<!-- <div class="split left">
   <div class="centered">	
    <h2>Registration</h2>	
 		<div class="container mainLoginWrapper well w3-panel w3-card-4">
@@ -112,7 +127,7 @@
 			</div>
 		</div>
 </div>
-</div>
+</div> -->
 
 <div class="split right">
   <div class="centered">
