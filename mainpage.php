@@ -33,7 +33,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
   <div class="pull-right">
   <form method="post" action="server/logout.php">
-    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4 pull-right" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
   </form>
 </div>
   </div>
@@ -63,6 +63,36 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
             <ul>
 
       <?php 
+
+           // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+           //   echo "it is here";
+
+           //    if(isset($_POST['action']))
+           //    { 
+           //        echo "it is in post yay." . $_POST['groupName'];
+
+           //        echo "<script>
+
+           //        alert('groups button clicked!');
+           //        var x = document.getElementById('AllGlobalPosts');
+           //        if (x.style.display === 'none') {
+           //             x.style.display = 'block';
+           //        } else {
+           //             x.style.display = 'none';
+           //        }
+
+
+           //        </script>
+           //        ";
+                
+
+           //    }
+
+           //  }
+
+
+
             ini_set('display_startup_errors', 1);
             ini_set('display_errors', 1);
             error_reporting(-1);
@@ -311,6 +341,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
     function globalClicked(){
 
     location.href = "http://qav2.cs.odu.edu/fordFanatics/mainpage.php";
+    //   alert("global clicked.");
+
+    // var x = document.getElementById("AllGlobalPosts");
+    // if (x.style.display === "none") {
+    //     x.style.display = "block";
+    // } else {
+    //     x.style.display = "none";
+    // }
+
+
+
     }
 
 

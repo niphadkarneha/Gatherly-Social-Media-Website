@@ -12,12 +12,10 @@
 		<meta charset="UTF-8">
 		<title>fordFanatics</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script type="text/javascript" src="./Assets/jquery.min.js"></script>
-		<script type="text/javascript" src="./Assets/bootstrap.min.js"></script>
-		<script type="text/javascript" src="./scripts/registersitescript.js"></script>
-		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+<!-- 		<script type="text/javascript" src="./scripts/registersitescript.js"></script> -->
+<!-- 		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="./Assets/w3.css">
+<!-- 		<link rel="stylesheet" href="./Assets/w3.css"> -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="register_site.css">
 	</head>
