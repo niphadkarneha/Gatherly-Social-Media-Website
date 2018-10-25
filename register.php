@@ -101,13 +101,17 @@
     <h1>Create an account</h1>
     <form method = "post" id = "regForm" class="form" enctype="multipart/form-data" autocomplete="off">
       <div class="alert alert-error"></div>
-       <label><b>Username</b></label><span id ='usernameRequired' style='color:red'>*</span>
+      <label><b>First Name</b></label><span id ='usernameRequired' style='color:red'>*</span>
+      <input style="color: black;" id = "fname" type="text" placeholder="First Name" name="firstname" required />
+      <label><b>Last Name</b></label><span id ='usernameRequired' style='color:red'>*</span>
+      <input style="color: black;" id = "lname" type="text" placeholder="Last Name" name="lastname" required />
+      <label><b>Username</b></label><span id ='usernameRequired' style='color:red'>*</span>
       <input style="color: black;" id = "uname" type="text" placeholder="User Name" name="username" required />
-       <label><b>Email</b></label><span id ='emailRequired' style='color:red'>*</span>
+      <label><b>Email</b></label><span id ='emailRequired' style='color:red'>*</span>
       <input style="color: black;"  id = "email" type="email" placeholder="Email" name="email" required />
-       <label><b>Password</b></label><span id ='passwordRequired' style='color:red'>*</span>
+      <label><b>Password</b></label><span id ='passwordRequired' style='color:red'>*</span>
       <input style="color: black;" type="password" id="pass" placeholder="Password" name="password" autocomplete="new-password" required />
-       <label><b>Confirm Password</b></label><span id ='confirmPasswordRequired' style='color:red'>*</span>
+      <label><b>Confirm Password</b></label><span id ='confirmPasswordRequired' style='color:red'>*</span>
       <input style="color: black;" type="password" id="confirmPass" placeholder="Confirm Password" name="confirmpassword" autocomplete="new-password" required />
 
       <div class="avatar"><label><b>Select your avatar</b></label><span id ='confirmPasswordRequired' style='color:red'>*</span><input type="file" name="avatar" accept="image/*" required /></div>
