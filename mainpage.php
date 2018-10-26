@@ -521,7 +521,7 @@ main footer a{
               $likeCount = $loginWebService->getRatingCount($login[$i]['messageId']);
               $userLiked = $loginWebService->checkUserLiked($login[$i]['messageId'], $userId);
               $userDisliked = $loginWebService->checkUserDisliked($login[$i]['messageId'], $userId);
-              
+              $comments = $loginWebService->getComments($login[$i]['messageId']);
               $reactions = explode("/", $likeCount);
             // echo "<h1> reaction id: " . $getLikeInformation;
             // var_dump($getPosterDetails);
@@ -583,17 +583,71 @@ main footer a{
             echo "<span class='dislikes'>" . " Dislikes: " . $reactions[1] . "</span>";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
             echo "<button onclick= myFunction('Chat') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>chat</i></button>";
-            echo "<button onclick= myFunction('Test') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>";
-            echo "<div id='Test' class='w3-hide w3-container'>";
+            echo "<button onclick= myFunction('". $login[$i]['messageId'] ."') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>";
+          
+      if(!empty($comments))
+
+      {      echo "<div  id='" . $login[$i]['messageId'] . "' class='w3-hide w3-container'>";
+          foreach($comments as $j => $items) {
+
+            $getCommenterDetails = $loginWebService -> getPosterDetails($comments[$j]['commentUserId']);
+           // echo "<br>comment<br/>";
+          //   echo "<div>";
+         echo "<br/>";
             echo "<div class='a'>";
-            echo "<p>Test</p>";
-            echo " </div>";
+            echo "<aside>";
+             echo "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
+             echo "<h6>" . $getCommenterDetails[0]['PostFirstName'] . " " . $getCommenterDetails[0]['PostLastName'] . "</h6>";
+             echo "<p>" . $comments[$j]['comment'] . "</p>";
+             echo "</aside>";
+          //   echo "<p> hello </p>";
+             //echo "<form id = 'commentFrom'> ";
+            // echo "<i class=' data-id=" . $comments[$j]['commentId'] ."></i>";
+          //  // echo "<div id = 'commentInputs'>";
+          //  // echo "<input type='hidden' value = '" .  $comments[$j]['messageId'] . "' name = 'commentsid' />";
+          //   //echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" . $comments[$j]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
+          //   //echo "<button type = 'submit'>Comment</button>";
+          //  // echo "</div>";
+          //   //echo "</form>";
+          //   echo "<br/>";
+          //   //echo "<input><aside><textarea placeholder='Type your message'></textarea></aside></input>";
+          //   echo " </div>";
+          //   echo "</div>";
+          //   echo " </div>";
+            
+            }//echo "</div>";
+            echo "<form id = 'commentFrom'>";
+            //echo "<i class=' data-id=" . $comments[$j]['commentId'] ."></i>";
+            echo "<div id = 'commentInputs'>";
+           // echo "<input type='hidden' value = '" .  $comments[$j]['messageId'] . "' name = 'commentsid' />";
+            echo "<aside><input placeholder='Type your comment'> </input>" ;
+            echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+          
             echo "</div>";
+            echo "</form>";
+
+     }
+     else
+     {
+            echo "<div id='" . $login[$i]['messageId'] . "' class='w3-hide w3-container'>";
+            echo "<div class='a'>";
+            //var_dump($comments);
+            echo "<p>no comments</p>";
+           
+            
+
+            echo "<form id = 'commentFrom'>";
+            //echo "<i class=' data-id=" . $comments[$j]['commentId'] ."></i>";
+            echo "<div id = 'commentInputs'>";
+           // echo "<input type='hidden' value = '" .  $comments[$j]['messageId'] . "' name = 'commentsid' />";
+            echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
+           echo " </div>";
+            echo "</div>";
+            echo "</div>";
+            echo "</form>";
             echo " </div>";
-            // echo "<div id='Test' class='w3-hide w3-container'>";
-            //  echo "<p>Test</p>";
-            //  echo " </div>";
-            //  //echo "</div>";
+     }
+
            
          }
        
@@ -610,81 +664,10 @@ main footer a{
   <div id="Chat" class="w3-hide w3-container">
   <main>
     <header>
-      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
-      <div>
-        <h2>Chat with Vincent Porter</h2>
-        <h3>already 1902 messages</h3>
-      </div>
-      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
-    </header>
-    <ul id="chat">
-      <li class="you">
-        <div class="entete">
-          <span class="status green"></span>
-          <h2>Vincent</h2>
-          <h3>10:12AM, Today</h3>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-        </div>
-      </li>
-      <li class="me">
-        <div class="entete">
-          <h3>10:12AM, Today</h3>
-          <h2>Vincent</h2>
-          <span class="status blue"></span>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-        </div>
-      </li>
-      <li class="me">
-        <div class="entete">
-          <h3>10:12AM, Today</h3>
-          <h2>Vincent</h2>
-          <span class="status blue"></span>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          OK
-        </div>
-      </li>
-      <li class="you">
-        <div class="entete">
-          <span class="status green"></span>
-          <h2>Vincent</h2>
-          <h3>10:12AM, Today</h3>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-        </div>
-      </li>
-      <li class="me">
-        <div class="entete">
-          <h3>10:12AM, Today</h3>
-          <h2>Vincent</h2>
-          <span class="status blue"></span>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-        </div>
-      </li>
-      <li class="me">
-        <div class="entete">
-          <h3>10:12AM, Today</h3>
-          <h2>Vincent</h2>
-          <span class="status blue"></span>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-          OK
-        </div>
-      </li>
-    </ul>
+      </header>
+      
+     <!--  </li> -->
+    <!-- </ul> -->
     <footer>
       <textarea placeholder="Type your message"></textarea>
       <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
@@ -702,7 +685,7 @@ main footer a{
 
 <!-- Footer -->
 <div class="footer">
-  <p>&copy;fordFanatics</p>
+ <!--  <p>&copy;fordFanatics</p> -->
 </div>
 
 <script>
