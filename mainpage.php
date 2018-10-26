@@ -615,7 +615,11 @@ main footer a{
           //   echo "</div>";
           //   echo " </div>";
             
-            }//echo "</div>";
+            }//
+            echo "</div>";
+            echo "</div>";
+            
+            
             echo "<form id = 'commentFrom'>";
             //echo "<i class=' data-id=" . $comments[$j]['commentId'] ."></i>";
             echo "<div id = 'commentInputs'>";
@@ -623,9 +627,11 @@ main footer a{
             echo "<aside><input placeholder='Type your comment'> </input>" ;
             echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
           
-            echo "</div>";
+           
             echo "</form>";
-
+             echo "</div>";
+            echo "</div>";
+            echo "</div>";
      }
      else
      {
@@ -647,7 +653,7 @@ main footer a{
             echo "</form>";
             echo " </div>";
      }
-
+          //echo " </div>";
            
          }
        
