@@ -580,7 +580,7 @@ main footer a{
                                  echo "<span class='likes'>" . "Likes: " . $reactions[0] . "</span>";
                                  echo "<span class='dislikes'>" . " Dislikes: " . $reactions[1] . "</span>";
                                  echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                 echo "<button onclick= myFunction('Chat') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>chat</i></button>";
+                                // echo "<button onclick= myFunction('Chat') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>chat</i></button>";
                                  echo "<button onclick= myFunction('". $login[$i]['messageId'] ."') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>";
                       
                                  if(!empty($comments))
@@ -593,7 +593,7 @@ main footer a{
 
                                      $getCommenterDetails = $loginWebService -> getPosterDetails($comments[$j]['commentUserId']);
                        
-                                     echo "<br/>";
+                                     //echo "<br/>";
                                      echo "<div class='a'>";
                                            
                                            echo "<aside>";
@@ -604,7 +604,7 @@ main footer a{
 
                                      echo "</div>";
                         
-                                  }//
+                                  }
                               
                                 echo "</div>";
                        
@@ -612,18 +612,18 @@ main footer a{
                        // echo "</div>";
                         
                         
-                                 echo "<form id = 'commentFrom'>";
+                                 echo "<form id " . $login[$i]['messageId'] . "  > ";
                       
-                          //  echo "<div id = 'commentInputs'>";
+                         //   echo "<div id = 'commentInputs'>";
                       
-                                     echo "<aside><input placeholder='Type your comment'> </input>" ;
-                                     echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
-                      
+                                     echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
+                                     //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                     echo  " " . "<button class='commentButton' value = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
                                  echo "</form>";
                         
-                          echo "</div>";
-                        // echo "</div>";
-                        // echo "</div>";
+                        //  echo "</div>";
+                         //echo "</div>";
+                         echo "</div>";
                  }
                  else
                  {
@@ -631,17 +631,25 @@ main footer a{
                             echo "<div class='a'>";
                        
                             echo "<p>no comments</p>";
-                       
-                        
-
-                              echo "<form id = 'commentFrom'>";
-                       
-                                   echo "<div id = 'commentInputs'>";
+                            
+                            echo "<form id " . $login[$i]['messageId'] . "  > ";
                       
-                                      echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
-                                   echo " </div>";
+                         //   echo "<div id = 'commentInputs'>";
+                      
+                                     echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
+                                     //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                     echo  " " . "<button class='commentButton' value = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                 echo "</form>";
+                        
+                             //  echo "<form id " . $login[$i]['messageId'] . "  > ";
+                             // // echo "<form id = 'commentFrom'>";
                        
-                              echo "</form>";
+                             //  //     echo "<div id = 'commentInputs'>";
+                      
+                             //          echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
+                             //    //   echo " </div>";
+                       
+                             //  echo "</form>";
                      
                 
                           echo "</div>";
