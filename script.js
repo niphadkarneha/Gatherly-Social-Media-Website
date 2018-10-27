@@ -1,4 +1,125 @@
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
+
+
+
+
+$("#regForm").submit(function(e) {
+
+      e.preventDefault();  
+      var formIsValid = true;
+     
+      var username = document.getElementById("uname").value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("pass").value;
+      var confirmPass = document.getElementById("confirmPass").value;
+
+
+
+      if(password == "" || confirmPass == "")
+      {
+       $('#passwordRequired').html(" *Password and Confirm Password do not match.");
+      }
+
+      if(password != confirmPass){
+
+         $('#passwordRequired').html(" *Password and Confirm Password do not match.");
+         $('#confirmPasswordRequired').html(" *Password and Confirm Password do not match.");
+        formIsValid = false;
+      }
+      else
+      {
+
+        if(username == "")
+        {
+          alert("username cannot be empty.");
+           formIsValid = false;
+        }
+
+        if(email == "")
+        {
+          alert("Email cannot be empty.");
+           formIsValid = false;
+        }
+
+      }
+
+  
+      if(formIsValid == true)
+      {
+
+            $.ajax({
+                url: "register.php",
+                type: 'post',
+                data: {'username': username, 'email': email, 'password': password },
+            
+                success: function (data) {
+                  if(data == 'userAlreadyExists')
+                  {
+                    $('#emailRequired').html(" *Email already Exists");
+                  }
+                  if(data == 'newUser'){
+                    alert("You have successfully registered!");
+                    location.reload();
+
+                  }
+                  else if (data=='duplicateUser'){
+                     alert("Error: "+data);
+                  }
+                    
+                }
+            });
+
+
+      }
+
+
+     
+
+});
+
+
 $(document).ready(function(){
+   
+  
+
+  $('.commentButton').on('click', function(e){
+       e.preventDefault();  
+    
+    var userInput = $(this).closest("form").find("input").val();
+    var messageIdCommentedAt = $(this).val();
+    var userCommented = "usercommented";
+
+    if (userInput == "")
+    {
+      alert("comments cannot be empty, please try again.");
+    }
+    else {
+     
+         $.ajax({
+
+              url : 'likeDislike.php',
+              type : 'POST',
+              data : {
+                'commentInput' : userInput, 
+                'messIdComment' : messageIdCommentedAt, 
+                'userCommented' : userCommented
+              },
+              
+              success : function(data) {              
+                
+                //$("#" + messageIdCommentedAt).load("#" + messageIdCommentedAt);
+              }
+        })  
+
+    }
+
+
+  });
+
+
+
 
    $('.likeOrDislike').on('click', function(){
 
