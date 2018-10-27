@@ -613,9 +613,9 @@ main footer a{
                         
                         
                                  echo "<form id " . $login[$i]['messageId'] . "  > ";
-                      
+                                     
                          //   echo "<div id = 'commentInputs'>";
-                      
+                                     //echo "<span value = '" . $login[$i]['FirstName'] . "' />";
                                      echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
                                      //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
                                      echo  " " . "<button class='commentButton' value = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";

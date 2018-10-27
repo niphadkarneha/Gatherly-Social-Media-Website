@@ -107,9 +107,19 @@ $(document).ready(function(){
                 'userCommented' : userCommented
               },
               
-              success : function(data) {              
+              success : function(data) {   
+                var userInfo = data;
+                userInfo = data.split('/');
+              //  alert(userInfo[0] + userInfo[1]);
+
+               // $( ".inner" ).append( "<p>Test</p>" );
+                //var e = $('<p>' + userInput + '</p>');
                 
-                //$("#" + messageIdCommentedAt).load("#" + messageIdCommentedAt);
+                var e = "<right> <aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
+                $('#' + messageIdCommentedAt).append(e); 
+               // $("#" + messageIdCommentedAt).remove();           
+                //$('#' + messageIdCommentedAt).load("/divcontents");
+               // $("#" + messageIdCommentedAt).load("#" + messageIdCommentedAt);
               }
         })  
 
