@@ -1,9 +1,98 @@
+<?php 
+  
+  ini_set('display_startup_errors', 1);
+  ini_set('display_errors', 1);
+  error_reporting(-1);
+  session_start();
+  include_once "./server/loginService.php";
+  include_once "./server/loginSQL.php";
+  //echo "it is here";
+  $loginWebService = new LoginWebService();
+
+              //start of group post request
+     
+    function clean_input($data) {
+     $data = trim($data);
+     $data = stripslashes($data);
+     $data = htmlspecialchars($data);
+    
+     return $data;
+  
+   }
+
+
+
+
+      if(isset($_POST['groupPost']))
+      {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $loginWebService = new LoginWebService();
+        
+      if($_POST['groupPost'] == "")
+        {
+       $groupId = $_POST['groupId'];
+             //echo "user id: " . $userId;
+       $encryptedGroupId = my_simple_crypt($groupId, 'e');
+            echo " <script>
+                  var txt;
+                  var r = confirm('Posts cannot be empty, Please try again.');
+                  if(r==true || r==false)
+                  {
+                    window.location.href = '../groupsPage.php?groupId=$encryptedGroupId'; 
+                  }
+                 </script>
+
+
+              ";
+
+          }
+        else 
+        {
+
+            if(isset($_SESSION['UserId']))
+        {
+             $userId = $_SESSION['UserId'];
+             $groupId = mysqli_real_escape_string($conn, $_POST['groupId']);
+             //echo "user id: " . $userId;
+             $encryptedGroupId = my_simple_crypt($groupId, 'e');
+             
+             $cleanedMessage = clean_input($_POST['groupPost']);
+            //   // echo $userId;
+             $cleanedMessage = mysqli_real_escape_string($conn, $cleanedMessage);
+
+               $login = $loginWebService -> writeGroupPostToDB($userId, $cleanedMessage, $groupId);
+
+            echo "
+            <script> window.location.href ='groupsPage.php?groupId=$encryptedGroupId'; 
+
+
+            </script>";
+
+        }
+
+
+        }
+
+
+      }
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <title>Gatherly</title>
 <head>
   <link rel="shortcut icon" type="image/jpg" href="icons/g.jpg">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,6 +100,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="script.js"></script>
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color:#e6ffff}
 .footer
@@ -23,6 +114,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
     color: white;
     text-align: center;
 }
+
+.material-icons {vertical-align:-14%}
+
+.fa {
+    font-size: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fa:hover {
+  color: darkblue;
+}
+
 </style>
 <body class="w3-theme-15", background-color="#e6ffff">
 
@@ -31,6 +135,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
+  <a href="profilepage.php" button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="openForm()" title="My Account"><i class="fa fa-user"></i>Welcome<?php  if(!isset($_SESSION)){session_start(); } echo " " . $_SESSION['FirstName'] . "!";?></a>
   <div class="pull-right">
   <form method="post" action="server/logout.php">
     <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
@@ -50,13 +155,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
       <!-- Accordion -->
       <div class="w3-card w3-round">
         <div class="w3-white">
-          <button onclick="myFunction('Demo1')"class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>My Profile</button>
-          <div id="Demo1" class="w3-hide w3-container">
-          <p>Email id: <?php  if(!isset($_SESSION)){session_start(); } echo $_SESSION['Email']; ?> </p> 
-          <p>First Name: <?php echo $_SESSION['FirstName']; ?> </p>
-          <p>Last Name: <?php echo $_SESSION['LastName']; ?> </p>
-          <p>Phone no: <?php echo "Not yet"; ?> </p>
-          </div>
+
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo2" class="w3-hide w3-container">
             <h3>Groups you belong</h3>
@@ -66,22 +165,26 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
             ini_set('display_startup_errors', 1);
             ini_set('display_errors', 1);
             error_reporting(-1);
-            include_once "./server/loginService.php";
-            include_once "./server/loginSQL.php";
+            //include_once "./server/loginService.php";
+            //include_once "./server/loginSQL.php";
 
             if(!isset($_SESSION)){
                 session_start();
               }
 
               $userID  = $_SESSION['UserId'];
-
+              
+              if (!isset($userID))
+              {
+                 header("Location: index.php");
+              }
+              
+              
               $MyloginWebService = new LoginWebService();
               $userGroupIds = $MyloginWebService -> getUserGroups($userID);
-            //  $i = "";
-            //  $item = "";
-              //var_dump($userGroups);
-              //echo $userGroups[1];
+              
               $count = count($userGroupIds);
+              
               $i = 0;
                echo "<button onclick='globalClicked()' class='w3-button w3-block w3-theme-l1 w3-left-align'>Global</button> </br>";
               while($i != $count)
@@ -137,6 +240,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
               <div class="row">
                   <div class="form-group">
                     <span class='invites'>Invite your friends</span>
+                    <input type="text" name="emailid/username" placeholder="emailid/username"><br>
                     <div class="channelInvites">
                     </div>
                   </div>
@@ -153,9 +257,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
           </div>
           
-          <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>My Events</button>
+          <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>My Invitations</button>
+
           <div id="Demo4"class="w3-hide w3-container">
-          <p>Fall break</p>
+          <p>Sally Carrera invited you to be part of Group A</p>
+          <button type="button" onclick="alert('Yay!! You are now part of Group A :) Say something')">Accept</button>
+          <button type="button" onclick="alert('Invitation declined')">Reject</button>
           </div>
           <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
           <div id="Demo5" class="w3-hide w3-container">
@@ -190,7 +297,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
      
   <?php
 
-
+  /***************************************************************************************
+*    Title: A simple two-way function to encrypt or decrypt a string
+*    Author: Nazmul Ahsan
+*    Date: 10/15/2018
+*    Code version: N/A
+*    Availability: https://nazmulahsan.me/simple-two-way-function-encrypt-decrypt-string/
+*
+***************************************************************************************/
    function my_simple_crypt( $string, $action = 'e' ) {
         // you may change these values to your own
         $secret_key = 'my_simple_secret_key';
@@ -210,6 +324,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
         return $output;
     }
+  //***********************end of citation*******************************************
 
 
 
@@ -239,7 +354,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
      echo  "<div class='w3-container w3-padding'>";
      echo  "<h6 class='w3-opacity'>Share something with the world</h6>";
               
-                echo "<form method='POST' action='server/writePost.php'>";
+                echo "<form method='POST' action='http://qav2.cs.odu.edu/fordFanatics/groupsPage.php'>";
                 echo "<input type='hidden' id='groupId' name='groupId' value='$groupId'>";
                 echo "<input type='text' id='postMessage' name='groupPost' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
                 echo "<button name='postTheMessage' type='submit' class='w3-button w3-theme'><i class='fa fa-pencil'></i>Post</button> ";
@@ -275,28 +390,160 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
        
 
          foreach($login as $i => $item) {
+           
               $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['groupMessageUserId']);
-            // var_dump($getPosterDetails);
+              $getLikeInformation = $loginWebService-> getLikes($login[$i]['groupMessageId'], $userId);
+              $likeCount = $loginWebService->getRatingCount($login[$i]['groupMessageId']);
+              $userLiked = $loginWebService->checkUserLiked($login[$i]['groupMessageId'], $userId);
+              $userDisliked = $loginWebService->checkUserDisliked($login[$i]['groupMessageId'], $userId);
+              $comments = $loginWebService->getComments($login[$i]['groupMessageId']);
+              $reactions = explode("/", $likeCount);
+ 
+
              echo "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'><br>";
-             echo "<span class='w3-right w3-opacity'>" . $login[$i]['groupTimeOfPost'] . "</span>";
-             echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
-             echo "<p>" . $login[$i]['groupMessage'] ."</p>";
-             echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-Loveit'></i>love it</button>"; 
-             echo "<button type='button' class='w3-button w3-theme-d2 w3-margin-bottom'><i class='fa fa-comment'></i>  Comment</button>"; 
-             echo " </div>";
+            
+                     echo "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                     echo "<span class='w3-right w3-opacity'>" . $login[$i]['groupTimeOfPost'] . "</span>";
+                     echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
+                     echo "<p>" . $login[$i]['groupMessage'] ."</p>";
+
+             
+                    if($userLiked == true)
+                    {
+                       echo "<i class='fa fa-thumbs-up like-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+                       echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       echo "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+                    }
+
+                   else if($userDisliked == true)
+                   {
+
+                      if($reactions[0] == '0')
+                      {
+                          
+                          echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                          echo "<i class='fa fa-thumbs-down dislike-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+                      }
+                      else
+                      {
+                          echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>"; 
+                          echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                          echo "<i class='fa fa-thumbs-down dislike-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+                      }
+
+
+                 }
+                else
+                {
+                        echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";  
+                        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                        echo "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id=" . $login[$i]['groupMessageId'] ."></i>";
+
+
+                }
+                  
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo "<span class='likes'>" . "Likes: " . $reactions[0] . "</span>";
+                echo "<span class='dislikes'>" . " Dislikes: " . $reactions[1] . "</span>";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
+                
+                echo "<button onclick= myFunction('". $login[$i]['groupMessageId'] ."') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>";
+               
+                if(!empty($comments)){  
+
+                                 echo "<div  id='" . $login[$i]['groupMessageId'] . "' class='w3-hide w3-container'>";
+                      
+                                  foreach($comments as $j => $items) {
+
+                                     $getCommenterDetails = $loginWebService -> getPosterDetails($comments[$j]['commentUserId']);
+                       
+                                     //echo "<br/>";
+                                     echo "<div class='a'>";
+                                           
+                                           echo "<aside>";
+                                               echo "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
+                                               echo "<h6>" . $getCommenterDetails[0]['PostFirstName'] . " " . $getCommenterDetails[0]['PostLastName'] . "</h6>";
+                                               echo "<p>" . $comments[$j]['comment'] . "</p>";
+                                           echo "</aside>";
+
+                                     echo "</div>";
+                        
+                                  }
+                              
+                                echo "</div>";
+                       
+
+                       // echo "</div>";
+                        
+                        
+                                 echo "<form id " . $login[$i]['groupMessageId'] . "  > ";
+                                     
+                         //   echo "<div id = 'commentInputs'>";
+                                     //echo "<span value = '" . $login[$i]['FirstName'] . "' />";
+                                     echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
+                                     //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                     echo  " " . "<button class='commentButton' value = '" .  $login[$i]['groupMessageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                 echo "</form>";
+                        
+                        //  echo "</div>";
+                         //echo "</div>";
+                         echo "</div>";
+
+                 }
+                 else
+                 {
+                        echo "<div id='" . $login[$i]['groupMessageId'] . "' class='w3-hide w3-container'>";
+                            echo "<div class='a'>";
+                       
+                            echo "<p>no comments</p>";
+                            
+                            echo "<form id =  '" . $login[$i]['groupMessageId'] . "'  > ";
+                      
+                         //   echo "<div id = 'commentInputs'>";
+                      
+                                     echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
+                                     //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                     echo  " " . "<button class='commentButton' value = '" .  $login[$i]['groupMessageId'] . "' type = 'submit'>Comment</button> </aside>";
+                                 echo "</form>";
+                        
+                             //  echo "<form id " . $login[$i]['messageId'] . "  > ";
+                             // // echo "<form id = 'commentFrom'>";
+                       
+                             //  //     echo "<div id = 'commentInputs'>";
+                      
+                             //          echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
+                             //    //   echo " </div>";
+                       
+                             //  echo "</form>";
+                     
+                
+                          echo "</div>";
+                          echo "</div>";
+                          echo "</div>";
+                         
+              
+                 }
+
+                // echo "</div>"; // ending global posts
+
+              
 
          }
        
-      }
+      } //if not empty login end bracket
  
   else{
-        echo "no posts to be displayed.";
+        echo "<h1>no posts to be displayed.</h1>";
      }
-       echo "</div>";
+     echo "<br/>";
+     echo "<br/>";
+     echo "<br/>";
+      // echo "</div>";
 
       
 
-   echo  "</div>";
+   //echo  "</div>";
 
 
 
@@ -325,7 +572,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
    document.getElementById("logout").onclick = function(){
 
-     location.href = "http://qav2.cs.odu.edu/fordFanatics/server/logout.php";
+     location.href = "./server/logout.php";
  };
 
       function myFunction(id) {
@@ -364,7 +611,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 
     function globalClicked(){
 
-    location.href = "http://qav2.cs.odu.edu/fordFanatics/mainpage.php";
+    location.href = "./mainpage.php";
     //   alert("global clicked.");
 
     // var x = document.getElementById("AllGlobalPosts");

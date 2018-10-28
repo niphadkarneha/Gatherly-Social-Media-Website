@@ -48,6 +48,81 @@
 
        }
 
+       if(isset($_POST['createGroup']))
+       {
+
+        $groupName = clean_input($_POST['groupName']);
+        $groupName = mysqli_real_escape_string($conn, $groupName);
+
+        $groupType = clean_input($_POST['groupType']);
+        $groupType = mysqli_real_escape_string($conn, $groupType);
+
+        $loginWebService -> createNewGroup($groupName, $groupType, $userId);
+
+
+
+       }
+
+       if(isset($_POST['checkGroup']))
+       {
+
+        $groupNameToBeChecked = clean_input($_POST['groupName']);
+        $groupNameToBeChecked = mysqli_real_escape_string($conn, $groupNameToBeChecked);
+
+        $checkGroupNameValid = $loginWebService -> checkIfGroupExists($groupNameToBeChecked); 
+        echo $checkGroupNameValid;
+       // echo $checkGroupNameValid;
+        //var_dump($checkGroupNameValid);
+
+
+       }
+
+       if(isset($_POST['joinGroup']))
+       {
+
+          $groupNameToJoin = clean_input($_POST['groupName']);
+          $groupNameToJoin = mysqli_real_escape_string($conn, $groupNameToJoin);
+
+          $checkGroupToBeJoined = $loginWebService -> checkIfGroupExists($groupNameToJoin);
+          //echo $checkGroupToBeJoined;
+
+          if($checkGroupToBeJoined == 0)
+          {
+            echo 0;
+          }
+          else{
+
+            $groupIdToBeJoined = $loginWebService -> getGroupIdFromName($groupNameToJoin);
+
+            
+            $userGroupIds = $loginWebService -> getUserGroups($userId);
+
+          
+
+
+            if (in_array($groupIdToBeJoined, $userGroupIds)) {
+               
+                echo 3;
+            }
+            else
+            {
+               $loginWebService->addUserToGroup($groupIdToBeJoined, $userId);
+            }
+
+           
+
+
+
+
+          }
+
+
+
+
+
+
+       }
+
 
 
     if(isset($_POST['action']))

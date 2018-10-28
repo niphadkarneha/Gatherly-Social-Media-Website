@@ -302,6 +302,50 @@ main footer a{
   margin-top:5px;
   display:inline-block;
 }
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#myUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+
+
+
+
+
 </style>
 <body class="w3-theme-15", background-color="#e6ffff">
 
@@ -381,11 +425,61 @@ main footer a{
               }
 
 
+              $allPublicGroups = $MyloginWebService -> getAllPublicGroups();
+
+
       ?>
             
 
             </ul>
           </div>
+      <button onclick="myFunction('joinAgroup')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Join public groups</button>
+        <div id = "joinAgroup" class="w3-hide w3-container">
+         
+         <h3> Enter Group Name</h3>
+
+         <form id = 'joinAgroupForum'>
+                <?php      
+              
+
+              if(!empty($allPublicGroups))
+              {
+
+
+
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for public group names..' title='Type in a name'><button class = 'joinGroupBtn' >Join Group</button><br/>";
+              
+              echo  "<ul id='myUL'>";
+                
+                foreach($allPublicGroups as $i => $item) {
+
+                     echo "<li><a id = 'groupNameDisplay' href='#'>" .  $allPublicGroups[$i]['publicGroupName'] . "</a></li>";
+               
+                }
+              echo "</ul>";
+
+              }
+              else {
+
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for public group names..' title='Type in a name'><button class = 'joinGroupBtn'>Join Group</button><br/>";
+                echo  "<ul id='myUL'>";
+
+                echo "<h6 id = 'therearenocomentsLabel' >There a no public groups available. Create one!</h6>";
+                echo "</ul>";
+
+              }
+             
+
+                 ?>
+
+              
+
+         </form>
+
+        </div>
+
+
+
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Create a group</button>
           <div id="Demo3" class="w3-hide w3-container">
             <div class="modal fade" id="createChannel" role="dialog">
@@ -396,40 +490,42 @@ main footer a{
                 <h6>Share a message, picture, story anything you like with your group.</h6>
               </div>
               <div class="modal-body newChannelDetails">
-                <form role="form" id="createChannelForm">
-                  <div class="row">
+          <form role="form" id="createChannelForm">
+              <div class="row">
                   <div class="form-group">
                     <div class="uniqueChannel"></div>
-                    <form action="/action_page.php">
-                    <input type="text" name="Groupname" placeholder="Group Name"><br>
+                    <form>
+                    <input type="text" id="groupNameToBeCreated" name="Groupname" placeholder="Group Name"><br>
                     </form>
                   </div>
               </div>
               <div class="row">
                 <span class="type">Group style</span>
-                <div class="form-group">
+                <div id = 'publicPrivateDiv' class="form-group">
                   <label class="radio-inline">
-                      <input type="radio" name="type" value="private" checked>Private
+                      <input type="radio" id = 'privateGroup' name="type" value="private" checked>Private
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="type" value="public">Public
+                      <input type="radio" id = 'publicGroup' name="type" value="public">Public
                     </label>
                 </div>
             </div>
-              <div class="row">
+<!--               <div class="row">
                   <div class="form-group">
                     <span class='invites'>Invite your friends</span>
                      <input type="text" name="emailid/username" placeholder="emailid/username"><br>
                     <div class="channelInvites">
                     </div>
                   </div>
-              </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div> -->
+
+               <div class="modal-footer">
+               <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
                 <button type="button" class="btn btn-default createChannelBtn" data-dismiss="modal">Create Group</button>
               </div>
+        </form>
+              </div>
+
             </div>
           </div>
       </div>
@@ -632,7 +728,7 @@ main footer a{
                        
                             echo "<p>no comments</p>";
                             
-                            echo "<form id " . $login[$i]['messageId'] . "  > ";
+                            echo "<form id =  '" . $login[$i]['messageId'] . "'  > ";
                       
                          //   echo "<div id = 'commentInputs'>";
                       
@@ -713,6 +809,22 @@ main footer a{
               x.previousElementSibling.className.replace(" w3-theme-d1", "");
           }
       }
+
+      function myFunctionTwo() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
 
 
 // Used to toggle the menu on smaller screens when clicking on the menu button
