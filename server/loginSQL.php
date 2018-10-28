@@ -18,10 +18,31 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function getAllPublicGroupsSql()
+  {
+    $sql = "SELECT * FROM fordFanatics.groups WHERE type = 'public'";
+    return $sql;
+  }
+
+  public function checkIfGroupExistsSql($groupName)
+  {
+    $sql = "SELECT * FROM fordFanatics.groups WHERE groupName = '$groupName'";
+    return $sql;
+  }
+
+
   public function addCommentsSQL($commentInput, $userId, $parentMessageId)
   {
     $sql = "INSERT INTO fordFanatics.comments (parent_messageId, comment, commentUserId)  VALUES ('$parentMessageId', '$commentInput', '$userId')";
     return $sql;
+  }
+
+  public function createNewGroupSQL($groupName, $type, $groupOwnerId){
+
+    $sql = "INSERT INTO fordFanatics.groups (groupName, ownerUserId, type) VALUES ('$groupName', '$groupOwnerId', '$type')";
+
+    return $sql;
+  
   }
 
   public function incrementLikeSql($messageId){
@@ -35,6 +56,12 @@ class LoginSqlService{
     $sql = "SELECT * FROM userLikes WHERE message_id = $messageId AND reactionId = '1'";
     return $sql;
 
+  }
+
+  public function addUserToGroupSql($groupId, $userId)
+  {
+    $sql = "INSERT INTO fordFanatics.userGroup (groupUserId, groupId) VALUES ('$userId', '$groupId')";
+    return $sql;
   }
 
   public function insertNewUserSql($username, $email, $password){
@@ -89,6 +116,12 @@ class LoginSqlService{
   public function getLikeCountForMes($messageId)
   {
     $sql = "SELECT likeCount FROM fordFanatics.posts WHERE messageId = '$messageId'";
+    return $sql;
+  }
+
+  public function getGroupIdFromNameSql($groupName)
+  {
+    $sql = "SELECT groupId FROM fordFanatics.groups WHERE groupName = '$groupName'";
     return $sql;
   }
 

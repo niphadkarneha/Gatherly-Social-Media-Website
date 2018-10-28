@@ -93,6 +93,48 @@ class LoginWebService{
 
   }
 
+
+  function checkIfGroupExists($groupName){
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+
+    $checkIfUserExistsSql = $sql_service->checkIfGroupExistsSql($groupName);
+
+    $result = $conn->query($checkIfUserExistsSql);
+
+    $resultCount = $result->num_rows;
+
+
+    $conn->close();
+    
+    return $resultCount;
+
+
+
+
+  }
+
+  function getGroupIdFromName($groupName)
+  {
+     $database_connection = new DatabaseConnection();
+     $conn = $database_connection->getConnection();
+
+     $sql_service = new LoginSqlService();
+
+     $getGroupIdFromNameSql = $sql_service->getGroupIdFromNameSql($groupName);
+
+
+     $result = $conn->query($getGroupIdFromNameSql)->fetch_object()->groupId;
+
+    $conn->close();
+
+    return $result;
+  }
+
+
   function getRatingCount ($messageId)
   {
 
@@ -268,6 +310,50 @@ class LoginWebService{
 
   }
 
+  public function createNewGroup($groupName, $type, $groupOwnerId)
+  {
+   
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+   
+    $sql_service = new LoginSqlService();
+   
+
+    $createNewGroupSql = $sql_service->createNewGroupSql($groupName, $type, $groupOwnerId);
+
+    $result = $conn->query($createNewGroupSql);
+
+    $conn->close();
+
+
+  }
+
+
+
+  public function getAllPublicGroups()
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+
+    $getAllPublicGroupsSql = $sql_service->getAllPublicGroupsSql();
+    $result = $conn->query($getAllPublicGroupsSql);
+   
+    while($row = $result->fetch_assoc()){
+    
+        $_SESSION['publicGroupId'] = $row['groupId'];
+        $_SESSION['publicGroupName'] = $row['groupName'];
+        $_SESSION['publicOwnerUserId'] = $row['ownerUserId'];
+        $_SESSION['publicCreatedAt'] = $row['created_at'];
+
+        $array[]= $_SESSION; 
+    }
+     $conn->close();
+     return $array;
+  }
+
+
   public function addCommentToDB($commentInput, $userId, $parentMessageId, $conn)
   {
     $sql_service = new LoginSqlService();
@@ -327,6 +413,8 @@ class LoginWebService{
      $conn->close();
      return $array;
   }
+
+
 
 
 
@@ -449,6 +537,23 @@ class LoginWebService{
 
   }
 
+  public function addUserToGroup($groupId, $userId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $addUserToGroupSql = $sql_service->addUserToGroupSql($groupId, $userId);
+
+    $result = $conn->query($addUserToGroupSql);
+
+    $conn->close();
+
+
+
+  }
+
   public function getLikeCountFromMes($messageId){
 
     $database_connection = new DatabaseConnection();
@@ -458,11 +563,6 @@ class LoginWebService{
     $getLikeCountForMesSql = $sql_service->getLikeCountForMes($messageId);
    
     $result = $conn->query($getLikeCountForMesSql)->fetch_object()->likeCount;
-
-    
-
-       
-      
 
     
     $conn->close();
