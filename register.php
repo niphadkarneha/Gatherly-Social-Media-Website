@@ -60,10 +60,10 @@ function hasWhiteSpace(s) {
 }
 
 $("#regForm").submit(function(e) {
-alert("submit button clicked");
+
       e.preventDefault();  
       var formIsValid = true;
-      alert("it is here");
+     
       var username = document.getElementById("uname").value;
       var email = document.getElementById("email").value;
       var password = document.getElementById("pass").value;
@@ -71,8 +71,8 @@ alert("submit button clicked");
       var firstName = document.getElementById("firstName").value;
       var lastName = document.getElementById("lastName").value;
 
-      alert(firstName);
-      alert(lastName);
+     
+     
 
        if(password == "" || confirmPass == "")
        {
