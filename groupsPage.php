@@ -27,6 +27,12 @@
 
     $userId = $_SESSION['UserId'];
 
+    
+      if((!isset($_POST['groupName'])) && (!isset($_POST['groupPost'])) && (!isset($_GET['groupId'])))
+      {
+              header("Location: mainpage.php");
+              die();
+      }
 
      if(isset($_POST['groupName']))
       {
