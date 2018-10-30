@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `fordFanatics`
 --
-
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `fordFanatics` /*!40100 DEFAULT CHARACTER SET latin1 */;
 -- --------------------------------------------------------
 
 --
