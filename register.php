@@ -116,7 +116,7 @@ $("#regForm").submit(function(e) {
                 success: function (data) {
                   
                   var dataInt = parseInt(data);
-                  alert(data);
+                  
                 if(dataInt == 1)
                  {
                   alert("You have successfully registered for Gatherly!");
