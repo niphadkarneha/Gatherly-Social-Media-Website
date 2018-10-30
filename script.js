@@ -281,7 +281,7 @@ $('.declineButton').on('click', function(e){
                 var userInfo = data;
                 userInfo = data.split('|');
 
-               
+               alert(userInfo[2]);
                 if (userInfo[2] == "")
                 {
                 $( "p" ).remove( ".nocommentclass" );
