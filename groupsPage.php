@@ -604,7 +604,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
      echo  "<div class='w3-container w3-padding'>";
      echo  "<h6 class='w3-opacity'>Share something with the " . $groupNameHeader . " group</h6>";
               
-                echo "<form method='POST' action='http://qav2.cs.odu.edu/fordFanatics/groupsPage.php'>";
+                echo "<form method='POST' action='groupsPage.php'>";
                 echo "<input type='hidden' id='groupId' name='groupId' value='$groupId'>";
                 echo "<input type='text' id='postMessage' name='groupPost' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
                 echo "<button name='postTheMessage' type='submit' class='w3-button w3-theme'><i class='fa fa-pencil'></i>Post</button> ";
