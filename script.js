@@ -241,7 +241,7 @@ $('.declineButton').on('click', function(e){
                }
                else
                {
-                alert("valid choice.");
+                alert("You have successfully joined the group.");
                }
 
               }
