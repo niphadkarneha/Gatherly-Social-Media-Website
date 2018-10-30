@@ -374,7 +374,7 @@ main footer a{
       <!-- Accordion -->
       <div class="w3-card w3-round">
         <div class="w3-white">
-          <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user fa-fw w3-margin-right"></i> My Groups</button>
+          <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user fa-fw w3-margin-right"></i>Profile Picture</button>
           <div id="Demo1" class="w3-hide w3-container">
             <form action = "upload.php" method="POST" enctype="multipart/form-data">
               <label><input type='file' name="image" accept=".png, .jpg, .jpeg"/></label>
