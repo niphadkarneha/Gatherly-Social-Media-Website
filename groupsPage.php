@@ -223,7 +223,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif, background-color
 ?>
 
 <a href= <?php  if(!isset($_SESSION)){session_start(); } echo "profilepage.php?Id=" . $_SESSION['UserId'];?> button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="openForm()" title="My Account"><i class="fa fa-user"></i>Welcome<?php  if(!isset($_SESSION)){session_start(); } echo " " . $_SESSION['FirstName'] . "!";?></a>
-    <form method="post" action="server/logout.php">
+ <div class = "pull-right">  
+   <form method="post" action="server/logout.php">
     <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a>
   </form>
 </div>
