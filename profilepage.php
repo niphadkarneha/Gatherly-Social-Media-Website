@@ -47,7 +47,7 @@ echo "<body>";
 		}
 		else
 		{
-			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
 		}
 	  
 	  
