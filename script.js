@@ -281,7 +281,7 @@ $('.declineButton').on('click', function(e){
                 var userInfo = data;
                 userInfo = data.split('|');
 
-                alert(userInfo[2]);
+               
                 $( "p" ).remove( ".nocommentclass" );
                 userInput = escapeHtml(userInput);
                 var e = "<right> <aside><img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
