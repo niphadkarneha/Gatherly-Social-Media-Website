@@ -40,7 +40,20 @@ echo "<body>";
 	echo "<div class = 'formDiv'>";
 		echo "<div class =''>";
 		echo "<a href='mainpage.php'><i class='fa fa-arrow-left arrowLeft' aria-hidden='true' style = 'margin-top: 3%;'></i></a>";
-		echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src= " . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+		
+	     if($profileInformation[0]['ProfilePpicture'] == "")
+		{
+			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='avatar.png' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+		}
+		else
+		{
+			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+		}
+	  
+	  
+	  
+	  
+	  //echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src= " . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
 		//echo "<img src= " . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
 		//echo "</h2>";
 	echo "</div>";
