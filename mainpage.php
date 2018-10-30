@@ -17,7 +17,10 @@
   
   }
 
-
+if(!isset($_SESSION['UserId']))
+  {
+    header('Location: ./index.php');
+  }
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -53,11 +56,7 @@
              $uncleanedMessage = clean_input($_POST['postMessage']);  
            
              $uncleanedMessage =  mysqli_real_escape_string($conn, $uncleanedMessage);
-          //   $cleanedMessage = clean_input($uncleanedMessage);
-                
 
-                       // echo $userId;
-             //echo $cleanedMessage;
 
                $login = $loginWebService -> writePostToDB($userId, $uncleanedMessage);
 
@@ -354,7 +353,7 @@ main footer a{
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
-  <a href="profilepage.php" button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="openForm()" title="My Account"><i class="fa fa-user"></i>Welcome<?php  if(!isset($_SESSION)){session_start(); } echo " " . $_SESSION['FirstName'] . "!";?></a>
+  <a href= <?php  if(!isset($_SESSION)){session_start(); } echo "profilepage.php?Id=" . $_SESSION['UserId'];?> button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="openForm()" title="My Account"><i class="fa fa-user"></i>Welcome<?php  if(!isset($_SESSION)){session_start(); } echo " " . $_SESSION['FirstName'] . "!";?></a>
   <div class="pull-right">
   <form method="POST" action="server/logout.php">
     <a  href="server/logout.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d3 pull-right" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a> 
@@ -406,23 +405,36 @@ main footer a{
               }
               
               //displaying the groups the user is part of
+             
+
+
               $count = count($userGroupIds);
               $i = 0;
                echo "<button onclick='globalClicked()' class='w3-button w3-block w3-theme-l1 w3-left-align'>Global</button> </br>";
-              while($i != $count)
+           
+              if(!empty($userGroupIds))
+
               {
+
+
+                  while($i != $count)
+                  {
                 
 
-                $groupName = $MyloginWebService ->getGroupName($userGroupIds[$i]);
-                $_SESSION['groupIdClicked' . $i] = $userGroupIds[$i];
+                        $groupName = $MyloginWebService ->getGroupName($userGroupIds[$i]);
+                        $_SESSION['groupIdClicked' . $i] = $userGroupIds[$i];
                 
-                echo "<form method='post' action='groupsPage.php'>";
-                echo "<input type='hidden' id='groupName' name='groupName' value='$userGroupIds[$i]'>";
-                echo "<button type='submit'  name='action' class='w3-button w3-block w3-theme-l1 w3-left-align'>" . $groupName . "</button> </br>";
-                echo "</form>";
+                        echo "<form method='post' action='groupsPage.php'>";
+                        echo "<input type='hidden' id='groupName' name='groupName' value='$userGroupIds[$i]'>";
+                        echo "<button type='submit'  name='action' class='w3-button w3-block w3-theme-l1 w3-left-align'>" . $groupName . "</button> </br>";
+                        echo "</form>";
               // echo $userGroupIds[$i];
-                $i = $i + 1;
+                        $i = $i + 1;
               }
+
+
+              }
+              
 
 
               $allPublicGroups = $MyloginWebService -> getAllPublicGroups();
@@ -478,7 +490,57 @@ main footer a{
 
         </div>
 
+<button onclick="myFunction('ownedGroupsDiv')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-balance-scale fa-fw w3-margin-right"></i>Owned Groups</button>
 
+          <div id = "ownedGroupsDiv" class="w3-hide w3-container">
+                <?php
+                if(!isset($_SESSION))
+                {
+                     session_start();
+                }
+
+                $userId = $_SESSION['UserId'];
+                $groupsOwned = $MyloginWebService->getOwnedGroups($userId );
+
+               // var_dump($groupsOwned);
+
+                echo "<br/>";
+
+                if($groupsOwned == "noGroupsOwned")
+                {
+                  echo "<h6> You do not own any groups. Please create your own groups to invite your friends.";
+                }
+                else
+                {
+                    $x = 0;
+                    $y = 0;
+                    $z = 0;
+                    
+                    foreach($groupsOwned as $i => $item) {
+                     echo "<form method='post' action='ownedGroups.php'>";
+                     echo "<input type = 'hidden' id='" . $z . "' name= 'ownerOfGroup' value = '" . $userId . "'</input>";
+                     echo "<input type='hidden' id='" . $x . "' name='groupNameOwned' value='" . $groupsOwned[$i]['ownedGroupName'] . "'>";
+                     echo "<input type='hidden' id='" . $y . "' name='groupTypeOwned' value='" . $groupsOwned[$i]['ownedType'] . "'>";
+                echo "<input type='hidden' id='" . $groupsOwned[$i]['ownedGroupName'] . "' name='groupIdOwned' value='" . $groupsOwned[$i]['ownedGroupId'] . "'>";
+                     echo "<button type='submit'  name='action' class='w3-button w3-block w3-theme-l1 w3-left-align'>" . $groupsOwned[$i]['ownedGroupName']. "</button> </br>";
+                    echo "</form>";
+                    $x = $x + 1;
+                    $y = $y + 1;
+                    $z = $z + 1;
+                    }
+
+                    
+
+                }
+
+
+
+
+                
+                ?>
+
+
+          </div>
 
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Create a group</button>
           <div id="Demo3" class="w3-hide w3-container">
@@ -532,27 +594,69 @@ main footer a{
 
           </div>
           
-          <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>My Invitations</button>
+           <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>My Invitations</button>
 
           <div id="Demo4"class="w3-hide w3-container">
-                <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
+
+          <?php 
+
+            //1.query for all the user invites the user has gotten
+              $loginWebService = new LoginWebService();
+              //$userGroupIds = $MyloginWebService -> getUserGroups($userID);
+              $groupIdInvitations = $loginWebService -> getListOfInvitesbyUserId($userId);
+
+              if(!empty($groupIdInvitations))
+              {
+
+              foreach($groupIdInvitations as $x => $item) {
+
+            echo "<div style=' border: 1px solid; padding: 10px; box-shadow: 5px 10px #888888; ' class='w3-container'>";
+    
+        echo "<center><p>Group Invitation request</p></center>";
+        echo "<center><b><p>Group Name: " . $loginWebService->getGroupName($groupIdInvitations[$x]['groupIdInvitation']) . "</p></b></center>";
+     
+        echo " <div class='w3-row w3-opacity'>";
+               echo "<div class='w3-half'>";
+                echo "<form id = '" . $groupIdInvitations[$x]['inviteId'] . "' >";
+                    echo "<input id='groupIdInvitation' type='hidden' value = '" . $groupIdInvitations[$x]['groupIdInvitation'] . "' </input>";
+                    echo "<button type = 'submit' class='w3-button w3-block w3-green w3-section acceptButton' title='Accept'><i class='fa fa-check'></i></button>";
+                echo "</form>";
+               echo "</div>";   
+               echo "<div class='w3-half'>";
+                  echo "<form id = '" . $groupIdInvitations[$x]['inviteId'] . "' <br/>";
+                    echo "<input id = 'groupIdInvitation' type='hidden' value = '" . $groupIdInvitations[$x]['groupIdInvitation'] . "' </input>";
+                    echo "<button type = 'submit' class='w3-button w3-block w3-red w3-section declineButton' title='Decline'><i class='fa fa-remove'></i></button>";
+                  echo "</form>";
+               echo "</div>";
+        echo "</div>";
+    echo "</div>";
+
+              }
+
+
+              }else
+              {
+                echo "<h6> You do not have any invitations. </h6>";
+              }
+
+                //var_dump($groupIdInvitations); 
+
+
+
+            //2.get the group name invitation from the group id from the invites table
+            //3.
+
+          ?>
+
+
+          <!-- <p>Sally Carrera invited you to be part of Group A</p>
+          <button type="button">Accept</button>
+          <button type="button">Reject</button> -->
+
+
+
+          </div>
           <br>
-          <p>Group Invitation request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-          </div>
           <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
           <div id="Demo5" class="w3-hide w3-container">
             <img src="icons/g.jpg" alt="Trulli" width="250" height="250">
@@ -561,15 +665,6 @@ main footer a{
       </div>
       <br>
       
-
-      <!-- Alert Box -->
-      <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
-        <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-          <i class="fa fa-remove"></i>
-        </span>
-        <p>Google Analytics who viewed your profile</p>
-      </div>
-    
     <!-- End Left Column -->
     </div>
   
@@ -625,9 +720,15 @@ main footer a{
                         // echo "<h1> reaction id: " . $getLikeInformation;
                         // var_dump($getPosterDetails);
                          
-                         
-                               
-                               echo "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                            
+                               if ($getPosterDetails[0]['ProfilePicture'] == ""){
+                                
+                                echo "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                               }
+                               else{
+                                 echo "<img src = '" . $getPosterDetails[0]['ProfilePicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                               }
+                              
                                echo "<span class='w3-right w3-opacity'>" . $login[$i]['TimeOfPost'] . "</span>";
                                echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
                                echo "<p>" . $login[$i]['message'] ."</p>";
@@ -693,7 +794,15 @@ main footer a{
                                      echo "<div class='a'>";
                                            
                                            echo "<aside>";
-                                               echo "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
+                                              
+                                              if($getCommenterDetails[0]['ProfilePicture'] == "")
+                                              {
+                                                  echo "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
+                                              }
+                                              else
+                                              {
+                                                echo "<aside><img src=". $getCommenterDetails[0]['ProfilePicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
+                                              }
                                                echo "<h6>" . $getCommenterDetails[0]['PostFirstName'] . " " . $getCommenterDetails[0]['PostLastName'] . "</h6>";
                                                echo "<p>" . $comments[$j]['comment'] . "</p>";
                                            echo "</aside>";
@@ -724,9 +833,9 @@ main footer a{
                  else
                  {
                         echo "<div id='" . $login[$i]['messageId'] . "' class='w3-hide w3-container'>";
-                            echo "<div class='a'>";
+                            echo "<div class='b'>";
                        
-                            echo "<p>no comments</p>";
+                            echo "<p class = 'nocommentclass'>no comments</p>";
                             
                             echo "<form id =  '" . $login[$i]['messageId'] . "'  > ";
                       

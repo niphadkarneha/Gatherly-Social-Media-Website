@@ -5,8 +5,8 @@
 
 	    private $host = "handson-mysql";
 	    private $db_name = "fordFanatics";
-	    private $username = "bkongara";
-	    private $password = "Mamatha5!";
+	    private $username = "kumar";
+	    private $password = "kumar";
 
 	    public function getConnection(){
 
@@ -20,7 +20,7 @@
 	        // Create connection
 	        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
 	        // Check connection
-	        if ($this->conn->connect_error) {
+	        if ($this->conn->connect_error) {	
 	            die("Connection failed: " . $this->conn->connect_error);
 	        }
 

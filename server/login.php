@@ -5,7 +5,7 @@
   session_start();
   include_once "./loginService.php";
   include_once "./loginSQL.php";
-  include_once "connect.php";
+  include_once "./connect.php";
   
   $loginWebService = new LoginWebService();
  
@@ -30,7 +30,7 @@
   	$password = clean_input($password);
 
   	$login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
-  	$conn->close();
+  	
 
     if(!isset($_SESSION))
   {

@@ -31,6 +31,8 @@
     $userId =  $_SESSION['UserId'];
 
 
+
+
     if(isset($_POST['userCommented']))
        {
         
@@ -43,8 +45,14 @@
        // echo $commentInput . " " . $messIdComment;
         
         $loginWebService -> addCommentToDB($commentInput, $userId, $messIdComment, $conn);
+        $profilePicture = "avatar.jpg";
 
-        echo $_SESSION['FirstName'] . "/" .$_SESSION['LastName'];
+        if($_SESSION['ProfilePicture'] != "")
+        {
+          $profilePicture = $_SESSION['ProfilePicture'];
+        }
+
+        echo $_SESSION['FirstName'] . "|" .$_SESSION['LastName'] . "|" . $profilePicture;
 
        }
 
@@ -58,7 +66,8 @@
         $groupType = mysqli_real_escape_string($conn, $groupType);
 
         $loginWebService -> createNewGroup($groupName, $groupType, $userId);
-
+        $groupId = $loginWebService -> getGroupIdFromName($groupName);
+        $loginWebService -> addUserToGroup($groupId, $userId);
 
 
        }
@@ -71,8 +80,7 @@
 
         $checkGroupNameValid = $loginWebService -> checkIfGroupExists($groupNameToBeChecked); 
         echo $checkGroupNameValid;
-       // echo $checkGroupNameValid;
-        //var_dump($checkGroupNameValid);
+
 
 
        }

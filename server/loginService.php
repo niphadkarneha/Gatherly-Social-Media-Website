@@ -29,9 +29,10 @@ class LoginWebService{
               $_SESSION['LastName'] = $row['LastName'];
               $_SESSION['Email'] = $row['Email'];
               $_SESSION['Status'] = $row['Status'];
-              $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
+              $_SESSION['ProfilePictureLoggedIn'] = $row['ProfilePicture'];
               $_SESSION['Password'] = $row['Password'];
               $_SESSION['UserId'] = $row['ID'];
+            //  $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
               $array[]= $_SESSION;
 
         }
@@ -42,6 +43,165 @@ class LoginWebService{
     }
     $conn->close();
     return json_encode($array);
+
+  }
+
+  public function checkIfUserIsInGroup($UserId, $groupId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $checkUserInGroupSql = "SELECT * FROM userGroup WHERE groupUserId = '$UserId' AND groupId = '$groupId'";
+
+   // $checkIfUserIsOwnerSql = "SELECT * FROM groups WHERE ownerUserId = '$UserId' AND groupId = '$groupId'";
+
+    //$checkIfUserIsOwner = $conn->query($checkIfUserIsOwnerSql);
+
+    $checkUserInGroup = $conn->query($checkUserInGroupSql);
+
+    if($checkUserInGroup->num_rows == 0)
+    {
+      return false;
+    }
+    else if ($checkUserInGroup->num_rows > 0)
+    {
+      return true;
+    }
+
+    $conn->close();
+
+  }
+
+  public function uploadProfilePicture($userId, $filePath)
+  {
+    
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $uploadProfilePictureSql = $sql_service->uploadProfilePictureSql($userId, $filePath);
+
+    $result = $conn->query($uploadProfilePictureSql);
+
+    $conn->close();
+  
+  }
+
+  public function sendInvitationToUser($groupId, $userIdInvited)
+  {
+      $database_connection = new DatabaseConnection();
+      $conn = $database_connection->getConnection();
+      $sql_service = new LoginSqlService();
+
+      $sendInvitationSql = "INSERT INTO fordFanatics.groupInvite (groupId, userIdInvited) VALUES ('$groupId', '$userIdInvited')";
+
+      $result = $conn->query($sendInvitationSql);
+
+      $conn->close();
+
+  }
+
+  public function getListOfInvitesbyUserId($userId){
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $getInvites = $sql_service->getInvitesSql($userId);
+
+
+    $result = $conn->query($getInvites);
+
+    if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+              if(!isset($_SESSION))
+              {
+                  session_start();
+              }
+
+              $_SESSION['inviteId']=$row['inviteId'];
+              $_SESSION['groupIdInvitation'] = $row['groupId'];
+              $_SESSION['userIdInvitation'] = $row['userIdInvited'];
+              $_SESSION['timeOfInvite'] = $row['timeOfInvite'];
+              //$_SESSION['parentMessageId'] = $row['parent_messageId'];
+              
+              $array[]= $_SESSION;
+
+        }
+
+       
+        return $array;
+
+    }
+
+
+
+
+
+
+
+  }
+
+  public function checkIfUserHasBeenInvited($userIdInvited, $groupIdTobeInvitedTo)
+  {
+
+     $database_connection = new DatabaseConnection();
+     $conn = $database_connection->getConnection();
+
+     $sql_service = new LoginSqlService();
+
+     $checkIfUserHasBeenInvitedSql = $sql_service->checkIfUserHasBeenInvitedSql($userIdInvited, $groupIdTobeInvitedTo);
+
+     $result = $conn->query($checkIfUserHasBeenInvitedSql);
+
+     if($result->num_rows == 0)
+     {
+        return false;
+     }
+     else
+     {
+        return true;
+     }
+
+     $conn->close();
+
+  }
+
+
+  public function checkIfUserExistsByEmail($emailId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $checkUserExistsByEmailSql = "SELECT * FROM user WHERE Email = '$emailId'";
+
+    $checkUserByEmail = $conn->query($checkUserExistsByEmailSql);
+
+    if($checkUserByEmail->num_rows == 0)
+    {
+      return false;
+    }
+    else{
+      return true;
+    }
+    $conn-close();
+
+  }
+
+
+  public function checkIfUserExistsByUsername($username)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+
+    $checkUserName = "SELECT * FROM user WHERE UserName = '$username'";
+
+    $checkUserByUserName = $conn->query($checkUserName);
+
+    return $checkUserByUserName->num_rows;
 
   }
 
@@ -66,7 +226,25 @@ class LoginWebService{
       return true;
     }
 
+    $conn->close();
+
   }
+
+  public function getUserIdFromUserEmail($userEmail)
+  {
+      $database_connection = new DatabaseConnection();
+      $conn = $database_connection->getConnection();
+
+      $getUserIdFromEmailSql = "SELECT ID FROM user WHERE Email = '$userEmail'";
+
+      $result = $conn->query($getUserIdFromEmailSql)->fetch_object()->ID;
+
+      $conn->close();
+      return $result;
+
+  }
+
+
 
   function checkUserDisliked($messageId, $userId)
   {
@@ -201,13 +379,13 @@ class LoginWebService{
 
   }
 
-  public function insertNewUser($username, $email, $password)
+  public function insertNewUser($FirstName, $LastName, $username, $email, $password)
   {
     $database_connection = new DatabaseConnection();
     $conn = $database_connection->getConnection();
 
     $sql_service = new LoginSqlService();
-    $InsertNewUserSql = $sql_service->insertNewUserSql($username, $email, $password);
+    $InsertNewUserSql = $sql_service->insertNewUserSql($FirstName, $LastName, $username, $email, $password);
 
     $result = $conn->query($InsertNewUserSql);
     
@@ -340,6 +518,10 @@ class LoginWebService{
     $getAllPublicGroupsSql = $sql_service->getAllPublicGroupsSql();
     $result = $conn->query($getAllPublicGroupsSql);
    
+    if($result->num_rows > 0)
+
+    {
+    
     while($row = $result->fetch_assoc()){
     
         $_SESSION['publicGroupId'] = $row['groupId'];
@@ -351,6 +533,12 @@ class LoginWebService{
     }
      $conn->close();
      return $array;
+
+
+
+
+    }
+
   }
 
 
@@ -405,17 +593,55 @@ class LoginWebService{
     $userGroupsSql = $sql_service->getGroupsForUser($userId);
     $result = $conn->query($userGroupsSql);
     
-     while($row = $result->fetch_assoc()){
+    if ($result->num_rows > 0) {
 
-      // $_SESSION['GroupId'] = $row['groupId']; 
-       $array[] = $row['groupId'];
-     }
-     $conn->close();
-     return $array;
+           while($row = $result->fetch_assoc()){
+
+            // $_SESSION['GroupId'] = $row['groupId']; 
+             $array[] = $row['groupId'];
+           }
+             $conn->close();
+             return $array;
+
+    }
+ 
+
   }
 
 
+  public function buildProfilePage($userId){
 
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+
+    $userInformationSql = $sql_service->getUserById($userId);
+    $result = $conn->query($userInformationSql);
+
+     if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+             
+             if(!isset($_SESSION)){
+
+                session_start();
+              }
+              
+              $_SESSION['ProfilePfirstName']=$row['FirstName'];
+              $_SESSION['ProfilePlName'] = $row['LastName'];
+              $_SESSION['ProfilePemail'] = $row['Email'];
+              $_SESSION['ProfilePpicture'] = $row['ProfilePicture'];
+              $_SESSION['ProfileUserName'] = $row['UserName'];
+              $array[]= $_SESSION; 
+
+        }
+
+        $conn->close();
+        return $array;
+     }
+
+  }
 
 
   public function getGroupName($groupId)
@@ -439,6 +665,40 @@ class LoginWebService{
 
 
   }
+
+  public function getGroupByGroupId($groupId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $groupNameSql = $sql_service->getGroupNamesSQL($groupId);
+
+    $result = $conn->query($groupNameSql);
+
+    while($row = $result->fetch_assoc()){
+
+        $_SESSION['ProfilePGroupName'] = $row['groupName'];
+        $_SESSION['ProfilePGroupType'] = $row['type'];
+        
+        $array[]= $_SESSION; 
+    
+    }
+    
+    $conn->close();
+    return $array;
+
+
+  }
+
+
+
+
+
+
+
+
+
 
   public function writePostToDB($userId, $message)
   {
@@ -492,6 +752,7 @@ class LoginWebService{
               $_SESSION['PostFirstName']=$row['FirstName'];
               $_SESSION['PostLastName'] = $row['LastName'];
               $_SESSION['EachMessageUserId'] = $row['ID'];
+              $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
               //$_SESSION['TimeOfPost'] = $row['TimeOfPost'];
              
 
@@ -506,6 +767,19 @@ class LoginWebService{
 
      }
 
+
+  }
+
+  public function deleteGroupInvitation($userId, $groupId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+
+    $deleteGroupInvitationSql = $sql_service->deleteGroupInvitationSql($groupId, $userId);
+
+    $result = $conn->query($deleteGroupInvitationSql);
 
   }
 
@@ -551,6 +825,82 @@ class LoginWebService{
     $conn->close();
 
 
+
+  }
+
+  public function getAllUsers()
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getAllUserIdsSql = $sql_service->getAllUserIdSqls();
+    
+    $result = $conn->query($getAllUserIdsSql);
+    
+    if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+             
+             if(!isset($_SESSION)){
+
+                session_start();
+              }
+              
+              $_SESSION['userIdAvail']=$row['ID'];
+              $_SESSION['EmailAvail']=$row['Email'];
+              $array[]= $_SESSION; 
+
+
+      }
+
+        $conn->close();
+        return $array;
+
+
+     }
+
+
+  }
+
+  public function getOwnedGroups($userId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getOwnedGroupsSql = $sql_service->getOwnedGroupsSql($userId);
+
+    $result = $conn->query($getOwnedGroupsSql);
+
+    if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+             
+             if(!isset($_SESSION)){
+
+                session_start();
+              }
+              
+              $_SESSION['ownedGroupName']=$row['groupName'];
+              $_SESSION['ownedGroupId'] = $row['groupId'];
+              $_SESSION['ownedCreatedAt'] = $row['created_at'];
+              $_SESSION['ownedType'] = $row['type'];
+
+              $array[]= $_SESSION; 
+
+
+      }
+
+        $conn->close();
+        return $array;
+
+
+     }
+      else
+      {
+        return "noGroupsOwned";
+      }
 
   }
 

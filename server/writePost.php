@@ -10,14 +10,22 @@
   	$firstTimeVisitingPage = true;
 
    	function clean_input($data) {
-	  
 	   $data = trim($data);
 	   $data = stripslashes($data);
 	   $data = htmlspecialchars($data);
+	  
 	   return $data;
 	
 	 }
-
+	
+/***************************************************************************************
+*    Title: A simple two-way function to encrypt or decrypt a string
+*    Author: Nazmul Ahsan
+*    Date: 10/15/2018
+*    Code version: N/A
+*    Availability: https://nazmulahsan.me/simple-two-way-function-encrypt-decrypt-string/
+*
+***************************************************************************************/
 	 function my_simple_crypt( $string, $action = 'e' ) {
         // you may change these values to your own
         $secret_key = 'my_simple_secret_key';
@@ -37,6 +45,7 @@
 
         return $output;
     }
+//************************end of citation **********************************
 
 
 	// echo "it is here";
@@ -52,12 +61,15 @@
 	  	
 	  	if($_POST['groupPost'] == "")
 	  		{
+			 $groupId = $_POST['groupId'];
+		         //echo "user id: " . $userId;
+			 $encryptedGroupId = my_simple_crypt($groupId, 'e');
 	  			  echo " <script>
                   var txt;
                   var r = confirm('Posts cannot be empty, Please try again.');
                   if(r==true || r==false)
                   {
-                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/groupsPage.php'; 
+                    window.location.href = '../groupsPage.php?groupId=$encryptedGroupId'; 
                   }
                  </script>
 
@@ -82,7 +94,7 @@
 			   		   $login = $loginWebService -> writeGroupPostToDB($userId, $cleanedMessage, $groupId);
 
 			   	  echo "
-			   	  <script> window.location.href ='http://qav2.cs.odu.edu/fordFanatics/groupsPage.php?groupId=$encryptedGroupId'; 
+			   	  <script> window.location.href ='../groupsPage.php?groupId=$encryptedGroupId'; 
 
 
 			   	  </script>";
@@ -108,7 +120,7 @@
                   var r = confirm('Posts cannot be empty, Please try again.');
                   if(r==true || r==false)
                   {
-                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/mainpage.php'; 
+                    window.location.href = '../mainpage.php'; 
                   }
                  </script>
 
@@ -123,13 +135,13 @@
 				 	   $userId = $_SESSION['UserId'];
 				 	  // echo "user id: " . $userId;
 				 	   $uncleanedMessage = $_POST['postMessage'];
-			     	   $cleanedMessage = clean_input($uncleanedMessage);
-			     	  // echo $userId;
+			     	           $cleanedMessage = clean_input($uncleanedMessage);
+			     	           // echo $userId;
 				 	   //echo $cleanedMessage;
 
 			   		   $login = $loginWebService -> writePostToDB($userId, $cleanedMessage);
 
-			   		   echo "<script> window.location.href ='http://qav2.cs.odu.edu/fordFanatics/mainpage.php'</script>";
+			   		   echo "<script> window.location.href ='../mainpage.php'</script>";
 
  			 	}
 

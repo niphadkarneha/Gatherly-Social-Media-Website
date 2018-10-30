@@ -12,15 +12,53 @@ class LoginSqlService{
       return $sql;
     }
 
+  public function getUserById($userId){
+
+    $sql = "SELECT * FROM fordFanatics.user WHERE ID = '$userId'";
+    return $sql;
+  }
+
+  public function uploadProfilePictureSql($userId, $filePath){
+
+    $sql = "UPDATE fordFanatics.user SET ProfilePicture = '$filePath' WHERE ID = '$userId'";
+
+    return $sql;
+  }
+
   public function getComments($messageId)
   {
     $sql = "SELECT * FROM fordFanatics.comments WHERE parent_messageId = '$messageId'";
     return $sql;
   }
 
+  public function getInvitesSql($userId){
+
+    $sql = "SELECT * FROM fordFanatics.groupInvite WHERE userIdInvited = '$userId'";
+    return $sql;
+  
+  }
+
+  public function sendInvitationSql($groupId, $userIdInvited)
+  {
+    $sql = "INSERT INTO fordFanatics.groupInvite (groupId, userIdInvited) VALUES ('$groupId', '$userIdInvited')";
+    return $sql;
+  }
+
+  public function checkIfUserHasBeenInvitedSql($userIdInvited, $groupIdTobeInvitedTo)
+  {
+    $sql = "SELECT * FROM fordFanatics.groupInvite WHERE userIdInvited = '$userIdInvited' AND groupId = '$groupIdTobeInvitedTo'";
+    return $sql;
+  }
+
   public function getAllPublicGroupsSql()
   {
     $sql = "SELECT * FROM fordFanatics.groups WHERE type = 'public'";
+    return $sql;
+  }
+
+  public function getAllUserIdSqls()
+  {
+    $sql = "SELECT * FROM fordFanatics.user";
     return $sql;
   }
 
@@ -45,6 +83,13 @@ class LoginSqlService{
   
   }
 
+  public function deleteGroupInvitationSql($groupId, $userId)
+  {
+    $sql = "DELETE FROM fordFanatics.groupInvite WHERE groupId = '$groupId' AND userIdInvited = '$userId'";
+
+    return $sql;
+  }
+
   public function incrementLikeSql($messageId){
 
     $sql = "UPDATE posts SET likeCount = likeCount + 1 WHERE messageId = $messageId";
@@ -64,9 +109,9 @@ class LoginSqlService{
     return $sql;
   }
 
-  public function insertNewUserSql($username, $email, $password){
+  public function insertNewUserSql($FirstName, $LastName, $username, $email, $password){
 
-    $sql = "INSERT INTO fordFanatics.user (FirstName, LastName, UserName, Email, Password) VALUES ('', '', '$username', '$email', '$password')";
+    $sql = "INSERT INTO fordFanatics.user (FirstName, LastName, UserName, Email, Password) VALUES ('$FirstName', '$LastName', '$username', '$email', '$password')";
 
     return $sql;
   }
@@ -90,6 +135,12 @@ class LoginSqlService{
     $sql = "UPDATE posts SET likeCount = likeCount - 1 WHERE messageId = $messageId";
     return $sql;
 
+  }
+
+  public function getOwnedGroupsSql($userId)
+  {
+    $sql = "SELECT * FROM groups WHERE ownerUserId = '$userId'";
+    return $sql;
   }
 
   public function recordDislikeSql($messageId, $userId)
