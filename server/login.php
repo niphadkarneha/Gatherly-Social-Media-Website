@@ -46,7 +46,7 @@
                   var r = confirm('All fields are required, Please try again.');
                   if(r==true || r==false)
                   {
-                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/index.php'; 
+                    window.location.href = '../index.php'; 
                   }
                  </script>
 
@@ -60,7 +60,7 @@
                   var r = confirm('wrong credentials, please try again.');
                   if(r==true || r==false)
                   {
-                    window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/index.php'; 
+                    window.location.href = '../index.php'; 
                   }
                  </script>
 
@@ -71,7 +71,7 @@
     }
     else if ($login != "fail")
     {
-      echo "<script> window.location.href = 'http://qav2.cs.odu.edu/fordFanatics/mainpage.php'</script>";
+      echo "<script> window.location.href = '../mainpage.php'</script>";
         //echo $login;
     }
         
