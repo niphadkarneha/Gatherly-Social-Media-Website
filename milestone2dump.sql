@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2018 at 12:58 AM
+-- Generation Time: Oct 30, 2018 at 03:33 AM
 -- Server version: 10.0.36-MariaDB-1~trusty
 -- PHP Version: 5.5.9-1ubuntu4.26
 
@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `fordFanatics` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
 --
 -- Table structure for table `comments`
 --
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `comment` text NOT NULL,
   `commentUserId` int(25) NOT NULL,
   `timeOfComent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=310 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=374 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `groupInvite` (
   `inviteId` int(11) NOT NULL,
   `userIdInvited` int(20) NOT NULL,
   `timeOfInvite` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -61,17 +61,6 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `groups`
---
-
-INSERT INTO `groups` (`groupId`, `groupName`, `ownerUserId`, `type`, `created_at`) VALUES
-(64, 'NewPrivateGroup', 40, 'private', '2018-10-30 03:36:16'),
-(65, 'newPublicGroup', 37, 'public', '2018-10-30 03:44:45'),
-(66, 'NewPrivateGroupbyMater', 16, 'private', '2018-10-30 04:05:50'),
-(67, 'PrivateGroup', 16, 'private', '2018-10-30 04:06:21'),
-(68, 'GroupOnDockerPrivate', 16, 'private', '2018-10-30 04:51:47');
-
 -- --------------------------------------------------------
 
 --
@@ -85,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `UserId` int(20) NOT NULL,
   `TimeOfPost` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `likeCount` int(22) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=525 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -114,8 +103,8 @@ INSERT INTO `user` (`ID`, `UserName`, `FirstName`, `LastName`, `Email`, `Status`
 (8, 'porsche@rsprings.gov', 'Sally', 'Carrera', 'porsche@rsprings.gov', '', '', '@sally', '', ''),
 (9, 'hornet@rsprings.gov', 'Doc', 'Hudson', 'hornet@rsprings.gov', '', '', '@doc', '', ''),
 (12, 'topsecret@agent.org', 'Finn', 'McMissile', 'topsecret@agent.org', '', '', '@mcmissile', '', ''),
-(13, 'kachow@rusteze.com', 'Lightning', 'McQueen', 'kachow@rusteze.com', '', 'images/13.jpeg', '@mcqueen', '', ''),
-(16, 'mater@rsprings.gov', 'Tom', 'Mater', 'mater@rsprings.gov', '', 'images/16.png', '@mater', '', '');
+(13, 'kachow@rusteze.com', 'Lightning', 'McQueen', 'kachow@rusteze.com', '', '', '@mcqueen', '', ''),
+(16, 'mater@rsprings.gov', 'Tom', 'Mater', 'mater@rsprings.gov', '', '', '@mater', '', '');
 
 -- --------------------------------------------------------
 
@@ -128,20 +117,7 @@ CREATE TABLE IF NOT EXISTS `userGroup` (
   `groupUserId` int(11) NOT NULL,
   `groupId` int(11) NOT NULL,
   `joinedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `userGroup`
---
-
-INSERT INTO `userGroup` (`id`, `groupUserId`, `groupId`, `joinedAt`) VALUES
-(35, 40, 64, '2018-10-30 03:36:16'),
-(36, 37, 65, '2018-10-30 03:44:45'),
-(37, 16, 66, '2018-10-30 04:05:50'),
-(38, 16, 67, '2018-10-30 04:06:21'),
-(39, 16, 68, '2018-10-30 04:51:47'),
-(40, 12, 68, '2018-10-30 04:54:12'),
-(41, 8, 65, '2018-10-30 04:55:38');
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -209,12 +185,12 @@ ALTER TABLE `userLikes`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentId` int(25) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=310;
+  MODIFY `commentId` int(25) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=374;
 --
 -- AUTO_INCREMENT for table `groupInvite`
 --
 ALTER TABLE `groupInvite`
-  MODIFY `inviteId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+  MODIFY `inviteId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `groups`
 --
@@ -224,7 +200,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `messageId` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=525;
+  MODIFY `messageId` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=536;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -234,7 +210,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `userGroup`
 --
 ALTER TABLE `userGroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
