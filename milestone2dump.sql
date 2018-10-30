@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `fordFanatics` /*!40100 DEFAULT CHARACTER SET latin1 */;
 --
 -- Table structure for table `user`
 --
