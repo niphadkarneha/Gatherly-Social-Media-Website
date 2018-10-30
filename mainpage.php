@@ -682,7 +682,7 @@ main footer a{
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
      <h6 class='w3-opacity'>Share something with the world</h6>         
-     <form method='POST' action='http://qav2.cs.odu.edu/fordFanatics/mainpage.php'>
+     <form method='POST' action='mainpage.php'>
      <input type='text' id='postMessage' name='postMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>
      <button name='postTheMessage' type='submit' class='w3-button w3-theme'><i class='fa fa-pencil'></i>Post</button>
      </form>
