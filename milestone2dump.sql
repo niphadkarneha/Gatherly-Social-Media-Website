@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2018 at 03:33 AM
+-- Generation Time: Oct 30, 2018 at 06:54 AM
 -- Server version: 10.0.36-MariaDB-1~trusty
 -- PHP Version: 5.5.9-1ubuntu4.26
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `comment` text NOT NULL,
   `commentUserId` int(25) NOT NULL,
   `timeOfComent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=374 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=462 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `ownerUserId` int(11) NOT NULL,
   `type` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `UserId` int(20) NOT NULL,
   `TimeOfPost` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `likeCount` int(22) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=555 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -93,18 +93,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `Password` varchar(244) NOT NULL,
   `PhoneNumber` text NOT NULL,
   `profile` varchar(344) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`ID`, `UserName`, `FirstName`, `LastName`, `Email`, `Status`, `ProfilePicture`, `Password`, `PhoneNumber`, `profile`) VALUES
-(8, 'porsche@rsprings.gov', 'Sally', 'Carrera', 'porsche@rsprings.gov', '', '', '@sally', '', ''),
-(9, 'hornet@rsprings.gov', 'Doc', 'Hudson', 'hornet@rsprings.gov', '', '', '@doc', '', ''),
-(12, 'topsecret@agent.org', 'Finn', 'McMissile', 'topsecret@agent.org', '', '', '@mcmissile', '', ''),
-(13, 'kachow@rusteze.com', 'Lightning', 'McQueen', 'kachow@rusteze.com', '', '', '@mcqueen', '', ''),
-(16, 'mater@rsprings.gov', 'Tom', 'Mater', 'mater@rsprings.gov', '', '', '@mater', '', '');
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -117,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `userGroup` (
   `groupUserId` int(11) NOT NULL,
   `groupId` int(11) NOT NULL,
   `joinedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -185,7 +174,7 @@ ALTER TABLE `userLikes`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentId` int(25) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=374;
+  MODIFY `commentId` int(25) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=462;
 --
 -- AUTO_INCREMENT for table `groupInvite`
 --
@@ -195,22 +184,22 @@ ALTER TABLE `groupInvite`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=72;
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `messageId` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=536;
+  MODIFY `messageId` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=555;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `userGroup`
 --
 ALTER TABLE `userGroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
