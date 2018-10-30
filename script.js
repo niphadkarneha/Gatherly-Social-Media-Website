@@ -2,87 +2,257 @@ function hasWhiteSpace(s) {
   return s.indexOf(' ') >= 0;
 }
 
+$(document).ready(function(){
 
 
+  var entityMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '`': '&#x60;',
+  '=': '&#x3D;'
+};
 
-$("#regForm").submit(function(e) {
 
-      e.preventDefault();  
-      var formIsValid = true;
-     
-      var username = document.getElementById("uname").value;
-      var email = document.getElementById("email").value;
-      var password = document.getElementById("pass").value;
-      var confirmPass = document.getElementById("confirmPass").value;
+function escapeHtml (string) {
+  return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+   
 
 
+$('.acceptButton').on('click', function(e){
 
-      if(password == "" || confirmPass == "")
-      {
-       $('#passwordRequired').html(" *Password and Confirm Password do not match.");
-      }
+  e.preventDefault();
 
-      if(password != confirmPass){
+  var groupIdAccepted = $(this).closest("form").find("input[id='groupIdInvitation']").val();
+  var action = 'addUserToGroup';
 
-         $('#passwordRequired').html(" *Password and Confirm Password do not match.");
-         $('#confirmPasswordRequired').html(" *Password and Confirm Password do not match.");
-        formIsValid = false;
-      }
-      else
-      {
+   $.ajax({
 
-        if(username == "")
-        {
-          alert("username cannot be empty.");
-           formIsValid = false;
-        }
-
-        if(email == "")
-        {
-          alert("Email cannot be empty.");
-           formIsValid = false;
-        }
-
-      }
-
+              url : 'inviteUser.php',
+              type : 'POST',
+              data : {
+                'groupIdAccepted' : groupIdAccepted, 
+                'addUserToGroup'  : action
+              },
+              
+              success : function(data) {   
+                  alert("You have been successfully added to the group!");
+                  location.reload();
+              }
+        })  
   
-      if(formIsValid == true)
-      {
-
-            $.ajax({
-                url: "register.php",
-                type: 'post',
-                data: {'username': username, 'email': email, 'password': password },
-            
-                success: function (data) {
-                  if(data == 'userAlreadyExists')
-                  {
-                    $('#emailRequired').html(" *Email already Exists");
-                  }
-                  if(data == 'newUser'){
-                    alert("You have successfully registered!");
-                    location.reload();
-
-                  }
-                  else if (data=='duplicateUser'){
-                     alert("Error: "+data);
-                  }
-                    
-                }
-            });
-
-
-      }
-
-
-     
 
 });
 
 
-$(document).ready(function(){
-   
+
+$('.declineButton').on('click', function(e){
+
+  e.preventDefault();
+
+  var groupIdDeclined = $(this).closest("form").find("input[id='groupIdInvitation']").val();
+
+     $.ajax({
+
+              url : 'inviteUser.php',
+              type : 'POST',
+              data : {
+                'groupIdDeclined'   : groupIdDeclined
+              },
+              
+              success : function(data) 
+              { 
+
+                  alert("You have  successfully declined the invitation.");
+                  //location.reload();
+              }
+        })  
   
+
+});
+
+
+
+
+  $('.createChannelBtn').on('click', function(e){
+
+    var groupName = $("#groupNameToBeCreated").val();
+    var groupType = $("input[type='radio']:checked").val();
+    var actionType = "createGroup";
+    var checkGroup = "checkGroup";
+    if (groupName == "")
+    {
+      // $('#groupNameRequired').html(" *Group Name cannot be empty, please try again.");
+      alert("Group Name cannot be empty, please try again.");
+
+    }
+    else
+    {   
+
+         $.ajax({
+
+              url : 'likeDislike.php',
+              type : 'POST',
+              data : {
+                'groupName'   : groupName,
+                'checkGroup'  : checkGroup
+              },
+              
+              success : function(data) {   
+              
+                if (data >= 1)
+                {
+                  alert("Group name is taken. Please choose a new group name.");
+                }
+                else{
+
+                               $.ajax({
+
+                                    url : 'likeDislike.php',
+                                    type : 'POST',
+                                    data : {
+                                      'groupName'   : groupName, 
+                                      'groupType'   : groupType,
+                                      'createGroup' : actionType 
+                                    },
+                                    
+                                    success : function(data) {   
+                                     
+                                      alert("successfully created group.");
+                                      e = "<li><a id = 'groupNameDisplay' href='#'>" + groupName + "</a></li>";
+                                      
+                                      if(groupType == "public")
+                                      {
+                                         $("#myUL").append(e); 
+                                      }
+
+                                    }
+                              }) 
+                }
+
+              }
+        }) 
+
+    }
+
+  });
+
+
+
+
+  $('.inviteUserButton').on('click', function(e){
+    e.preventDefault();
+    
+    var userEmailToBeInvited = $(this).closest("form").find("input[id='myInputTwo']").val();
+    var ownerInvitingUser = $(this).closest("form").find("input[id='ownerUserId']").val();
+    var groupIdInvitedTo = $(this).closest("form").find("input[id='groupIdInvitedTo']").val();
+
+    var userEmailToBeInvited = escapeHtml(userEmailToBeInvited);
+    
+    if (userEmailToBeInvited == "")
+    {
+      alert("user email cannot be empty. Please try again.");
+    }
+    else
+    {
+
+         $.ajax({
+
+              url : 'inviteUser.php',
+              type : 'POST',
+              data : {
+                'userEmailToBeInvited'   : userEmailToBeInvited,
+                'ownerInvitingUser'      : ownerInvitingUser,
+                'groupIdInvitedTo'       : groupIdInvitedTo
+              },
+              
+              success : function(data) {   
+                
+               if (data == "InvalidEmailId")
+               {
+                alert("Invalid user id. Please choose one from the list below.");
+               }
+               else if (data == "InvalidInput")
+               {
+                alert("The user entered already exists in the group or does not exist. Please choose a new user.");
+               }
+               else
+               {
+                alert("Invitation successfully sent.");
+               }
+
+              }
+        })
+
+
+
+
+
+    }
+
+
+
+
+  });
+
+  $('.joinGroupBtn').on('click', function(e){
+
+    e.preventDefault();
+
+    var checkGroup = "checkUserGroup";
+    var joinGroup = "joinGroup";
+    var groupNameChosen = $(this).closest("form").find("input").val();
+    var actionType = "joinGroup";
+
+    if (groupNameChosen == "")
+    {
+      // $('#groupNameRequired').html(" *Group Name cannot be empty, please try again.");
+      alert("Group Name cannot be empty, please try again.");
+
+    }
+    else
+    {   
+
+         $.ajax({
+
+              url : 'likeDislike.php',
+              type : 'POST',
+              data : {
+                'groupName'   : groupNameChosen,
+                'joinGroup'  : checkGroup
+              },
+              
+              success : function(data) {   
+                
+                var returnData = parseInt(data);
+               if(returnData == 0)
+               {
+                alert("Group name chosen does not exist. Please check your input.");
+               }
+               else if (returnData == 3)
+               {
+                alert("You are already a member of this group. Please choose a new group to join.");
+               }
+               else
+               {
+                alert("valid choice.");
+               }
+
+              }
+        }) 
+
+    }
+
+  });
+
+
+
 
   $('.commentButton').on('click', function(e){
        e.preventDefault();  
@@ -109,17 +279,16 @@ $(document).ready(function(){
               
               success : function(data) {   
                 var userInfo = data;
-                userInfo = data.split('/');
-              //  alert(userInfo[0] + userInfo[1]);
+                userInfo = data.split('|');
 
-               // $( ".inner" ).append( "<p>Test</p>" );
-                //var e = $('<p>' + userInput + '</p>');
-                
-                var e = "<right> <aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
+                alert(userInfo[2]);
+                $( "p" ).remove( ".nocommentclass" );
+                userInput = escapeHtml(userInput);
+                var e = "<right> <aside><img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
                 $('#' + messageIdCommentedAt).append(e); 
-               // $("#" + messageIdCommentedAt).remove();           
-                //$('#' + messageIdCommentedAt).load("/divcontents");
-               // $("#" + messageIdCommentedAt).load("#" + messageIdCommentedAt);
+                
+                $(this).closest("form").find("input[type=text], textarea").val("");
+
               }
         })  
 
