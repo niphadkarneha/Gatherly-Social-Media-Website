@@ -18,6 +18,12 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function getLatestPostSql($userId, $groupId)
+  {
+    $sql = "SELECT * FROM posts,user WHERE posts.UserId = '$userId' AND posts.groupId = '$groupId' AND user.ID = '$userId' ORDER BY posts.TimeOfPost DESC LIMIT 1";
+    return $sql;
+  }
+
   public function uploadProfilePictureSql($userId, $filePath){
 
     $sql = "UPDATE fordFanatics.user SET ProfilePicture = '$filePath' WHERE ID = '$userId'";
@@ -90,9 +96,27 @@ class LoginSqlService{
     return $sql;
   }
 
-  public function incrementLikeSql($messageId){
+  public function updateUpAndDownVotesSql($messageId, $likeCount, $dislikeCount ){
 
-    $sql = "UPDATE posts SET likeCount = likeCount + 1 WHERE messageId = $messageId";
+    //$sql = "UPDATE posts SET upVotes = '$likeCount' AND downVotes = '$dislikeCount' WHERE messageId = $messageId";
+      $sql = "UPDATE posts SET downVotes = '$dislikeCount', upVotes = '$likeCount' WHERE messageId = '$messageId'";
+
+    return $sql;
+
+  }
+
+  public function incrementDislikeSql($messageId){
+
+    $sql = "UPDATE posts SET downVotes = downVotes + 1 WHERE messageId = $messageId";
+
+    return $sql;
+
+  }
+
+  public function decrementDislikeSql($messageId){
+
+    $sql = "UPDATE posts SET downVotes = downVotes - 1 WHERE messageId = $messageId";
+
     return $sql;
   }
 
@@ -132,7 +156,7 @@ class LoginSqlService{
 
   public function decrementLikeSql($messageId){
 
-    $sql = "UPDATE posts SET likeCount = likeCount - 1 WHERE messageId = $messageId";
+    $sql = "UPDATE posts SET upVotes = upVotes - 1 WHERE messageId = $messageId";
     return $sql;
 
   }
@@ -199,7 +223,8 @@ class LoginSqlService{
   //sql to get all of the posts
   public function getGlobalPostsSQL()
   {
-  	$sql = "SELECT * FROM fordFanatics.posts WHERE groupId='3' ORDER by TimeOfPost DESC";
+  	 $sql = "SELECT * FROM fordFanatics.posts,user WHERE groupId='3' and posts.UserId = user.ID ORDER by posts.TimeOfPost DESC";
+    //$sql = "SELECT * FROM fordFanatics.posts WHERE groupId='3' ORDER by posts.TimeOfPost DESC";
   	return $sql;
   }
 
@@ -219,7 +244,9 @@ class LoginSqlService{
 
   public function getPostByGroup($groupId)
   {
-    $sql = "SELECT * FROM fordFanatics.posts WHERE groupId='$groupId' ORDER by TimeOfPost DESC ";
+
+    $sql = "SELECT * FROM fordFanatics.posts,user WHERE groupId='$groupId' and posts.UserId = user.ID ORDER by posts.TimeOfPost DESC";
+    //$sql = "SELECT * FROM fordFanatics.posts WHERE groupId='$groupId' ORDER by TimeOfPost DESC ";
     return $sql;
   }
 

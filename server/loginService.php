@@ -32,7 +32,7 @@ class LoginWebService{
               $_SESSION['ProfilePictureLoggedIn'] = $row['ProfilePicture'];
               $_SESSION['Password'] = $row['Password'];
               $_SESSION['UserId'] = $row['ID'];
-            //  $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
+              $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
               $array[]= $_SESSION;
 
         }
@@ -100,6 +100,41 @@ class LoginWebService{
       $conn->close();
 
   }
+
+
+  public function getLatestPost($userId, $groupId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $getLatestPostSql = $sql_service->getLatestPostSql($userId, $groupId);
+
+    $result = $conn->query($getLatestPostSql);
+
+    if($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+
+            $data['latestPost'][]=$row;
+
+
+
+        }
+
+
+        return json_encode($data);
+
+
+    }
+
+
+
+
+
+  }
+
 
   public function getListOfInvitesbyUserId($userId){
 
@@ -435,17 +470,19 @@ class LoginWebService{
                   session_start();
               }
 
-              $_SESSION['groupMessageId']=$row['messageId'];
-              $_SESSION['groupMessage'] = $row['message'];
-              $_SESSION['groupMessageUserId'] = $row['UserId'];
-              $_SESSION['groupTimeOfPost'] = $row['TimeOfPost'];
-               $_SESSION['groupLikeCount'] = $row['likeCount'];
-              $array[]= $_SESSION;
+               $data['messages'][]=$row;
+
+              // $_SESSION['groupMessageId']=$row['messageId'];
+              // $_SESSION['groupMessage'] = $row['message'];
+              // $_SESSION['groupMessageUserId'] = $row['UserId'];
+              // $_SESSION['groupTimeOfPost'] = $row['TimeOfPost'];
+              //  $_SESSION['groupLikeCount'] = $row['likeCount'];
+              // $array[]= $_SESSION;
 
         }
 
        
-        return $array;
+        return json_encode($data);
 
     }
 
@@ -469,19 +506,19 @@ class LoginWebService{
               {
                   session_start();
               }
-
-              $_SESSION['commentId']=$row['commentId'];
-              $_SESSION['comment'] = $row['comment'];
-              $_SESSION['commentUserId'] = $row['commentUserId'];
-              $_SESSION['timeOfComment'] = $row['timeOfComent'];
-              $_SESSION['parentMessageId'] = $row['parent_messageId'];
+              $data['comments'][]=$row;
+              // $_SESSION['commentId']=$row['commentId'];
+              // $_SESSION['comment'] = $row['comment'];
+              // $_SESSION['commentUserId'] = $row['commentUserId'];
+              // $_SESSION['timeOfComment'] = $row['timeOfComent'];
+              // $_SESSION['parentMessageId'] = $row['parent_messageId'];
               
-              $array[]= $_SESSION;
+              //$array[]= $_SESSION;
 
         }
 
        
-        return $array;
+        return json_encode($data);
 
     }
 
@@ -557,15 +594,20 @@ class LoginWebService{
 
 
 
-  public function incrementLike($messageId, $userId, $conn)
+  public function updateUpAndDownVotes($messageId, $userId, $conn, $upAndDownVotes)
   {
 
-    $sql_service = new LoginSqlService();
+      //$ratingCount = getRatingCount($messageId);
+      $likeCount = explode('/', $upAndDownVotes);
 
-    $IncrementLikeSql = $sql_service->incrementLikeSql($messageId);
+     
 
-    $result = $conn->query($IncrementLikeSql);
-    $conn->close();
+     $sql_service = new LoginSqlService();
+
+     $updateUpAndDownVotesSql = $sql_service->updateUpAndDownVotesSql($messageId, $likeCount[0], $likeCount[1]);
+
+     $result = $conn->query($updateUpAndDownVotesSql);
+     $conn->close();
 
   }
 
@@ -579,6 +621,33 @@ class LoginWebService{
     $result = $conn->query($decrementLikeSql);
 
     $conn ->close();
+
+  }
+
+  public function incrementDislike($messageId, $userId, $conn)
+  {
+
+    $sql_service = new LoginSqlService();
+
+    $incrementDislikeSql = $sql_service->incrementDislikeSql($messageId);
+
+    $result = $conn->query($incrementDislikeSql);
+
+    $conn ->close();
+  
+  }
+
+
+  public function decrementDislike($messageId, $userId, $conn)
+  {
+
+        $sql_service = new LoginSqlService();
+
+        $decrementDislikeSql = $sql_service->decrementDislikeSql($messageId);
+
+        $result = $conn->query($decrementDislikeSql);
+
+        $conn ->close();
 
   }
 
@@ -654,14 +723,20 @@ class LoginWebService{
 
     $result = $conn->query($groupNameSql);
 
-    while($row = $result->fetch_assoc()){
+    if($result->num_rows > 0)
+    {
+          while($row = $result->fetch_assoc()){
 
-      $groupName = $row['groupName'];
+            $groupName = $row['groupName'];
+
+          }
+          
+          $conn->close();
+          return $groupName;
 
     }
-    
-    $conn->close();
-    return $groupName;
+
+
 
 
   }
@@ -749,20 +824,21 @@ class LoginWebService{
                 session_start();
               }
               
-              $_SESSION['PostFirstName']=$row['FirstName'];
-              $_SESSION['PostLastName'] = $row['LastName'];
-              $_SESSION['EachMessageUserId'] = $row['ID'];
-              $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
-              //$_SESSION['TimeOfPost'] = $row['TimeOfPost'];
+              $data['commenter'][] = $row; 
+              // $_SESSION['PostFirstName']=$row['FirstName'];
+              // $_SESSION['PostLastName'] = $row['LastName'];
+              // $_SESSION['EachMessageUserId'] = $row['ID'];
+              // $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
+              
              
 
-              $array[]= $_SESSION; 
+              //$array[]= $_SESSION; 
 
 
         }
 
         $conn->close();
-        return $array;
+        return json_encode($data);
 
 
      }
@@ -938,17 +1014,17 @@ class LoginWebService{
                   session_start();
               }
 
-              $_SESSION['messageId']=$row['messageId'];
-              $_SESSION['message'] = $row['message'];
-              $_SESSION['MessageUserId'] = $row['UserId'];
-              $_SESSION['TimeOfPost'] = $row['TimeOfPost'];
-              $_SESSION['likeCount'] = $row['likeCount'];
-              $array[]= $_SESSION;
+              $data['messages'][]=$row;
+              /*$data['message'] = $row['message'];
+              $data['MessageUserId'] = $row['UserId'];
+              $data['TimeOfPost'] = $row['TimeOfPost'];
+              $data['likeCount'] = $row['likeCount'];*/
+              
 
         }
 
         $conn->close();
-        return $array;
+        return json_encode($data);
 
     }
 
