@@ -36,6 +36,8 @@
     if(isset($_POST['userCommented']))
        {
         
+
+
         $commentInput = clean_input($_POST['commentInput']);
         $commentInput = mysqli_real_escape_string($conn, $commentInput);
 
@@ -45,14 +47,9 @@
        // echo $commentInput . " " . $messIdComment;
         
         $loginWebService -> addCommentToDB($commentInput, $userId, $messIdComment, $conn);
-        $profilePicture = "avatar.jpg";
 
-        if($_SESSION['ProfilePicture'] != "")
-        {
-          $profilePicture = $_SESSION['ProfilePicture'];
-        }
 
-        echo $_SESSION['FirstName'] . "|" .$_SESSION['LastName'] . "|" . $profilePicture;
+        echo $_SESSION['FirstName'] . "|" .$_SESSION['LastName'] . "|" . $_SESSION['ProfilePicture'] . "|";
 
        }
 
@@ -143,44 +140,47 @@
       $likeCount = $loginWebService->getRatingCount($_POST['post_id']);
       $likeDislikeCount = $loginWebService->getLikeCountFromMes($_POST['post_id']);
      
-      //$reactionsLike = explode("/", $likeCount);
       switch ($action) {
+        
         case 'like':
-        $loginWebService -> recordLikes($post_id, $userId);
-        $loginWebService -> incrementLike($post_id, $userId, $conn);
-        $likeCountFromUserLikes = $loginWebService->getLikeCountFromUserLikesTable($_POST['post_id']);
-        //echo $likeCount . "/" . $userLikedMessage;
-        //echo $likeCountFromUserLikes;
-      $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
-        echo $likeDislikeCountFromUserLike;
-        break;
+              $loginWebService -> recordLikes($post_id, $userId);
+        
+              $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
+              $loginWebService -> updateUpAndDownVotes($_POST['post_id'], $userId, $conn, $likeDislikeCountFromUserLike);
+
+              echo $likeDislikeCountFromUserLike;
+              break;
         
         case 'dislike':
-        $loginWebService -> recordDislike($post_id, $userId);
-        $loginWebService -> decrementLike($post_id, $userId, $conn);
-        $likeCountFromUserLikes = $loginWebService->getLikeCountFromUserLikesTable($_POST['post_id']);
-        //echo $likeCount . "/" . $userLikedMessage;
-       // echo $likeCountFromUserLikes;
-        $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
-        echo $likeDislikeCountFromUserLike;
-        break;
+             $loginWebService -> recordDislike($post_id, $userId);
+  
+             $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
+             $loginWebService -> updateUpAndDownVotes($_POST['post_id'], $userId, $conn, $likeDislikeCountFromUserLike);
+        
+             echo $likeDislikeCountFromUserLike;
+             break;
 
         case 'unlike':
         $loginWebService ->deleteLike($post_id, $userId);
-        $loginWebService -> decrementLike($post_id, $userId, $conn);
-        $likeCountFromUserLikes = $loginWebService->getLikeCountFromUserLikesTable($_POST['post_id']);
-        $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
-        echo $likeDislikeCountFromUserLike;
-        //echo $likeCountFromUserLikes;
-        //echo $likeCount . "/" . $userLikedMessage;
+  
+         $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
+         $loginWebService -> updateUpAndDownVotes($_POST['post_id'], $userId, $conn, $likeDislikeCountFromUserLike);
+        
 
-        case 'undislike':
-        $loginWebService ->deleteLike($post_id, $userId);
-        $loginWebService -> incrementLike($post_id, $userId, $conn);
-        $likeCountFromUserLikes = $loginWebService->getLikeCountFromUserLikesTable($_POST['post_id']);
-        //echo $likeCountFromUserLikes;
-        $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
-        echo $likeDislikeCountFromUserLike;
+
+         echo $likeDislikeCountFromUserLike;
+          break;
+          
+          case 'undislike':
+              
+              $loginWebService ->deleteLike($post_id, $userId);
+  
+             $likeDislikeCountFromUserLike = $loginWebService->getRatingCount($_POST['post_id']);
+             $loginWebService -> updateUpAndDownVotes($_POST['post_id'], $userId, $conn, $likeDislikeCountFromUserLike);
+        
+             echo $likeDislikeCountFromUserLike;
+             break;
+
         default:
           # code...
           break;
