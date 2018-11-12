@@ -71,6 +71,7 @@ if(!isset($_SESSION['UserId']))
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="script.js"></script>
   <script src="mainPage.js"></script>
+  <script src="pagination.js"></script>
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -308,6 +309,21 @@ main footer a{
     margin-top: -5px;
 }
 
+.loadMore {
+
+  color : #fff;
+  background: #2196f3;
+  border-radius: 1.5em;
+  left: 30%;
+  padding: 1em;
+  text-decoration: none;
+  width: 100%;
+
+
+
+
+}
+
 
 </style>
 <body class="w3-theme-15", background-color="#e6ffff">
@@ -514,14 +530,7 @@ main footer a{
                     </label>
                 </div>
             </div>
-<!--               <div class="row">
-                  <div class="form-group">
-                    <span class='invites'>Invite your friends</span>
-                     <input type="text" name="emailid/username" placeholder="emailid/username"><br>
-                    <div class="channelInvites">
-                    </div>
-                  </div>
-              </div> -->
+
 
                <div class="modal-footer">
                <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
@@ -578,13 +587,6 @@ main footer a{
             //3.
           ?>
 
-
-          <!-- <p>Sally Carrera invited you to be part of Group A</p>
-          <button type="button">Accept</button>
-          <button type="button">Reject</button> -->
-
-
-
           </div>
           <br>
           <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
@@ -629,191 +631,21 @@ main footer a{
      </div>
 
 
-     <div class="allPostsClass" id = "allPosts">
+     <div id = 'pagination_data'>
+        <div class="allPostsClass" id = "allPosts">
 
 
-     </div>
+        </div>
+   </div>
 
 
      <div class = "groupPostsClass" id = "groupPosts">
      </div>
 
- <?php  
-  //     include_once "./server/loginService.php";
-  //     include_once "./server/loginSQL.php";
-    
-  //     if(!isset($_SESSION))
-  //      {
-  //          session_start();
-  //      }
-  //     $userId = $_SESSION['UserId'];
-  //     $loginWebService = new LoginWebService();
-  //     $login = $loginWebService -> getAllGlobalPosts();
-  //     $var = 1;
-      
-      
-  //     if(!empty($login))
-  //     {
-       
-  //        foreach($login as $i => $item) {
-       
-  //        echo "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'><br>";
-                         
-  //                         $getPosterDetails = $loginWebService -> getPosterDetails($login[$i]['MessageUserId']);
-  //                         $getLikeInformation = $loginWebService-> getLikes($login[$i]['messageId'], $userId);
-  //                         $likeCount = $loginWebService->getRatingCount($login[$i]['messageId']);
-  //                         $userLiked = $loginWebService->checkUserLiked($login[$i]['messageId'], $userId);
-  //                         $userDisliked = $loginWebService->checkUserDisliked($login[$i]['messageId'], $userId);
-  //                         $comments = $loginWebService->getComments($login[$i]['messageId']);
-  //                         $reactions = explode("/", $likeCount);
-  //                       // echo "<h1> reaction id: " . $getLikeInformation;
-  //                       // var_dump($getPosterDetails);
-                         
-                            
-  //                              if ($getPosterDetails[0]['ProfilePicture'] == ""){
-                                
-  //                               echo "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-  //                              }
-  //                              else{
-  //                                echo "<img src = '" . $getPosterDetails[0]['ProfilePicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-  //                              }
-                              
-  //                              echo "<span class='w3-right w3-opacity'>" . $login[$i]['TimeOfPost'] . "</span>";
-  //                              echo "<h4>" . $getPosterDetails[0]['PostFirstName'] . " " . $getPosterDetails[0]['PostLastName'] . "</h4><br>";
-  //                              echo "<p>" . $login[$i]['message'] ."</p>";
-                        
-  //                              if($userLiked == true)
-  //                               {
-                   
-  //                                  echo "<i class='fa fa-thumbs-up like-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-  //                                  echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                  echo "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-  //                               }
-                     
-  //                               else if($userDisliked == true)
-  //                              {
-  //                                   if($reactions[0] == '0')
-  //                                   {
-  //                                     echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-                          
-  //                                     echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                       
-  //                                     echo "<i class='fa fa-thumbs-down dislike-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-  //                                   }
-  //                                 else
-  //                                 {
-             
-  //                                     echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-                   
-  //                                     echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                     echo "<i class='fa fa-thumbs-down dislike-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-  //                                 }
-  //                              }
-  //                             else
-  //                              {
-  //                                echo "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-               
-  //                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                echo "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id=" . $login[$i]['messageId'] ."></i>";
-  //                              }
-                        
-  //                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                echo "<span class='likes'>" . "Likes: " . $reactions[0] . "</span>";
-  //                                echo "<span class='dislikes'>" . " Dislikes: " . $reactions[1] . "</span>";
-  //                                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                               // echo "<button onclick= myFunction('Chat') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>chat</i></button>";
-  //                                echo "<button onclick= myFunction('". $login[$i]['messageId'] ."') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>";
-                      
-  //                                if(!empty($comments))
-  //                                {  
-  //                                echo "<div  id='" . $login[$i]['messageId'] . "' class='w3-hide w3-container'>";
-                      
-  //                                 foreach($comments as $j => $items) {
-  //                                    $getCommenterDetails = $loginWebService -> getPosterDetails($comments[$j]['commentUserId']);
-                       
-  //                                    //echo "<br/>";
-  //                                    echo "<div class='a'>";
-                                           
-  //                                          echo "<aside>";
-                                              
-  //                                             if($getCommenterDetails[0]['ProfilePicture'] == "")
-  //                                             {
-  //                                                 echo "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
-  //                                             }
-  //                                             else
-  //                                             {
-  //                                               echo "<aside><img src=". $getCommenterDetails[0]['ProfilePicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
-  //                                             }
-  //                                              echo "<h6>" . $getCommenterDetails[0]['PostFirstName'] . " " . $getCommenterDetails[0]['PostLastName'] . "</h6>";
-  //                                              echo "<p>" . $comments[$j]['comment'] . "</p>";
-  //                                          echo "</aside>";
-  //                                    echo "</div>";
-                        
-  //                                 }
-                              
-  //                               echo "</div>";
-                       
-  //                      // echo "</div>";
-                        
-                        
-  //                                echo "<form id " . $login[$i]['messageId'] . "  > ";
-                                     
-  //                        //   echo "<div id = 'commentInputs'>";
-  //                                    //echo "<span value = '" . $login[$i]['FirstName'] . "' />";
-  //                                    echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
-  //                                    //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
-  //                                    echo  " " . "<button class='commentButton' value = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
-  //                                echo "</form>";
-                        
-  //                       //  echo "</div>";
-  //                        //echo "</div>";
-  //                        echo "</div>";
-  //                }
-  //                else
-  //                {
-  //                       echo "<div id='" . $login[$i]['messageId'] . "' class='w3-hide w3-container'>";
-  //                           echo "<div class='b'>";
-                       
-  //                           echo "<p class = 'nocommentclass'>no comments</p>";
-                            
-  //                           echo "<form id =  '" . $login[$i]['messageId'] . "'  > ";
-                      
-  //                        //   echo "<div id = 'commentInputs'>";
-                      
-  //                                    echo "<aside><input name =" . $login[$i]['MessageUserId'] . " placeholder='Type your comment'> </input>" ;
-  //                                    //echo  " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
-  //                                    echo  " " . "<button class='commentButton' value = '" .  $login[$i]['messageId'] . "' type = 'submit'>Comment</button> </aside>";
-  //                                echo "</form>";
-                        
-  //                            //  echo "<form id " . $login[$i]['messageId'] . "  > ";
-  //                            // // echo "<form id = 'commentFrom'>";
-                       
-  //                            //  //     echo "<div id = 'commentInputs'>";
-                      
-  //                            //          echo "<aside><input placeholder='Type your comment'> </input>" . " " . "<button class='commentButton data-id = '" .  $login[$i]['messageId'] . "'' type = 'submit'>Comment</button> </aside>";
-  //                            //    //   echo " </div>";
-                       
-  //                            //  echo "</form>";
-                     
-                
-  //                         echo "</div>";
-  //                         echo "</div>";
-  //                         echo "</div>";
-              
-  //                }
-  //                     //echo " </div>";
-                       
-  //                    }
-                   
-  //                  //  echo "</div";
-  //                 }
- 
-  // else{
-  //       echo "<h1>no posts to be displayed.<h1>";
-  //    }
-  //      //echo "</div>";
-  //  //echo  "</div>";
-  ?> 
+      <button class ='loadMore'>Load More </button>   
+
+      <button class ='loadMoreGroup'>Load More </button> 
+      <input type="hidden" id='groupIdLoad' value="3">
 <div class="w3-col m2">
   <div id="Chat" class="w3-hide w3-container">
   <main>
