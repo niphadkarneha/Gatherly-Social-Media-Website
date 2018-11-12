@@ -62,6 +62,40 @@
  }
 
 
+ if(isset($_POST['pagination_data']))
+ {
+
+    $recordPerPage = 5;
+    $page = "";
+    $output = "";
+
+    if(isset($_POST['page']))
+    {
+      $page = $_POST['page'];
+    }
+    else
+    {
+      $page = 1;
+    }
+
+    $groupId = $_POST['groupId'];
+
+    $page = $page + 1;
+    $startFrom = ($page - 1) * $recordPerPage;
+   
+    $loginWebService = new LoginWebService();
+    
+    $pageData = $loginWebService -> paginationData($startFrom, $recordPerPage, $groupId);
+
+    //$totalRecords = $loginWebService -> getNumberOfPosts(3);
+
+    //$totalPages = ceil($totalRecords/$recordPerPage);
+    echo $pageData;
+
+    //echo "page : " . $page . "data: " . $pageData;
+
+ }
+
 
 
  if(isset($_POST['getPosterDetails']))
@@ -80,6 +114,20 @@
       echo $posterDetails;
 
  }
+
+
+ if(isset($_POST['getNumGlobalPosts']))
+ {
+
+     $loginWebService = new LoginWebService();
+    
+     $totalRecords = $loginWebService -> getNumberOfPosts(3);
+
+     $totalPages = ceil($totalRecords/5);
+
+     echo $totalPages;
+ }
+
 
  if(isset($_POST['checkIfUserLiked']))
  {

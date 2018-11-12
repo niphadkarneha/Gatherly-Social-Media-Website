@@ -741,6 +741,36 @@ class LoginWebService{
 
   }
 
+
+  public function paginationData($startFrom, $postPerPage, $groupId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $paginationSql = $sql_service->paginationSql($startFrom, $postPerPage, $groupId);
+
+    $result = $conn->query($paginationSql);
+
+     if ($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+
+          $data['messages'][] = $row;
+        }
+
+
+        return json_encode($data);
+
+     }
+
+
+
+
+  }
+
+
   public function getGroupByGroupId($groupId)
   {
     $database_connection = new DatabaseConnection();
@@ -993,6 +1023,21 @@ class LoginWebService{
     
     $conn->close();
     return $result;
+
+  }
+
+  public function getNumberOfPosts($groupId)
+  {   
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getAllPosts = $sql_service->getPostCount($groupId);
+
+    $result = $conn->query($getAllPosts);
+
+    return $result->num_rows;
 
   }
 

@@ -89,6 +89,13 @@ class LoginSqlService{
   
   }
 
+  public function paginationSql($startFrom, $postPerPage, $groupId)
+  {
+    $sql = "SELECT * FROM posts,user WHERE posts.groupId = $groupId and posts.UserId = user.ID ORDER by TimeOfPost DESC LIMIT $startFrom, $postPerPage";
+
+    return $sql;
+  }
+
   public function deleteGroupInvitationSql($groupId, $userId)
   {
     $sql = "DELETE FROM fordFanatics.groupInvite WHERE groupId = '$groupId' AND userIdInvited = '$userId'";
@@ -247,6 +254,12 @@ class LoginSqlService{
 
     $sql = "SELECT * FROM fordFanatics.posts,user WHERE groupId='$groupId' and posts.UserId = user.ID ORDER by posts.TimeOfPost DESC";
     //$sql = "SELECT * FROM fordFanatics.posts WHERE groupId='$groupId' ORDER by TimeOfPost DESC ";
+    return $sql;
+  }
+
+  public function getPostCount($groupId)
+  {
+    $sql = "SELECT * FROM fordFanatics.posts WHERE groupId = '$groupId'";
     return $sql;
   }
 
