@@ -319,11 +319,18 @@ main footer a{
   text-decoration: none;
   width: 100%;
 
-
-
-
 }
 
+.loadMoreGroup {
+  color : #fff;
+  background: #2196f3;
+  border-radius: 1.5em;
+  left: 30%;
+  padding: 1em;
+  text-decoration: none;
+  width: 100%;
+  
+}
 
 </style>
 <body class="w3-theme-15", background-color="#e6ffff">
@@ -645,6 +652,7 @@ main footer a{
       <button class ='loadMore'>Load More </button>   
 
       <button class ='loadMoreGroup'>Load More </button> 
+
       <input type="hidden" id='groupIdLoad' value="3">
 <div class="w3-col m2">
   <div id="Chat" class="w3-hide w3-container">
