@@ -304,7 +304,7 @@ $(document).on('click', '.deleteMessageBtn', function(e) {
   
   var messageId = $(this).closest("form").find("input").val();
   
-  alert('deleteMessageBtn clicked' + messageId);
+  
   
 
       $.ajax({
@@ -425,10 +425,28 @@ $(document).on('click', '.postMessage', function(e) {
               
               var latestPost = JSON.parse(data);
 
-              //console.log(latestPost);                                                                                                                 
-              
+              var UserType = 0;
               var str = "";
-              str+= "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+              
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getUserType' : 'getUserType'
+                    },
+                    
+                    success : function(data) {   
+                         UserType = parseInt(data);
+                         str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
+
+                    }
+                });                                                                                                               
+              
+              
+             // str+= "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
               str+= "<div  >";
               
               if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
@@ -441,7 +459,18 @@ $(document).on('click', '.postMessage', function(e) {
               }
                         
                        str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
-                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4><br>";
+                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
+                     
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
                        str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
 
                        str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
@@ -515,8 +544,28 @@ $(document).on('click', '.postGroupMessage', function(e) {
                
                var latestPost = JSON.parse(data);
 
-                var str = "";
-              str+= "<div id = 'groupPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+              var UserType = 0;
+              var str = "";
+              
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getUserType' : 'getUserType'
+                    },
+                    
+                    success : function(data) {   
+                         UserType = parseInt(data);
+                         str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
+
+                    }
+                });             
+
+               // var str = "";
+             // str+= "<div id = 'groupPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
               str+= "<div  >";
               
               if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
@@ -529,7 +578,18 @@ $(document).on('click', '.postGroupMessage', function(e) {
               }
                         
                        str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
-                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4><br>";
+                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
+                       
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
                        str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
 
                        str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
@@ -662,6 +722,24 @@ $(document).on('click', '.groupsPage', function (e) {
                       else
                       {
 
+                        var UserType = 0;
+
+                        $.ajax({
+
+                                url : 'server/controller.php',
+                                type : 'POST',
+                                async: false,
+                                data : {
+                                    'getUserType' : 'getUserType'
+                                },
+                                
+                                success : function(data) {   
+                                     UserType = parseInt(data);
+                                 
+
+                                }
+                      });
+
                       var obj = JSON.parse(data);
                       var messageLength = obj.length;
                       
@@ -669,7 +747,7 @@ $(document).on('click', '.groupsPage', function (e) {
 
                       obj['messages'].forEach(function(e){
 
-                    str+= "<div id = 'groupMessages' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                    str+= "<div id = '" + e['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
                       
                         str+= "<div  >";
 
@@ -682,8 +760,23 @@ $(document).on('click', '.groupsPage', function (e) {
                         }
                         
                        str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
-                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4></br>";
+                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
+                       
+                      if(UserType == 1)
+                        {
+                            str += "<form id = '" + e['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + e['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
+
                        str+= "<p>" + e['message'] + "</p>";
+
+
+
 
                            $.ajax({
 

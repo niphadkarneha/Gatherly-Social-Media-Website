@@ -34,6 +34,24 @@ $(document).ready(function(){
                       else
                       {
 
+                        var UserType = 0;
+
+                        $.ajax({
+
+                                url : 'server/controller.php',
+                                type : 'POST',
+                                async: false,
+                                data : {
+                                    'getUserType' : 'getUserType'
+                                },
+                                
+                                success : function(data) {   
+                                     UserType = parseInt(data);
+                                 
+
+                                }
+                      });
+
                       var obj = JSON.parse(data);
                       var messageLength = obj.length;
                       var str ="";
@@ -42,7 +60,7 @@ $(document).ready(function(){
 
                       obj['messages'].forEach(function(e){
 
-                    str+= "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     str+= "<div id = '" + e['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
                 
                         str+= "<div  >";
 
@@ -55,7 +73,21 @@ $(document).ready(function(){
                         }
                         
                        str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
-                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4><br>";
+                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
+
+
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + e['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + e['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
+
+
                        str+= "<p>" + e['message'] + "</p>";
 
                            $.ajax({
@@ -261,6 +293,7 @@ $(document).on('click','.loadMoreGroup',function(e){
 
            url : 'server/controller.php',
             type : 'POST',
+            async: false,
               data : {
               
                'pagination_data' : "displayMessages",
@@ -310,7 +343,7 @@ $(document).on('click','.loadMoreGroup',function(e){
 
                       obj['messages'].forEach(function(e){
 
-                    str+= "<div id = " + e['messageId'] + "globalMessage" + " class='w3-container w3-card w3-white w3-round w3-margin'>";
+                    str+= "<div id = '" + e['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
                 
                         str+= "<div  >";
 
@@ -323,7 +356,7 @@ $(document).on('click','.loadMoreGroup',function(e){
                         }
                         
                        str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
-                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4><br>";
+                       str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
                        
                        if(UserType == 1)
                         {
