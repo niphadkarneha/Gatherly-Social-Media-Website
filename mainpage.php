@@ -339,16 +339,14 @@ main footer a{
 <div class="w3-top">
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
+  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"><i class="fa fa-home w3-margin-right"></i>Gatherly</a>
   <a href= <?php  if(!isset($_SESSION)){session_start(); } echo "profilepage.php?Id=" . $_SESSION['UserId'];?> button class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" onclick="openForm()" title="My Account"><i class="fa fa-user"></i>Welcome<?php  if(!isset($_SESSION)){session_start(); } echo " " . $_SESSION['FirstName'] . "!";?></a>
   <div class="pull-right">
 
     <div id = "welcomeMessage">
       
-    </div>
-
-
-
+  </div>
+  <a href="helppage.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"><i class="fa fa-file w3-margin-right"></i>FAQ's</a>
   <form method="POST" action="server/logout.php">
     <a  href="server/logout.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d3 pull-right" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a> 
 
@@ -595,7 +593,6 @@ main footer a{
           ?>
 
           </div>
-          <br>
           <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
           <div id="Demo5" class="w3-hide w3-container">
             <img src="icons/g.jpg" alt="Trulli" width="250" height="250">
