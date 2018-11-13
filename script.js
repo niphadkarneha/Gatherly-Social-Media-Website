@@ -5,6 +5,79 @@ function hasWhiteSpace(s) {
 $(document).ready(function(){
 
 
+
+
+$('.loginButton').on('click', function(e){
+
+   var userName = escapeHtml($(this).closest("form").find("input[id='email']").val());
+   var password = escapeHtml($(this).closest("form").find("input[id='password']").val());
+
+   var message = "<p>Email cannot be empty. Please try again.";
+
+   if(userName == "")
+   {
+     alert("Username cannot be empty. Please try again.");
+   }
+
+   if(password == "")
+   {
+    alert("Password cannot be empty. Please try again.");
+   }
+
+
+   if(userName != "" && password != "")
+   {
+
+                                      $.ajax({
+
+                                    url : './server/login.php',
+                                    type : 'POST',
+                                    data : {
+                                      'email'   : userName, 
+                                      'password'   : password 
+                                    },
+                                    
+                                    success : function(data) {   
+                                      
+                                      if(data == 'fail')
+                                      {
+                                           alert("Wrong Credentials, Please try again.");
+                                      }
+                                      else
+                                      {
+                                          var obj = JSON.parse(data);
+
+                                          if(parseInt(obj[0]['userType']) == 0)
+                                          {
+                                            $( ".deleteMessageBtn" ).remove();
+                                          }
+
+
+                                          window.location.href = "mainpage.php"; 
+                                      }
+
+
+                                    }
+                              }) 
+
+
+
+
+   }
+
+
+
+
+
+
+
+});
+
+
+
+
+
+
   var entityMap = {
   '&': '&amp;',
   '<': '&lt;',
@@ -52,6 +125,9 @@ $('.acceptButton').on('click', function(e){
 
 
 
+
+
+
 $('.declineButton').on('click', function(e){
 
   e.preventDefault();
@@ -76,6 +152,11 @@ $('.declineButton').on('click', function(e){
   
 
 });
+
+
+
+
+
 
 
 
@@ -254,57 +335,41 @@ $('.declineButton').on('click', function(e){
 
 
 
-  $('.commentButton').on('click', function(e){
-       e.preventDefault();  
+  // $('.commentButton').on('click', function(e){
+  //      e.preventDefault();  
     
-    var userInput = $(this).closest("form").find("input").val();
-    var messageIdCommentedAt = $(this).val();
-    var userCommented = "usercommented";
+  //   var userInput = $(this).closest("form").find("input").val();
+  //   var messageIdCommentedAt = $(this).val();
+  //   var userCommented = "usercommented";
 
-    if (userInput == "")
-    {
-      alert("comments cannot be empty, please try again.");
-    }
-    else {
+  //   if (userInput == "")
+  //   {
+  //     alert("comments cannot be empty, please try again.");
+  //   }
+  //   else {
      
-         $.ajax({
+  //        $.ajax({
 
-              url : 'likeDislike.php',
-              type : 'POST',
-              data : {
-                'commentInput' : userInput, 
-                'messIdComment' : messageIdCommentedAt, 
-                'userCommented' : userCommented
-              },
+  //             url : 'likeDislike.php',
+  //             type : 'POST',
+  //             data : {
+  //               'commentInput' : userInput, 
+  //               'messIdComment' : messageIdCommentedAt, 
+  //               'userCommented' : userCommented
+  //             },
               
-              success : function(data) {   
-                var userInfo = data;
-                userInfo = data.split('|');
-                 location.reload();
+  //             success : function(data) {   
+  //               var userInfo = data;
+  //               userInfo = data.split('|');
+  //                location.reload();
                
-//                 if (userInfo[2] == "")
-//                 {
-//                 $( "p" ).remove( ".nocommentclass" );
-//                 userInput = escapeHtml(userInput);
-//                 var e = "<right> <aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
-//                 $('#' + messageIdCommentedAt).append(e); 
-//                 }
-//                 else
-//                 {
-//                   $( "p" ).remove( ".nocommentclass" );
-//                   userInput = escapeHtml(userInput);
-//                    var e = "<right> <aside><img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside> <aside><h6> " + userInfo[0] + " " + userInfo[1] +"</h6></aside> <p>" + userInput + "</p>     </right>";
-//                   $('#' + messageIdCommentedAt).append(e); 
-//                 } 
-                
+  //             }
+  //       })  
 
-              }
-        })  
-
-    }
+  //   }
 
 
-  });
+  // });
 
 
 

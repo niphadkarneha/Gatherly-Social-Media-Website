@@ -10,8 +10,6 @@ $(document).ready(function(){
 
 
 
-
-
 function loadMessages(page, groupId){
   
   $(".allPostsClass").empty();
@@ -42,16 +40,35 @@ function loadMessages(page, groupId){
                       }
                       else
                       {
+                        var UserType = 0;
+
+                              $.ajax({
+
+                                      url : 'server/controller.php',
+                                      type : 'POST',
+                                      async: false,
+                                      data : {
+                                          'getUserType' : 'getUserType'
+                                      },
+                                      
+                                      success : function(data) {   
+                                           UserType = parseInt(data);
+                                       
+
+                                      }
+                              }); 
+
 
                       var obj = JSON.parse(data);
                       var messageLength = obj.length;
                       var str ="";
                       var result = null;
-
+                    
+                      
 
                       obj['messages'].forEach(function(e){
 
-                    str+= "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                    str+= "<div id = " + e['messageId'] + "globalMessage" + " class='w3-container w3-card w3-white w3-round w3-margin'>";
                 
 				            	  str+= "<div  >";
 
@@ -64,8 +81,21 @@ function loadMessages(page, groupId){
                         }
                       	
 							         str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
-	                     str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4><br>";
-	                     str+= "<p>" + e['message'] + "</p>";
+	                     str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
+
+                      if(UserType == 1)
+                      {
+                            str += "<form id = '" + e['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + e['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                      }
+
+	                    
+
+                       str+= "<p>" + e['message'] + "</p>";
 
                            $.ajax({
 
@@ -226,13 +256,11 @@ function loadMessages(page, groupId){
 
 
                             
-                                  
-
                               str += "<form id =  '" + e['messageId'] + "'  > ";
                                   str += "<aside><input name =" + e['MessageUserId'] +   " placeholder='Type your comment'> </input>" ;
                                   str +=  "<button class='commentButton' value = '"  + e['messageId'] + "' type = 'submit'>Comment</button> </aside>";
                               str += "</form>";
-                                
+                              
 
                             str += "</div>";
                             
@@ -270,6 +298,35 @@ function escapeHtml (string) {
     return entityMap[s];
   });
 }
+
+
+$(document).on('click', '.deleteMessageBtn', function(e) {
+  
+  var messageId = $(this).closest("form").find("input").val();
+  
+  alert('deleteMessageBtn clicked' + messageId);
+  
+
+      $.ajax({
+
+        url : 'server/controller.php',
+        type : 'POST',
+        data : {
+            'deleteMessage'  : 'deleteMessage',
+            'messageId' : messageId
+
+        },
+        
+        success : function(data) {   
+         
+          $('#' + messageId + 'globalMessage').remove();
+
+        }
+
+  });  
+ 
+
+});
 
 
 $(document).on('click', '.commentButton', function(e) {
