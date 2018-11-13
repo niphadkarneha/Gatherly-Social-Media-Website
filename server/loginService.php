@@ -28,10 +28,10 @@ class LoginWebService{
               $_SESSION['FirstName'] = $row['FirstName'];
               $_SESSION['LastName'] = $row['LastName'];
               $_SESSION['Email'] = $row['Email'];
-              $_SESSION['Status'] = $row['Status'];
               $_SESSION['ProfilePictureLoggedIn'] = $row['ProfilePicture'];
               $_SESSION['Password'] = $row['Password'];
               $_SESSION['UserId'] = $row['ID'];
+              $_SESSION['userType'] = $row['type'];
               $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
               $array[]= $_SESSION;
 
@@ -67,6 +67,21 @@ class LoginWebService{
     {
       return true;
     }
+
+    $conn->close();
+
+  }
+
+
+  public function deleteMessage($messageId)
+  { 
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $deleteMessageSql = $sql_service->deleteMessageSql($messageId);
+
+    $result = $conn->query($deleteMessageSql);
 
     $conn->close();
 

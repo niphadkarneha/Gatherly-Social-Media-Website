@@ -18,6 +18,12 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function deleteMessageSql($messageId)
+  {
+    $sql = "DELETE FROM posts WHERE messageId = $messageId";
+    return $sql;
+  }
+
   public function getLatestPostSql($userId, $groupId)
   {
     $sql = "SELECT * FROM posts,user WHERE posts.UserId = '$userId' AND posts.groupId = '$groupId' AND user.ID = '$userId' ORDER BY posts.TimeOfPost DESC LIMIT 1";

@@ -29,6 +29,35 @@
 
  }
 
+ if(isset($_POST['deleteMessage']))
+ {
+
+    if(!isset($_SESSION))
+    {
+      session_start();
+    }
+
+    $messageId = $_POST['messageId'];
+    $loginWebService = new LoginWebService();
+
+    $loginWebService -> deleteMessage($messageId);
+    
+  }
+
+
+
+ if(isset($_POST['getUserType']))
+ {
+
+    if(!isset($_SESSION))
+    {
+      session_start();
+    }
+
+    echo $_SESSION['userType'];
+
+ }
+
  if(isset($_POST['addGroupMessage']))
  {
     if(!isset($_SESSION))
@@ -53,6 +82,8 @@
     $loginWebService -> writeGroupPostToDB($userId, $message, $groupId);
 
     $latestPost = $loginWebService -> getLatestPost($userId, $groupId);
+
+    $conn->close();
     
     echo $latestPost;
 
