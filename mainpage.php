@@ -463,6 +463,42 @@ main footer a{
 
         </div>
 
+
+              <button onclick="myFunction('Findfriend')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user-circle-o fa-fw w3-margin-right"></i>Find a Friend</button>
+        <div id = "Findfriend" class="w3-hide w3-container">
+         
+         <h3> Enter Friend's Name</h3>
+
+         <form id = 'Findfriend'>
+                <?php      
+              
+              if(!empty($FirstName))
+              {
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a friend..' title='Type in a name'><button class = 'Findfriend' >Findfriend</button><br/>";
+              
+              echo  "<ul id='myUL'>";
+                
+                foreach($FirstName as $i => $item) {
+                     echo "<li><a id = 'UserName' href='#'>" .  $FirstName[$i]['FirstName'] . "</a></li>";
+               
+                }
+              echo "</ul>";
+              }
+              else {
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for friends..' title='Type in a name'><button class = 'Findfriend'>Findfriend</button><br/>";
+                echo  "<ul id='myUL'>";
+                echo "<h6 id = 'therearenocomentsLabel' >There a no one with this name!</h6>";
+                echo "</ul>";
+              }
+             
+                 ?>
+
+              
+
+         </form>
+
+        </div>
+
 <button onclick="myFunction('ownedGroupsDiv')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-balance-scale fa-fw w3-margin-right"></i>Owned Groups</button>
 
           <div id = "ownedGroupsDiv" class="w3-hide w3-container">
@@ -613,18 +649,19 @@ main footer a{
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
      <h6 class='w3-opacity'>Share something with the world</h6>         
-    
-
      <form >
      <input type='text' id='postMessage' name='postMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>
      <button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postMessage'><i class='fa fa-pencil'></i>Post</button>
      </form>
-  </div>  
+     <form >
+     <button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postMessage'><i class='fa fa-upload'></i>Upload</button>
+     </form>
+      </div>
+     </div>
+     </div>
+     </div>
+     </div>
 
-     </div>
-     </div>
-     </div>
-     </div>
 
 
      <div id = 'groupPostForum'>
@@ -706,34 +743,8 @@ main footer a{
         }
     }
 }
-// Used to toggle the menu on smaller screens when clicking on the menu button
-    function openNav() {
-        var x = document.getElementById("navDemo");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else { 
-            x.className = x.className.replace(" w3-show", "");
-        }
-    }
-    function otherGroupsClicked(){
-    var x = document.getElementById("AllGlobalPosts");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-    }
-    function globalClicked(){
-    location.href = "mainpage.php";
-    }
-    function likeDislike(x) {
-        
-        x.classList.toggle("fa-thumbs-down");
-    }
-    function dislikeClicked(){
-      var dislicekButtonClicked = document.getElementById("messageid").value;
-      document.getElementById(dislicekButtonClicked).disabled = true;
-    }
+
+
 </script>
  
 </body>
