@@ -470,28 +470,6 @@ main footer a{
          <h3> Enter Friend's Name</h3>
 
          <form id = 'Findfriend'>
-                <?php      
-              
-              if(!empty($FirstName))
-              {
-              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a friend..' title='Type in a name'><button class = 'Findfriend' >Findfriend</button><br/>";
-              
-              echo  "<ul id='myUL'>";
-                
-                foreach($FirstName as $i => $item) {
-                     echo "<li><a id = 'UserName' href='#'>" .  $FirstName[$i]['FirstName'] . "</a></li>";
-               
-                }
-              echo "</ul>";
-              }
-              else {
-              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for friends..' title='Type in a name'><button class = 'Findfriend'>Findfriend</button><br/>";
-                echo  "<ul id='myUL'>";
-                echo "<h6 id = 'therearenocomentsLabel' >There a no one with this name!</h6>";
-                echo "</ul>";
-              }
-             
-                 ?>
 
               
 
@@ -743,6 +721,35 @@ main footer a{
         }
     }
 }
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+    function openNav() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else { 
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+    function otherGroupsClicked(){
+    var x = document.getElementById("AllGlobalPosts");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+    function globalClicked(){
+    location.href = "mainpage.php";
+    }
+    function likeDislike(x) {
+        
+        x.classList.toggle("fa-thumbs-down");
+    }
+    function dislikeClicked(){
+      var dislicekButtonClicked = document.getElementById("messageid").value;
+      document.getElementById(dislicekButtonClicked).disabled = true;
+    }
 
 
 </script>
