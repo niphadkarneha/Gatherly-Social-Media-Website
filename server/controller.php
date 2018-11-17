@@ -45,6 +45,17 @@
   }
 
 
+if(isset($_POST['getAllGroups']))
+{
+     $loginWebService = new LoginWebService();
+
+     $allGroups = $loginWebService ->getAllExistingGroups();
+
+     echo $allGroups;
+
+}
+
+
 
  if(isset($_POST['getUserType']))
  {
