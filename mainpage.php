@@ -155,6 +155,10 @@ h2,h3{
   margin-right:0;
   margin-left:7px;
 }
+
+
+
+
 main header{
   height:110px;
   padding:30px 20px 30px 40px;
@@ -332,6 +336,45 @@ main footer a{
   
 }
 
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 8px;
+    font-size: 16px;
+    border: none;
+}
+
+.dropup {
+    position: relative;
+    display: inline-block;
+}
+
+.dropup-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 80px;
+    bottom: 30px;
+    z-index: 1;
+}
+
+.dropup-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropup-content a:hover {background-color: #ccc}
+
+.dropup:hover .dropup-content {
+    display: block;
+}
+
+.dropup:hover .dropbtn {
+    background-color: #2980B9;
+}
+
 </style>
 <body class="w3-theme-15", background-color="#e6ffff">
 
@@ -346,7 +389,7 @@ main footer a{
     <div id = "welcomeMessage">
       
   </div>
-  <a href="helppage.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"><i class="fa fa-file w3-margin-right"></i>FAQ's</a>
+  <a href="helppage.html" class="w3-bar-item w3-button w3-hide-small w3-padding w3-hover-white"><i class="fa fa-file w3-margin-right"></i>FAQ's</a>
   <form method="POST" action="server/logout.php">
     <a  href="server/logout.php" class="w3-bar-item w3-button w3-padding-large w3-theme-d3 pull-right" type="submit" class="btn navbar-btn btn-danger" name="logout" id="logout"  value="Log Out"><i class="fa fa-sign-out w3-margin-right"></i>Log Out</a> 
 
@@ -403,7 +446,7 @@ main footer a{
              
               $count = count($userGroupIds);
               $i = 0;
-               echo "<button onclick='globalClicked()' class='w3-button w3-block w3-theme-l1 w3-left-align'>Global</button> </br>";
+               //echo "<button onclick='globalClicked()' class='w3-button w3-block w3-theme-l1 w3-left-align'>Global</button> </br>";
            
               if(!empty($userGroupIds))
               {
@@ -464,12 +507,34 @@ main footer a{
         </div>
 
 
-              <button onclick="myFunction('Findfriend')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user-circle-o fa-fw w3-margin-right"></i>Find a Friend</button>
+        <button onclick="myFunction('Findfriend')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user-circle-o fa-fw w3-margin-right"></i>Search for a user</button>
         <div id = "Findfriend" class="w3-hide w3-container">
          
          <h3> Enter Friend's Name</h3>
 
          <form id = 'Findfriend'>
+                <?php      
+              
+              if(!empty($Email))
+              {
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a member..' title='Type in a name'><button class = 'FindfriendBtn'>Find a Friend</button><br/>";
+              
+              echo  "<ul id='myUL'>";
+                
+                foreach($Email as $i => $item) {
+                     echo "<li><a id = 'Email' href='#'>" .  $Email[$i]['Email'] . "</a></li>";
+               
+                }
+              echo "</ul>";
+              }
+              else {
+              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a member..' title='Type in a name'><button class = 'FindfriendBtn'>Find a Friend</button><br/>";
+                echo  "<ul id='myUL'>";
+                echo "<h6 id = 'therearenousers' >There a no users with this email id.Check the email id!</h6>";
+                echo "</ul>";
+              }
+             
+                 ?>          
 
               
 
@@ -486,6 +551,45 @@ main footer a{
                      session_start();
                 }
                 $userId = $_SESSION['UserId'];
+
+                $loggedInUserType = $_SESSION['userType'];
+                
+                if($loggedInUserType == "1")
+                {
+                   $groupsOwned = $MyloginWebService-> getAllGroups();
+                   
+                    echo "<br/>";
+                if($groupsOwned == "noGroupsOwned")
+                {
+                  echo "<h6> You do not own any groups. Please create your own groups to invite your friends.";
+                }
+                else
+                {
+                    $x = 0;
+                    $y = 0;
+                    $z = 0;
+                    
+                    foreach($groupsOwned as $i => $item) {
+                     echo "<form method='post' action='ownedGroups.php'>";
+                     echo "<input type = 'hidden' id='" . $z . "' name= 'ownerOfGroup' value = '" . $userId . "'</input>";
+                     echo "<input type='hidden' id='" . $x . "' name='groupNameOwned' value='" . $groupsOwned[$i]['ownedGroupName'] . "'>";
+                     echo "<input type='hidden' id='" . $y . "' name='groupTypeOwned' value='" . $groupsOwned[$i]['ownedType'] . "'>";
+                echo "<input type='hidden' id='" . $groupsOwned[$i]['ownedGroupName'] . "' name='groupIdOwned' value='" . $groupsOwned[$i]['ownedGroupId'] . "'>";
+                     echo "<button type='submit'  name='action' class='w3-button w3-block w3-theme-l1 w3-left-align'>" . $groupsOwned[$i]['ownedGroupName']. "</button> </br>";
+                    echo "</form>";
+                    $x = $x + 1;
+                    $y = $y + 1;
+                    $z = $z + 1;
+                    }
+                    
+                }
+
+
+                }
+                else 
+                {
+
+
                 $groupsOwned = $MyloginWebService->getOwnedGroups($userId );
                // var_dump($groupsOwned);
                 echo "<br/>";
@@ -513,7 +617,7 @@ main footer a{
                     }
                     
                 }
-                
+                    }
                 ?>
 
 
@@ -521,9 +625,9 @@ main footer a{
 
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Create a group</button>
           <div id="Demo3" class="w3-hide w3-container">
-            <div class="modal fade" id="createChannel" role="dialog">
+            <div  id="createChannel" role="dialog">
           <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div  style="max-width: 275px;" class="modal-content">
               <div class="modal-header">
                 <h4 class="modal-title">Create a new group</h4>
                 <h6>Share a message, picture, story anything you like with your group.</h6>
@@ -564,7 +668,7 @@ main footer a{
 
           </div>
           
-           <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>My Invitations</button>
+           <button onclick="myFunction('Demo4')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-plus fa-fw w3-margin-right"></i>My Invitations</button>
 
           <div id="Demo4"class="w3-hide w3-container">
 
@@ -607,17 +711,48 @@ main footer a{
           ?>
 
           </div>
-          <button onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>My Photos</button>
-          <div id="Demo5" class="w3-hide w3-container">
-            <img src="icons/g.jpg" alt="Trulli" width="250" height="250">
+
+
+          </div> 
+          <div id = 'adminPrivlages'>
+              <button  onclick="myFunction('Demo5')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-picture-o fa-fw w3-margin-right adminModifyUsersButton"></i>Modify Group Membership</button>
+              <div style="display: none;" id="Demo5" class="w3-hide w3-container adminModifyUsers">
+              
+
           </div>
-        </div>      
+
+          <script type="text/javascript">
+
+                $.ajax({
+
+                  url : 'server/controller.php',
+                  type : 'POST',
+                  async: false,
+                  data : {
+                      'getUserType' : 'getUserType'
+                  },
+                  
+                  success : function(data) {   
+                       UserType = parseInt(data);
+                                
+                       if(UserType == 0)
+                       {
+                          $('#adminPrivlages').remove();
+                       }
+                  }
+              });  
+
+      </script>
+        </div>
+             
       </div>
+
       <br>
       
     <!-- End Left Column -->
     </div>
-  
+    
+
     <!-- Middle Column -->
     <div class="w3-col m7">
     
@@ -632,23 +767,110 @@ main footer a{
      <button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postMessage'><i class='fa fa-pencil'></i>Post</button>
      </form>
      <form >
-     <button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postMessage'><i class='fa fa-upload'></i>Upload</button>
+     <div class="dropup">
+     <button id = 'dropbtn' name='uploadbtn' type='submit' class='w3-button w3-theme dropbtn button button1'><i class='fa fa-upload'></i>Upload</button>
+        <div class="dropup-content">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal3">Upload an image</button>
+     
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2">Upload a file</button>
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">Code Snippet</button>
+        </div>
      </form>
       </div>
+    </div>
      </div>
      </div>
      </div>
      </div>
 
 
+  <!-- Modal for code snippet -->
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Insert your code here</h4>
+        </div>
+                            <div class="modal-body">
+                              <form action ='#' id= "codeForm" method = "post">
+                              <div class="form-group">
+ <!--                                  <select>
+                                    <option value="python">Python</option>
+                                    <option value="C++">C++</option>
+                                    <option value="Java">Java</option>
+                                    <option value="Matlab">Matlab</option>
+                                  </select> -->
+                                <textarea rows="8" cols="50" class="form-control codeArea" name = "message" id="code" placeholder= " Snippet" autofocus required ><code>
+x = 5;<br>
+y = 6;<br>
+z = x + y;
+</code></textarea>
+
+                              <input type='hidden' name='text' value='1'>
+                              </div>
+                              
+                              <div class="modal-footer">
+                              <button type="button" class="btn btn-default modalClose" data-dismiss="modal">Close</button>
+                               <button type="submit" name = "submit"  class="btn btn-success codeBtn" >submit code</button>
+                              </div>
+    
+                            </form>
+                            </div>
+      </div>
+    </div>
+  </div>
+
+
+ <!-- Modal for File upload -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn btn-info" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Share a file</h4>
+        </div>
+           <div class="modal-body">
+            <form action = "#" method="POST" enctype="multipart/form-data">
+              <label><input type='file' name="image" accept=".png, .jpg, .jpeg"/></label>
+              <button name = "submit" class="btn btn-info" type="submit">Submit</button>
+              <button type="button" class="btn btn-info modalClose" data-dismiss="modal">Close</button>
+              </form>
+            </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal for File upload -->
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Share a picture</h4>
+        </div>
+           <div class="modal-body">
+            <form action = "#" method="POST" enctype="multipart/form-data">
+              <label><input type='file' name="image" accept=".png, .jpg, .jpeg"/></label>
+              <button name = "submit" class="btn btn-info" type="submit">Submit</button>
+              <button type="button" class="btn btn-info modalClose" data-dismiss="modal">Close</button>
+              </form>
+            </div>
+      </div>
+    </div>
+  </div>
 
      <div id = 'groupPostForum'>
 
-
-
-
      </div>
-
 
      <div id = 'pagination_data'>
         <div class="allPostsClass" id = "allPosts">
@@ -691,7 +913,7 @@ main footer a{
 
 <!-- Footer -->
 <div class="footer">
- <!--  <p>&copy;fordFanatics</p> -->
+<p>&copy;fordFanatics</p>
 </div>
 
 <script>
@@ -722,6 +944,8 @@ main footer a{
     }
 }
 
+
+
 // Used to toggle the menu on smaller screens when clicking on the menu button
     function openNav() {
         var x = document.getElementById("navDemo");
@@ -750,6 +974,7 @@ main footer a{
       var dislicekButtonClicked = document.getElementById("messageid").value;
       document.getElementById(dislicekButtonClicked).disabled = true;
     }
+
 
 
 </script>

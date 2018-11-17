@@ -226,11 +226,114 @@ $('.declineButton').on('click', function(e){
 
 
 
+  $('.removeUserAdminButton').on('click', function(e){
+
+    e.preventDefault();
+
+     var userEmailToRemove = escapeHtml($(this).closest("form").find("input[id='removeUserAdmin']").val());
+     var groupIdToRemoveFrom = escapeHtml($(this).closest("form").find("input[id='groupIdAdminRemove']").val());
+
+     if (userEmailToRemove == "")
+     {
+         alert("user email cannot be empty. Please try again.");
+     }
+     else
+     {
+
+       $.ajax({
+
+              url : 'inviteUser.php',
+              type : 'POST',
+              data : {
+                'removeUserAdmin' : 'removeUserAdmin',
+                'emailIdToRemove' : userEmailToRemove,
+                'groupIdRemoveFrom' : groupIdToRemoveFrom
+              },
+              
+              success : function(data) {   
+              
+               if (data == "InvalidEmailId")
+               {
+                alert("Invalid user id. Please choose one from the list below.");
+               }
+               else if (data == "InvalidInput")
+               {
+                alert("The user entered is not a member of this group or does not exist. Please try again.");
+               }
+               else
+               {
+                  alert("User has been successfully removed from group.");
+                 
+                 
+               }
+
+              }
+        })
+
+     }
+     
+
+  });
+
+
+
+
+
+
+  $('.addUserAdminButton').on('click', function(e){
+
+    // var userEmailToBeInvited = $(this).closest("form").find("input[id='userIdToAdd']").val();
+    e.preventDefault();
+
+     var userEmailToAdd = escapeHtml($(this).closest("form").find("input[id='addUserAdmin']").val());
+     var groupIdToBeAddedTo = escapeHtml($(this).closest("form").find("input[id='groupIdAdminAdd']").val());
+
+     
+    if (userEmailToAdd == "")
+    {
+      alert("user email cannot be empty. Please try again.");
+    }
+     else
+     {
+            $.ajax({
+
+              url : 'inviteUser.php',
+              type : 'POST',
+              data : {
+                'addUserAdmin' : 'addUserAdmin',
+                'userEmailAddAdmin' : userEmailToAdd,
+                'groupIdAdminAdd' : groupIdToBeAddedTo
+              },
+              
+              success : function(data) {   
+              
+               if (data == "InvalidEmailId")
+               {
+                alert("Invalid user id. Please choose one from the list below.");
+               }
+               else if (data == "InvalidInput")
+               {
+                alert("The user entered already exists in the group or does not exist. Please choose a new user.");
+               }
+               else
+               {
+                  alert("User has been successfully added to group.");
+                 
+               }
+
+              }
+        })
+    }
+     
+
+  });
+
+
 
   $('.inviteUserButton').on('click', function(e){
     e.preventDefault();
     
-    var userEmailToBeInvited = $(this).closest("form").find("input[id='myInputTwo']").val();
+    var userEmailToBeInvited = escapeHtml($(this).closest("form").find("input[id='myInputTwo']").val());
     var ownerInvitingUser = $(this).closest("form").find("input[id='ownerUserId']").val();
     var groupIdInvitedTo = $(this).closest("form").find("input[id='groupIdInvitedTo']").val();
 

@@ -95,8 +95,8 @@ function loadMessages(page, groupId){
 
 	                    
 
-                       str+= "<p>" + e['message'] + "</p>";
-
+                        str+= "<p>" + e['message'] + "</p>";
+                        
                            $.ajax({
 
                                    url : 'server/controller.php',
@@ -269,11 +269,44 @@ function loadMessages(page, groupId){
                             str += "</div>";
                                            
                             $('#allPosts').html(str);
-                          
-
-
 
                       });
+                            
+                            var adminStr = "";
+
+                            $.ajax({
+
+                              url : 'server/controller.php',
+                              type : 'POST',
+                              async: false,
+                              data : {
+                                  'getAllGroups' : 'getAllGroups'
+                              },
+                              
+                              success : function(data) {   
+                            
+                                  var groups = JSON.parse(data);
+
+                                  console.log(groups);
+                                  var numberOfGroups = groups['groups'].length;
+
+                                  adminStr += "</br>";
+                                  for (var i =0; i<numberOfGroups; i++)
+                                  {
+
+                                    adminStr += "<form method = 'post' action = 'modifyGroups.php'>";
+                                    adminStr += "<input type='hidden'  id='groupNameAdmin' name='groupNameAdmin' value='" + groups['groups'][i]['groupId'] + "'>";
+                                    adminStr += "<button type='submit' class = 'modifyGroupOnClick'  >" + groups['groups'][i]['groupName'] + "</button> </br>";
+                                    adminStr += "</form>";
+                                 
+                                  }
+                                  
+
+
+                                  $('#Demo5').append(adminStr);
+
+                              }
+                            }); 
                          }
         }
 
@@ -299,6 +332,20 @@ function escapeHtml (string) {
   });
 }
 
+
+
+$(document).on('click', 'adminAddUserDisplay', function(e) {
+
+alert('email clicked');
+
+});
+
+
+$(document).on('click', '.adminAdduser', function(e) {
+
+alert("adminAdduser clicked");
+
+});
 
 $(document).on('click', '.deleteMessageBtn', function(e) {
   
@@ -393,6 +440,8 @@ $(document).on('click', '.commentButton', function(e) {
 
 
   });
+
+
 
 
 
@@ -739,8 +788,12 @@ $(document).on('click', '.groupsPage', function (e) {
 
                                 }
                       });
+                      if(data != "")
+                      {
+                        var obj = JSON.parse(data);
 
-                      var obj = JSON.parse(data);
+                      }
+                      
                       var messageLength = obj.length;
                       
                       var result = null;
