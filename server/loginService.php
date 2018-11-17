@@ -87,6 +87,8 @@ class LoginWebService{
 
   }
 
+
+
   public function uploadProfilePicture($userId, $filePath)
   {
     
@@ -133,20 +135,37 @@ class LoginWebService{
         while($row = $result->fetch_assoc()) {
 
             $data['latestPost'][]=$row;
-
-
-
         }
 
 
         return json_encode($data);
 
+    }
+
+  }
+
+
+  public function getAllExistingGroups() {
+
+  $database_connection = new DatabaseConnection();
+  $conn = $database_connection->getConnection();
+  $sql_service = new LoginSqlService();
+
+  $getAllExistingGroupsSql = $sql_service -> getAllExistingGroupsSql();
+
+  $result = $conn->query($getAllExistingGroupsSql);
+
+  if($result->num_rows > 0) {
+
+    while ($row = $result->fetch_assoc()) {
+
+      $data['groups'][] = $row;
 
     }
 
+    return json_encode($data);
 
-
-
+  }
 
   }
 
@@ -970,6 +989,7 @@ class LoginWebService{
               
               $_SESSION['userIdAvail']=$row['ID'];
               $_SESSION['EmailAvail']=$row['Email'];
+              $_SESSION['UserTypeAvail'] = $row['type'];
               $array[]= $_SESSION; 
 
 
@@ -981,6 +1001,48 @@ class LoginWebService{
 
      }
 
+
+  }
+
+
+  public function getAllGroups()
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    
+    $sql_service = new LoginSqlService();
+    $getAllGroupsSql = $sql_service->getAllExistingGroupsSql();
+
+    $result = $conn->query($getAllGroupsSql);
+
+    if($result->num_rows > 0)
+    {
+        while($row = $result->fetch_assoc()) {
+             
+             if(!isset($_SESSION)){
+
+                session_start();
+              }
+              
+              $_SESSION['ownedGroupName']=$row['groupName'];
+              $_SESSION['ownedGroupId'] = $row['groupId'];
+              $_SESSION['ownedCreatedAt'] = $row['created_at'];
+              $_SESSION['ownedType'] = $row['type'];
+
+              $array[]= $_SESSION; 
+
+
+      }
+
+        $conn->close();
+        return $array;
+
+
+    }
+    else 
+    {
+      echo "noGroupsOwned";
+    }
 
   }
 
@@ -1024,6 +1086,23 @@ class LoginWebService{
       }
 
   }
+
+
+  public function removeUserFromGroup($groupId, $userId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getLikeCountForMesSql = $sql_service->removeUserFromGroupSql($groupId, $userId);
+
+    $result = $conn ->query($getLikeCountForMesSql);
+
+    $conn->close();
+
+
+  }
+
 
   public function getLikeCountFromMes($messageId){
 

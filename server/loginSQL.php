@@ -18,6 +18,21 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function removeUserFromGroupSql($groupId, $userId) {
+
+    $sql = "DELETE FROM userGroup WHERE groupId = $groupId AND groupUserId = $userId";
+
+    return $sql;
+
+  }
+
+  public function getAllExistingGroupsSql(){
+
+    $sql = "SELECT * FROM fordFanatics.groups";
+    return $sql;
+
+  }
+
   public function deleteMessageSql($messageId)
   {
     $sql = "DELETE FROM posts WHERE messageId = $messageId";
