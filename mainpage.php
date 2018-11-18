@@ -486,13 +486,17 @@ main footer a{
               echo  "<ul id='myUL'>";
                 
                 foreach($allPublicGroups as $i => $item) {
+                  if($allPublicGroups[$i]['publicGroupStatus'] == 0)
+                  {
+
                      echo "<li><a id = 'groupNameDisplay' href='#'>" .  $allPublicGroups[$i]['publicGroupName'] . "</a></li>";
+                  }
                
                 }
               echo "</ul>";
               }
               else {
-              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for public group names..' title='Type in a name'><button class = 'joinGroupBtn'>Join Group</button><br/>";
+             // echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for public group names..' title='Type in a name'><button class = 'joinGroupBtn'>Join Group</button><br/>";
                 echo  "<ul id='myUL'>";
                 echo "<h6 id = 'therearenocomentsLabel' >There a no public groups available. Create one!</h6>";
                 echo "</ul>";
@@ -570,6 +574,8 @@ main footer a{
                     $z = 0;
                     
                     foreach($groupsOwned as $i => $item) {
+                      if($groupsOwned[$i]['ownedStatus'] == 0)
+                      {
                      echo "<form method='post' action='ownedGroups.php'>";
                      echo "<input type = 'hidden' id='" . $z . "' name= 'ownerOfGroup' value = '" . $userId . "'</input>";
                      echo "<input type='hidden' id='" . $x . "' name='groupNameOwned' value='" . $groupsOwned[$i]['ownedGroupName'] . "'>";
@@ -580,6 +586,11 @@ main footer a{
                     $x = $x + 1;
                     $y = $y + 1;
                     $z = $z + 1;
+
+                      }
+
+                   
+
                     }
                     
                 }
@@ -756,7 +767,7 @@ main footer a{
     <!-- Middle Column -->
     <div class="w3-col m7">
     
-     <div id = 'globalPostForum'> 
+<!--  <div id = 'globalPostForum'> 
       <div class="w3-row-padding">
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
@@ -781,8 +792,8 @@ main footer a{
     </div>
      </div>
      </div>
-     </div>
-     </div>
+  </div>
+     </div>  -->
 
 
   <!-- Modal for code snippet -->
@@ -868,24 +879,42 @@ z = x + y;
     </div>
   </div>
 
-     <div id = 'groupPostForum'>
+     <div id = 'groupPostForumOne'>
+<!--  <div class="allPostsClass" id = "allPosts">
+
+
+        </div> -->
+
 
      </div>
 
+
+
      <div id = 'pagination_data'>
+
+
+
+
         <div class="allPostsClass" id = "allPosts">
 
 
         </div>
+
+
    </div>
+
+
+
 
 
      <div class = "groupPostsClass" id = "groupPosts">
      </div>
 
+
+
       <button class ='loadMore'>Load More </button>   
 
-      <button class ='loadMoreGroup'>Load More </button> 
+      <!-- <button class ='loadMoreGroup'>Load More </button>  -->
 
       <input type="hidden" id='groupIdLoad' value="3">
 <div class="w3-col m2">
@@ -912,9 +941,9 @@ z = x + y;
 
 
 <!-- Footer -->
-<div class="footer">
+<!-- <div class="footer">
 <p>&copy;fordFanatics</p>
-</div>
+</div> -->
 
 <script>
       function myFunction(id) {
