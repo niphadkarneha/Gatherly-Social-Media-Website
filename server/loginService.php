@@ -87,6 +87,38 @@ class LoginWebService{
 
   }
 
+  public function lockGroup($groupId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $lockGroupSql = $sql_service->lockGroupSql($groupId);
+
+    $result = $conn->query($lockGroupSql);
+
+    $conn->close();
+
+
+  }
+
+  public function unlockGroup($groupId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $lockGroupSql = $sql_service->unlockGroupSql($groupId);
+
+    $result = $conn->query($lockGroupSql);
+
+    $conn->close();
+
+
+
+  }
+
 
 
   public function uploadProfilePicture($userId, $filePath)
@@ -115,6 +147,31 @@ class LoginWebService{
       $result = $conn->query($sendInvitationSql);
 
       $conn->close();
+
+  }
+
+
+  public function getGroupInfo($groupId)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $getGroupInfoSql = $sql_service->getGroupInfoSql($groupId);
+
+    $result = $conn->query($getGroupInfoSql);
+
+    if($result->num_rows > 0) {
+
+      while ($row = $result->fetch_assoc()) {
+
+        $data['groupInfo'][] = $row;
+
+      }
+
+      return json_encode($data);
+
+    }
 
   }
 
@@ -599,6 +656,7 @@ class LoginWebService{
         $_SESSION['publicGroupName'] = $row['groupName'];
         $_SESSION['publicOwnerUserId'] = $row['ownerUserId'];
         $_SESSION['publicCreatedAt'] = $row['created_at'];
+        $_SESSION['publicGroupStatus'] = $row['status'];
 
         $array[]= $_SESSION; 
     }
@@ -1027,6 +1085,7 @@ class LoginWebService{
               $_SESSION['ownedGroupName']=$row['groupName'];
               $_SESSION['ownedGroupId'] = $row['groupId'];
               $_SESSION['ownedCreatedAt'] = $row['created_at'];
+              $_SESSION['ownedStatus'] = $row['status'];
               $_SESSION['ownedType'] = $row['type'];
 
               $array[]= $_SESSION; 

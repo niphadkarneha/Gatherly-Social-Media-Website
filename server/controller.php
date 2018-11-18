@@ -29,6 +29,26 @@
 
  }
 
+ if(isset($_POST['lockGroup']))
+ {
+    $groupId = $_POST['groupId'];
+    $loginWebService = new LoginWebService();
+    
+    $loginWebService -> lockGroup($groupId);
+
+
+
+ }
+
+ if(isset($_POST['unlockGroup']))
+ {
+    $groupId = $_POST['groupId'];
+    $loginWebService = new LoginWebService();
+
+    $loginWebService -> unlockGroup($groupId);
+
+ }
+
  if(isset($_POST['deleteMessage']))
  {
 
@@ -272,6 +292,17 @@ if(isset($_POST['displayGroupMessages']))
    echo $groupMessages;
 
 
+}
+
+if(isset($_POST['getGroupInfo']))
+{
+   $loginWebService = new LoginWebService();
+
+   $groupId = $_POST['groupId'];
+
+   $groupInfo = $loginWebService -> getGroupInfo($groupId);
+
+   echo $groupInfo;
 }
 
 

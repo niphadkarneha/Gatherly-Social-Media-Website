@@ -18,6 +18,25 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function getGroupInfoSql($groupId){
+
+    $sql = "SELECT * FROM fordFanatics.groups WHERE groupId = $groupId";
+    return $sql;
+
+  }
+
+  public function lockGroupSql($groupId){
+
+    $sql = "UPDATE fordFanatics.groups SET status = 1 WHERE groupId = $groupId";
+    return $sql;
+  }
+
+  public function unlockGroupSql($groupId){
+
+     $sql = "UPDATE fordFanatics.groups SET status = 0 WHERE groupId = $groupId";
+    return $sql;
+  }
+
   public function removeUserFromGroupSql($groupId, $userId) {
 
     $sql = "DELETE FROM userGroup WHERE groupId = $groupId AND groupUserId = $userId";
