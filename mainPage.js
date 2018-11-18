@@ -876,7 +876,7 @@ $(document).on('click', '.postGroupMessage', function(e) {
 
 
 $(document).on('click', '.groupsPage', function (e) {
-
+      window.pageTarget = 1
         e.preventDefault();
         pageStartGroup = 1;
       //   $('.loadMoreGroup').attr('disabled', false);
