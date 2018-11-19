@@ -309,6 +309,12 @@ class LoginSqlService{
   	return $sql;
   }
 
+  public function searchUsersSql($search)
+  {
+    $sql = "SELECT * FROM user WHERE FirstName LIKE '$search%' OR LastName LIKE '$search%' OR Email LIKE '$search%' OR UserName LIKE '$search%'";
+    return $sql;
+  }
+
 
 }
   

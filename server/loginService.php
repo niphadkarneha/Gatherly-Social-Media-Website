@@ -1026,6 +1026,32 @@ class LoginWebService{
 
   }
 
+  public function getAllUserForSearch()
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getAllUsersSql = $sql_service->getAllUserIdSqls();
+
+    $result = $conn->query($getAllUsersSql);
+
+    if($result->num_rows > 0)
+    {
+        while($row = $result->fetch_assoc()) {
+
+          $data['searchResults'][] = $row;
+
+        }
+
+        $conn->close();
+        return json_encode($data);
+    }
+
+    $conn->close();
+
+  }
+
   public function getAllUsers()
   {
     $database_connection = new DatabaseConnection();
@@ -1102,6 +1128,35 @@ class LoginWebService{
     {
       echo "noGroupsOwned";
     }
+
+  }
+
+  public function  searchResults($search)
+  {
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $searchUsersSql = $sql_service-> searchUsersSql($search);
+
+    $result = $conn->query($searchUsersSql);
+
+    if($result->num_rows > 0)
+    {
+
+      while($row = $result->fetch_assoc()) {
+
+        $data['searchResults'][] = $row;
+
+      }
+
+      $conn->close();
+      return json_encode($data);
+
+    }
+
+
+
 
   }
 
