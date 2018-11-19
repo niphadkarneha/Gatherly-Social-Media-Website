@@ -514,35 +514,16 @@ main footer a{
         <button onclick="myFunction('Findfriend')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user-circle-o fa-fw w3-margin-right"></i>Search for a user</button>
         <div id = "Findfriend" class="w3-hide w3-container">
          
-         <h3> Enter Friend's Name</h3>
+         <h3> Enter User name or email</h3>
 
-         <form id = 'Findfriend'>
-                <?php      
-              
-              if(!empty($Email))
-              {
-              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a member..' title='Type in a name'><button class = 'FindfriendBtn'>Find a Friend</button><br/>";
-              
-              echo  "<ul id='myUL'>";
-                
-                foreach($Email as $i => $item) {
-                     echo "<li><a id = 'Email' href='#'>" .  $Email[$i]['Email'] . "</a></li>";
-               
-                }
-              echo "</ul>";
-              }
-              else {
-              echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for a member..' title='Type in a name'><button class = 'FindfriendBtn'>Find a Friend</button><br/>";
-                echo  "<ul id='myUL'>";
-                echo "<h6 id = 'therearenousers' >There a no users with this email id.Check the email id!</h6>";
-                echo "</ul>";
-              }
-             
-                 ?>          
-
-              
-
-         </form>
+         <div class="form-group">
+            <div class="input-group">
+             <span class="input-group-addon">Search</span>
+             <input type="text" name="search_text" id="search_text" placeholder="Search by User Details" class="form-control" />
+            </div>
+           </div>
+           <br />
+           <div id="result"></div>
 
         </div>
 
