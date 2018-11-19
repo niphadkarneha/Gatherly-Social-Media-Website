@@ -9,6 +9,65 @@ $(document).ready(function(){
    loadMessages(0, 3);
 
 
+    load_data();
+
+ function load_data(query)
+ {
+  $.ajax({
+   url:"server/searchUsers.php",
+   method:"POST",
+   data:{query:query},
+   success:function(data)
+   {
+
+    if(data == "")
+    {
+        
+
+       $("#result").html("no results");
+    }
+    else
+    {
+         
+          data = JSON.parse(data);
+         
+          var str = ""; 
+         // = data['searchResults'][0]['FirstName'] + " " + data['searchResults'][0]['LastName'];
+          var searchResultsCount = data['searchResults'].length;
+
+          for(var i = 0; i< searchResultsCount; i++)
+          {
+             str += "<a href = 'profilepage.php?Id=" + data['searchResults'][i]['ID'] + "'";
+             str += "<button>" + data['searchResults'][i]['FirstName'] + " " + data['searchResults'][i]['LastName'] + "</button></br>";
+
+             str += "</a>";
+
+          }
+
+          $('#result').html(str);
+
+    }
+
+
+   
+
+
+   }
+  });
+ }
+ 
+ $('#search_text').keyup(function(){
+  var search = $(this).val();
+  if(search != '')
+  {
+   load_data(search);
+  }
+  else
+  {
+   load_data();
+  }
+ });
+
 
 function loadMessages(page, groupId){
   
@@ -872,6 +931,8 @@ $(document).on('click', '.postGroupMessage', function(e) {
      }
 
 });
+
+
 
 
 
