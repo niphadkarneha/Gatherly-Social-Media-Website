@@ -1009,6 +1009,64 @@ class LoginWebService{
 
   }
 
+  public function getPostCountByUser($userId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getPostCountByUserSql = $sql_service->getPostCountByUserSql($userId);
+    
+    $result = $conn->query($getPostCountByUserSql);
+
+    $postCount = $result->num_rows;
+
+    $conn->close();
+    return $postCount;    
+
+  }
+
+  public function getGroupCountbyUser($userId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getGroupCountbyUserSql = $sql_service->getGroupCountbyUserSql($userId);
+
+    $result = $conn->query($getGroupCountbyUserSql);
+
+    $groupCount = $result->num_rows;
+
+    $conn->close();
+    return $groupCount;
+
+  }
+
+  public function getAllLikesByUser($userId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $getAllLikesByUserSql = $sql_service->getAllLikesByUserSql($userId);
+
+    $result = $conn->query($getAllLikesByUserSql);
+
+    $likes = $result->num_rows;
+
+    $conn->close();
+    return $likes;
+
+
+
+  }
+
+
+
   public function addUserToGroup($groupId, $userId)
   {
 

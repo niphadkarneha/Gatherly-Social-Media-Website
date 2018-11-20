@@ -25,6 +25,13 @@ class LoginSqlService{
 
   }
 
+  public function getAllLikesByUserSql($UserId){
+
+    $sql = "SELECT * FROM userLikes WHERE userId = $UserId";
+    return $sql;
+
+  }
+
   public function lockGroupSql($groupId){
 
     $sql = "UPDATE fordFanatics.groups SET status = 1 WHERE groupId = $groupId";
@@ -244,6 +251,18 @@ class LoginSqlService{
   public function getLikeCountForMes($messageId)
   {
     $sql = "SELECT likeCount FROM fordFanatics.posts WHERE messageId = '$messageId'";
+    return $sql;
+  }
+
+  public function getPostCountByUserSql($userId)
+  {
+    $sql = "SELECT * FROM fordFanatics.posts WHERE UserId = $userId";
+    return $sql;
+  }
+
+  public function getGroupCountbyUserSql($userId)
+  {
+    $sql = "SELECT * FROM fordFanatics.userGroup WHERE groupUserId = $userId";
     return $sql;
   }
 
