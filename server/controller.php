@@ -51,6 +51,37 @@
 
  }
 
+
+ if(isset($_POST['checkUserMembership']))
+ {
+
+    if(!isset($_SESSION))
+    {
+      session_start();
+    }
+
+  $groupId = $_POST['groupId'];
+  $loginWebService = new LoginWebService();
+  $userId = $_SESSION['UserId'];
+
+  $UserIsMember = $loginWebService->checkMembership($userId, $groupId);
+
+  if($UserIsMember >= 1)
+  {
+    echo 1;
+  }
+  else
+  {
+    echo 0;
+  }
+
+
+
+ }
+
+
+
+
  if(isset($_POST['deleteMessage']))
  {
 

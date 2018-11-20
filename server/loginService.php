@@ -1045,6 +1045,28 @@ class LoginWebService{
 
   }
 
+
+  public function checkMembership($userId, $groupId)
+  {
+   
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $checkMembershipSql = $sql_service->checkMembershipSql($userId, $groupId);
+
+    $result = $conn->query($checkMembershipSql);
+
+    $likes = $result->num_rows;
+
+    $conn->close();
+    return $likes;
+  
+
+
+  }
+
+
   public function getAllLikesByUser($userId)
   {
 

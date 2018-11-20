@@ -260,6 +260,15 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function checkMembershipSql($userId, $groupId)
+  {
+
+    $sql = "SELECT * FROM fordFanatics.userGroup WHERE groupUserId = $userId AND groupId = $groupId";
+    return $sql;
+
+
+  }
+
   public function getGroupCountbyUserSql($userId)
   {
     $sql = "SELECT * FROM fordFanatics.userGroup WHERE groupUserId = $userId";
