@@ -265,7 +265,20 @@ class LoginSqlService{
 
     $sql = "SELECT * FROM fordFanatics.userGroup WHERE groupUserId = $userId AND groupId = $groupId";
     return $sql;
+  }
 
+  public function deleteLikesAssociatedSql($messageId)
+  {
+
+    $sql = "DELETE FROM fordFanatics.userLikes WHERE message_id = $messageId";
+    return $sql;
+
+  }
+
+  public function deleteAssociatedCommSql($messageId)
+  {
+    $sql = "DELETE FROM fordFanatics.comments WHERE parent_messageId = $messageId";
+    return $sql;
 
   }
 

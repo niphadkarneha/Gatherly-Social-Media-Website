@@ -87,6 +87,37 @@ class LoginWebService{
 
   }
 
+
+  public function deleteLikesAssociated($messageId)
+  {
+   
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $deleteLikesAssociatedSql = $sql_service->deleteLikesAssociatedSql($messageId);
+
+    $result = $conn->query($deleteLikesAssociatedSql);
+    $conn->close();
+
+  }
+
+  public function deleteCommentsAssociated($messageId)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $sql_service = new LoginSqlService();
+
+    $deleteAssociatedCommSql = $sql_service->deleteAssociatedCommSql($messageId);
+
+    $result = $conn->query($deleteAssociatedCommSql);
+    $conn->close();
+
+
+  }
+
+
   public function lockGroup($groupId)
   {
     $database_connection = new DatabaseConnection();

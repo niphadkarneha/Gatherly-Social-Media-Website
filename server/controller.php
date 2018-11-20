@@ -94,7 +94,9 @@
     $loginWebService = new LoginWebService();
 
     $loginWebService -> deleteMessage($messageId);
-    
+    $loginWebService -> deleteLikesAssociated($messageId);
+    $loginWebService -> deleteCommentsAssociated($messageId);
+  
   }
 
 
