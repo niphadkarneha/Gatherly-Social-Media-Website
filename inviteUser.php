@@ -60,12 +60,111 @@
 
   }
 
+  if(isset($_POST['removeUserAdmin']))
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $loginWebService = new LoginWebService();
+
+    $userEmailToBeRemoved =  clean_input($_POST['emailIdToRemove']);
+    $userEmailToBeRemoved = mysqli_real_escape_string($conn, $userEmailToBeRemoved);
+
+    $groupIdToRemoveFrom = clean_input($_POST['groupIdRemoveFrom']);
+    $groupIdToRemoveFrom = mysqli_real_escape_string($conn, $groupIdToRemoveFrom);
+
+    $isValidUser = $loginWebService->checkIfUserExistsByEmail($userEmailToBeRemoved);
+
+    if($isValidUser == false)
+    {
+      echo "InvalidEmailId";
+      die();
+    }
+    else 
+    {
+
+            $userIdToRemove = $loginWebService->getUserIdFromUserEmail($userEmailToBeRemoved);
+            $checkIfUserIsInGroup = $loginWebService->checkIfUserIsInGroup($userIdToRemove, $groupIdToRemoveFrom);
+
+            $checkIfUserHasBeenInvited = $loginWebService->checkIfUserHasBeenInvited($userIdToRemove, $groupIdToRemoveFrom);
+
+            if (($checkIfUserIsInGroup == true) && ($checkIfUserHasBeenInvited == false) )
+            {
+                $loginWebService->removeUserFromGroup($groupIdToRemoveFrom, $userIdToRemove);
+                echo "success";
+            }
+            else 
+            {
+              echo "InvalidInput";
+              die();
+
+            }
+
+
+    }
+
+
+  }
+
+
+  if(isset($_POST['addUserAdmin']))
+  {
+   
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $loginWebService = new LoginWebService();
+  
+
+    $userEmailToBeInvited =  clean_input($_POST['userEmailAddAdmin']);
+    $userEmailToBeInvited = mysqli_real_escape_string($conn, $userEmailToBeInvited);
+
+    $groupIdTobeInvitedTo = clean_input($_POST['groupIdAdminAdd']);
+    $groupIdTobeInvitedTo = mysqli_real_escape_string($conn, $groupIdTobeInvitedTo);
+
+
+
+    $isValidUser = $loginWebService->checkIfUserExistsByEmail($userEmailToBeInvited);
+
+    if($isValidUser == false)
+    {
+      echo "InvalidEmailId";
+      die();
+    }
+    //check if user is already in the group
+    else
+    {
+      
+      
+      $userIdInvited = $loginWebService->getUserIdFromUserEmail($userEmailToBeInvited);
+      $checkIfUserIsInGroup = $loginWebService->checkIfUserIsInGroup($userIdInvited, $groupIdTobeInvitedTo);
+
+      $checkIfUserHasBeenInvited = $loginWebService->checkIfUserHasBeenInvited($userIdInvited, $groupIdTobeInvitedTo);
+
+      if (($checkIfUserIsInGroup == false) && ($checkIfUserHasBeenInvited == false) )
+      {
+          $loginWebService->addUserToGroup($groupIdTobeInvitedTo, $userIdInvited);
+          echo "success";
+      }
+      else 
+      {
+        echo "InvalidInput";
+        die();
+
+      }
+
+
+
+   }
+
+  }
+
+
 
   if(isset($_POST['userEmailToBeInvited']))
   {
 		
 		
-	$database_connection = new DatabaseConnection();
+	  $database_connection = new DatabaseConnection();
     $conn = $database_connection->getConnection();
     $loginWebService = new LoginWebService();
 	
