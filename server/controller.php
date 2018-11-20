@@ -179,6 +179,58 @@ if(isset($_POST['getAllGroups']))
 
  }
 
+ if(isset($_POST['writeUrlUpload']))
+ {
+
+  $loginWebService = new LoginWebService();
+  $groupId = $_POST['groupId'];
+  $urlToWrite = $_POST['urlToUpload'];
+ 
+  if(!isset($_SESSION))
+  {
+    session_start();
+  }
+
+  $userId = $_SESSION['UserId'];
+  
+  $loginWebService -> writeUploadToDB($userId, $groupId, "url", $urlToWrite);
+  $latestPost = $loginWebService ->  getLatestPost($userId, $groupId);
+
+  echo $latestPost;
+
+
+
+
+ }
+
+ if(isset($_POST['uploadSourceCode']))
+ {
+
+  $loginWebService = new LoginWebService();
+  $groupId = $_POST['groupId'];
+  $database_connection = new DatabaseConnection();
+
+  $conn = $database_connection->getConnection();
+  
+  $codeToUpload = mysqli_real_escape_string($conn, $_POST['codeToUpload']);
+  
+
+
+  if(!isset($_SESSION))
+  {
+    session_start();
+  }
+
+  $userId = $_SESSION['UserId'];
+  
+  $loginWebService -> writeUploadToDB($userId, $groupId, "code", $codeToUpload);
+  $latestPost = $loginWebService->getLatestPost($userId, $groupId);
+
+  echo $latestPost;
+
+
+}
+
 
  if(isset($_POST['getNumGlobalPosts']))
  {

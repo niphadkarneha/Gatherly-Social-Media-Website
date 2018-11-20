@@ -108,6 +108,12 @@ class LoginSqlService{
     return $sql;
   }
 
+  public function writeUploadToDBSql($userId, $groupId, $type, $message)
+  {
+    $sql = "INSERT INTO fordFanatics.posts (message, postType, groupId, UserId) VALUES ('$message', '$type', '$groupId', '$userId')";
+    return $sql;
+  }
+
   public function checkIfGroupExistsSql($groupName)
   {
     $sql = "SELECT * FROM fordFanatics.groups WHERE groupName = '$groupName'";

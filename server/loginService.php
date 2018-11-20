@@ -1089,6 +1089,21 @@ class LoginWebService{
   }
 
 
+  public function writeUploadToDB($userId, $groupId, $type, $message)
+  {
+
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+
+    $sql_service = new LoginSqlService();
+    $writeUploadToDBSql = $sql_service->writeUploadToDBSql($userId, $groupId, $type, $message);
+
+    $result = $conn->query($writeUploadToDBSql);
+
+    $conn->close();
+
+  }
+
   public function getAllGroups()
   {
     $database_connection = new DatabaseConnection();
