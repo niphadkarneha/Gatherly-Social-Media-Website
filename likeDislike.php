@@ -65,7 +65,15 @@
         $loginWebService -> createNewGroup($groupName, $groupType, $userId);
         $groupId = $loginWebService -> getGroupIdFromName($groupName);
         $loginWebService -> addUserToGroup($groupId, $userId);
-        $loginWebService -> addUserToGroup($groupId, 66);
+        
+        $ownerOfGroup = (int)$userId;
+
+        if($ownerOfGroup != 66)
+        {
+          $loginWebService -> addUserToGroup($groupId, 66);
+        }
+
+        
 
        }
 
