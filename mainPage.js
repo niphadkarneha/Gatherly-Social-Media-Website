@@ -62,10 +62,6 @@ $(document).ready(function(){
 
     }
 
-
-   
-
-
    }
   });
  }
@@ -89,6 +85,38 @@ function loadMessages(page, groupId){
   $(".groupPostsClass").empty();
   $(".loadMore").show();
   
+  var isUserMember = 0;
+
+  $.ajax({
+
+    url : 'server/controller.php',
+    type : 'POST',
+    async: false,
+    data : {
+        'checkUserMembership'  : 'checkUserMembership',
+        'groupId' : groupId
+
+    },
+    
+    success : function(data) {   
+        
+      isUserMember = parseInt(data);
+    }
+
+  }); 
+
+
+  if(isUserMember == 0)
+  {
+
+    var non = "";
+    non+="<h1>You are not part of this group. You must be part of this group to view or edit its content.</h1>";
+    $('#allPosts').html(non);
+    return;
+
+  }
+
+
   var groupStatus = 0;
   
 
@@ -96,6 +124,7 @@ function loadMessages(page, groupId){
 
               url : 'server/controller.php',
               type : 'POST',
+              async: false,
               data : {
                   'getGroupName'  : 'getGroupName',
                   'groupId' : groupId
@@ -191,10 +220,6 @@ function loadMessages(page, groupId){
             strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal3'>Upload an image</button>";
           strf += "</form>";
 
-          // strf += "<form id = 'uploadFile'>";
-          //   strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal2'>Upload a file</button>";
-          // strf+="</form>";
-         
           strf += "<form id = 'uploadCode'>";
             strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal1'>Code</button>";
 
@@ -306,11 +331,7 @@ function loadMessages(page, groupId){
           strf += "<form id = 'uploadImage'>";
             strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal3'>Upload an image</button>";
           strf += "</form>";
-
-          // strf += "<form id = 'uploadFile'>";
-          //   strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal2'>Upload a file</button>";
-          // strf+="</form>";
-         
+     
           strf += "<form id = 'uploadCode'>";
             strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal1'>Code</button>";
 
@@ -711,14 +732,12 @@ $(document).on('click', '.submitCodeButton', function(e) {
        var groupId = document.getElementById("groupIdPostedTo").value;
 
        var code = escapeHtml($('#codeToUpload').val());
-       //$('#codeToUpload').attr('value', "");
 
-       alert("groupId : " + groupId + "code " + code);
 
 
        if(code == "")
        {
-        alert("Source code top upload cannot be empty. Please try again.");
+        alert("Source code to upload cannot be empty. Please try again.");
        }
        else
        {
@@ -835,7 +854,7 @@ $(document).on('click', '.submitCodeButton', function(e) {
 $(document).on('click', '.uploadImageButtonURL', function(e) {
 
   e.preventDefault();
-  //alert("upload image url clicked");
+
  var groupId = document.getElementById("groupIdPostedTo").value;
  var urlToUpload = document.getElementById("urlToUpload").value;
  
@@ -1298,15 +1317,6 @@ $(document).on('click', '.groupsPage', function (e) {
       window.pageTarget = 1
         e.preventDefault();
         pageStartGroup = 1;
-      //   $('.loadMoreGroup').attr('disabled', false);
-      // // alert("display group messages called");
-        
-      //   $('.loadMore').hide();
-      //   $(".loadMoreGroup").show();
-        // $( ".allPostsClass" ).empty();
-        // $("#groupPosts").empty();
-        // $("#globalPostForum").empty();
-        // $("#welcomeMessage").empty();
 
         
         var groupId = escapeHtml($(this).closest("form").find("input[id='groupName']").val());
@@ -1316,374 +1326,7 @@ $(document).on('click', '.groupsPage', function (e) {
         $("#groupIdPostedTo").attr('value', groupId);
 
         loadMessages(0, groupId);
-  //       var groupStatus = 0;
-    
-  //       $.ajax({
 
-  //     url : 'server/controller.php',
-  //     type : 'POST',
-  //     async: false,
-  //     data : {
-  //         'getGroupInfo' : 'getGroupInfo',
-  //         'groupId' : groupId
-  //     },
-      
-  //     success : function(data) {   
-  //      data = JSON.parse(data);   
-  //      groupStatus = data['groupInfo'][0]['status'];
-            
-  //     }
-  // });
-       
-
-  //         $.ajax({
-
-  //             url : 'server/controller.php',
-  //             type : 'POST',
-  //             data : {
-  //                 'getGroupName'  : 'getGroupName',
-  //                 'groupId' : groupId
-
-  //             },
-              
-  //             success : function(data) {   
-                  
-  //               var welcomeMessage = "<h1><center> Welcome to " + data + " group! </center> </h1>";
-
-  //               $('#welcomeMessage').html(welcomeMessage);
-
-  //             }
-
-  //       });  
-
-  //         var str ="";
-         
-  //         str += "<div class='w3-row-padding'>";
-  //         str += "<div class='w3-col m12'>";
-  //         str += "<div class='w3-card w3-round w3-white'>";
-  //         str += " <div class='w3-container w3-padding'>";
-  //         str += "<h6 class='w3-opacity'>Share something with the world</h6>";         
-          
-  //       if(groupStatus == 0)
-  //        {
-
-  //         str += "<form >";
-  //            str += "<input type='text' id='groupPostMessage' name='groupPostMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
-  //            str += "<input type = 'hidden' id='groupIdPostedTo' class'groupIdPosted' value = '" + groupId + "'>";
-  //            str += "<button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postGroupMessage'><i class='fa fa-pencil'></i>Post</button>";
-  //         str += "</form>";
-         
-
-  //           str += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-unlock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
-  //        }
-  //        else
-  //        {
-  //         str += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-lock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
-  //        }
-
-         
-
-  //         str += "</div>";  
-
-  //         str += "</div>";
-           
-  //         str +=  "</div>";
-       
-  //         str += "</div>";
-
-
-  //         $('#allPosts').html(str);
-  //         //loadMessages(1, groupId);
-  //         str = "";
-
-  //         $.ajax({
-
-  //              url : 'server/controller.php',
-  //              type : 'POST',
-  //              async: false,
-  //              data : {
-             
-  //               'pagination_data' : displayMessages,
-  //               'groupId' : groupId,
-  //               'page' : 0 
-             
-  //            },
-                                 
-  //            success : function(data) {   
-
-
-  //                     if (data == "")
-  //                     {
-                      
-  //                         str = "<h1 id = 'nopostsClass'> no posts to be displayed. </h1>";
-                 
-  //                       $('#groupPosts').html(str);
-
-  //                     }
-  //                     else
-  //                     {
-
-  //                       var UserType = 0;
-
-  //                       $.ajax({
-
-  //                               url : 'server/controller.php',
-  //                               type : 'POST',
-  //                               async: false,
-  //                               data : {
-  //                                   'getUserType' : 'getUserType'
-  //                               },
-                                
-  //                               success : function(data) {   
-  //                                    UserType = parseInt(data);
-                                 
-
-  //                               }
-  //                     });
-  //                     if(data != "")
-  //                     {
-  //                       var obj = JSON.parse(data);
-
-  //                     }
-                      
-  //                     var messageLength = obj.length;
-                      
-  //                     var result = null;
-
-  //                     obj['messages'].forEach(function(e){
-
-  //                   str+= "<div id = '" + e['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
-                      
-  //                       str+= "<div  >";
-
-  //                       if (e['ProfilePicture'] == ""){
-                                
-  //                            str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-  //                        }
-  //                       else{
-  //                                str += "<img src = '" + e['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-  //                       }
-                        
-  //                      str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
-  //                      str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
-                       
-  //                     if(UserType == 1)
-  //                       {
-  //                           str += "<form id = '" + e['messageId'] + "dButton" + "'>";
-  //                               str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
-  //                               str += "<input type = 'hidden' value = '" + e['messageId'] + "'>";
-  //                               str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
-  //                               str += "</button><br>";
-  //                           str += "</form>";
-  //                       }
-
-
-  //                      str+= "<p>" + e['message'] + "</p>";
-
-
-
-
-  //                          $.ajax({
-
-  //                                  url : 'server/controller.php',
-  //                                  type : 'POST',
-  //                                  async: false,
-  //                                  data : {
-  //                                    'checkIfUserLiked' : 'checkIfUserLiked', 
-  //                                    'messageId' : e['messageId']
-  //                                  },
-                                    
-  //                                  success : function(data) {   
-  //                                     result = data;
-  //                                      var UserLiked = data.split('/');
-  //                                      UserLikedCount = UserLiked[0];
-  //                                      userDislikedCount = UserLiked[1];
-
-  //                                      if(UserLikedCount == '1')
-  //                                      {
-  //                                          if(groupStatus == 0)
-  //                                          {
-  //                                              str += "<i class='fa fa-thumbs-up like-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                              str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                              str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                              str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                          }
-                                           
-  //                                          str += "<span class='likes'> Likes:" + e['upVotes'] + " </span>";
-  //                                          str += "<span class='dislikes'>Dislikes: " + e['downVotes'] + " </span>";
-
-  //                                      }
-  //                                      if(userDislikedCount == '1')
-  //                                      {
-
-  //                                         if(groupStatus == 0)
-  //                                         {
-  //                                            str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                            str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                            str += "<i class='fa fa-thumbs-down dislike-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                            str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                         }
-
-                                           
-  //                                          str += "<span class='likes'> Likes:" + e['upVotes'] + " </span>";
-  //                                          str += "<span class='dislikes'>Dislikes: " + e['downVotes'] + " </span>";
-
-  //                                      }
-  //                                      if(UserLikedCount == '' && userDislikedCount == '')
-  //                                      {
-  //                                          if(groupStatus == 0)
-  //                                          {
-  //                                             str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                             str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-  //                                             str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + e['messageId'] + " ></i>";
-  //                                             str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
-  //                                          }
-
-  //                                          str += "<span class='likes'> Likes:" + e['upVotes'] + " </span>";
-  //                                          str += "<span class='dislikes'>Dislikes: " + e['downVotes'] + " </span>";
-
-  //                                      }
-
- 
-  //                                  }
-              
-  //                         }); 
-
-  //                          // console.log(e['messageId']);
-  //                           var messageId = e['messageId'];
-
-
-  //                            $.ajax({
-
-  //                                   url : 'server/controller.php',
-  //                                   type : 'POST',
-  //                                   async: false,
-  //                                   data : {
-
-  //                                     'getComments' : 'getComments',
-  //                                     'messageId'   : e['messageId']
-
-  //                                   },
-                                    
-  //                                   success : function(data) {   
-                                     
-  //                                    str += "<button onclick= myFunction('" + messageId + "') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>"; 
-
-  //                                    if(data.length == 0)
-  //                                    {
-  //                                      str += "<div id = '" + messageId + "' class = 'w3-hide w3-container'>";
-  //                                      str += "<div class='a nocommentclass'>";
-  //                                         str += "<p> no comments </p>";
-  //                                      str += "</div>";
-
-  //                                      str += "</div>";
-  //                                    }
-  //                                    else
-  //                                    {
-
-  //                                    str += "<div id = '" + messageId + "' class = 'w3-hide w3-container'>";
-
-  //                                     var commentsObj = JSON.parse(data);
-                                      
-  //                                     commentsObj['comments'].forEach(function(e){
-  //                                     //console.log(commentsObj);
-                                        
-  //                                             $.ajax({
-
-  //                                                   url : 'server/controller.php',
-  //                                                   type : 'POST',
-  //                                                   async: false,
-  //                                                   data : {
-                                                  
-  //                                                       'getCommenterDetails' : 'getCommenterDetails', 
-  //                                                       'commenterUserId'     : commentsObj['comments'][0]['commentUserId']
-                                               
-  //                                                   },
-                                          
-  //                                                    success : function(data) {   
-                                                        
-  //                                                          var commenterObj = JSON.parse(data);
-
-  //                                                         // console.log(commenterObj);
-
-  //                                                    if(commenterObj['commenter'][0]["FirstName"] == "")
-  //                                                    {
-  //                                                        str += "<aside><img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
-  //                                                    }
-  //                                                    else
-  //                                                    {
-  //                                                        str += "<aside><img src=" + commenterObj['commenter'][0]["ProfilePicture"] + " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside>";
-  //                                                    }
-
-  //                                                         str += "<h6>" + commenterObj['commenter'][0]['FirstName'] + " " + commenterObj['commenter'][0]['LastName'] + "</h6>";
-                                                         
-                                                            
-  //                                                    }
-
-                    
-  //                                            }); 
-                                        
-  //                                       str += "</br>";
-
-  //                                       str += "<div class='a'>";
-
-  //                                           str += "<aside>";
-                                                
-  //                                               str += "<p>" + commentsObj["comments"][0]['comment'] + "</p>";
-                                                
-  //                                           str += "</aside>";
-                                        
-  //                                       str += "</div>";
-                                        
-
-
-
-
-  //                                     });
-                                      
-
-  //                                    }
-
-
-                                      
-  //                                   }
-  //                             });
-
-
-                            
-                                  
-                            
-  //                             str += "<form id =  '" + e['messageId'] + "'  > ";
-                                
-  //                                 str += "<aside><input name =" + e['MessageUserId'] +   " placeholder='Type your comment'> </input>" ;
-                                     
-  //                                 if(groupStatus == 0)
-  //                                 {
-
-  //                                   str +=  "<button class='commentButton' value = '"  + e['messageId'] + "' type = 'submit'>Comment</button> </aside>";
-  //                                 }  
-                                  
-                              
-  //                             str += "</form>";
-                                
-
-  //                           str += "</div>";
-                            
-
-  //                           str += "</div>";
-  //                           str += "</div>";
-                                           
-  //                           $('#groupPosts').html(str);
-                          
-
-
-
-  //                     });
-  //                     }
-  //       }
-
-  // });
 
 
 });
@@ -1710,13 +1353,6 @@ $(document).on('click', '.arcUnarcGroup', function () {
   if($clicked_btn.hasClass('fa-unlock'))
   {
     
-          // $clicked_btn.removeClass('fa-unlock');
-          // $clicked_btn.addClass('fa-lock');
-          // $("#groupPostMessage").hide();
-          // $("#postButton").hide();
-          // $(".likeOrDislike").hide();
-          // $(".commentButton").hide();
-       
           var action = "lockGroup";
 
           $.ajax({
@@ -1739,15 +1375,6 @@ $(document).on('click', '.arcUnarcGroup', function () {
   }
   else
   {
-          // alert('unlock clicked');
-          // $clicked_btn.removeClass('fa-lock');
-          // $clicked_btn.addClass('fa-unlock');
-          // $("#groupPostMessage").show();
-          // $("#postButton").show();
-          // $(".likeOrDislike").show();
-          // $(".commentButton").show();
-
-
 
           var action = "unlockGroup";
 
