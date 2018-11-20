@@ -682,14 +682,14 @@ function loadMessages(page, groupId){
 
                                   console.log(groups);
                                   var numberOfGroups = groups['groups'].length;
-
+                                  console.log("num of groups: " + numberOfGroups);
                                   adminStr += "</br>";
                                   for (var i =0; i<numberOfGroups; i++)
                                   {
 
                                     adminStr += "<form method = 'post' action = 'modifyGroups.php'>";
                                     adminStr += "<input type='hidden'  id='groupNameAdmin' name='groupNameAdmin' value='" + groups['groups'][i]['groupId'] + "'>";
-                                    adminStr += "<button type='submit' class = 'modifyGroupOnClick'  >" + groups['groups'][i]['groupName'] + "</button> </br>";
+                                    adminStr += "<button type='submit' class = 'modifyGroupOnClick w3-button w3-block w3-theme-l1 w3-left-align'  >" + groups['groups'][i]['groupName'] + "</button> </br>";
                                     adminStr += "</form>";
                                  
                                   }

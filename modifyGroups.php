@@ -4,14 +4,6 @@
 // {
 // 	$groupId = $_POST['groupNameAdmin'];
 
-
-
-
-
-
-
-
-
 // }
 
 ?>
@@ -34,7 +26,6 @@
 			 <style type="text/css">
 	
 #myInputTwo {
-  background-image: url('/css/searchicon.png');
   background-position: 10px 12px;
   background-repeat: no-repeat;
   width: 100%;
@@ -67,6 +58,7 @@
 
 
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 <body>
 <a href='mainpage.php'><i class='fa fa-arrow-left arrowLeft' aria-hidden='true' style = 'margin-top: 3%;'></i></a>
@@ -86,9 +78,6 @@
 				$groupId = $_POST['groupNameAdmin'];
 
 			 }
-
-
-
 
 			echo "<div style = 'float: left;' class =''>";
 				
@@ -128,7 +117,7 @@
 		    echo "</div>"; 
 
 
-		    echo "<div style = 'float: left;' class =''>";
+		    echo "<div style = 'float: right;' class =''>";
 				
 				echo "<h2 style='margin-top: -3%;'> Remove Users</h2>";
 				echo "<form id = 'adminRemoveMemberForum'>";
@@ -207,6 +196,8 @@
 
 
 <script type="text/javascript">
+
+
 	
       function myFunctionTwo() {
         var input, filter, ul, li, a, i;
