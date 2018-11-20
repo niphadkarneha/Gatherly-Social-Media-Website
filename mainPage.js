@@ -648,7 +648,7 @@ function loadMessages(page, groupId){
                                   
                                   if(groupStatus == 0)
                                   {
-                                    str +=  "<button class='commentButton' value = '"  + e['messageId'] + "' type = 'submit'>Comment</button> </aside>";
+                                    str +=  "<button class='commentButton' value = '"  + e['messageId'] + "' type = 'submit'>Comment</button> </aside></br>";
                                   }    
                                   
                               
@@ -1160,10 +1160,13 @@ $(document).on('click', '.commentButton', function(e) {
                 {
                     $(".nocommentclass").remove();
                     userInput = escapeHtml(userInput);
-                    var e = "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'></aside><h6>  " + userInfo[0] + " " + userInfo[1] +"</h6> </br> <div class='a'> <p>" + userInput + "</p></div>";
-                
-                    $('#' + messageIdCommentedAt).append(e); 
+                    var e = "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6> </br> <div class='a'> <p>" + userInput + "</p></div>";
+                     e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                         e += "<aside><input placeholder='Type your comment'> </input>" ;
+                         e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                     e += "</form>";
 
+                    $('#' + messageIdCommentedAt).append(e); 
                 
                 }
                 else
@@ -1173,7 +1176,7 @@ $(document).on('click', '.commentButton', function(e) {
                      var e = "<img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6> </br> <div class='a'> <p>" + userInput + "</p></div>";
                      e += "<form id =  '" + messageIdCommentedAt + "'  > ";
                          e += "<aside><input placeholder='Type your comment'> </input>" ;
-                         e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside>";
+                         e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
                      e += "</form>";
 
                     $('#' + messageIdCommentedAt).append(e); 
