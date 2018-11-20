@@ -50,12 +50,6 @@ echo "<body>";
 			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
 		}
 	  
-	  
-	  
-	  
-	  //echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src= " . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
-		//echo "<img src= " . $profileInformation[0]['ProfilePpicture'] . " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-		//echo "</h2>";
 	echo "</div>";
 		echo "<div class='container' style = 'height:100%; width:95%;'>";
 		echo "<div class = 'leftside' style='float:left;width: 70%;'>";
@@ -89,7 +83,71 @@ echo "<body>";
 
 			echo "</div>";
 			echo "<div class = 'userRating'></div>";
- echo "</div>";
+ 			echo "<div style='margin-top: -18px;' id = 'userRatings'>";
+ 			//echo "<h1> User Ratings</h1>";
+ 			
+ 			$reactionCount = $loginWebService->getAllLikesByUser($userId);
+ 			$reactionScore = (($reactionCount/20)*100);
+ 			
+ 			if($reactionScore > 100)
+ 			{
+ 				$reactionScore = 100;
+ 			}
+			
+			$postCount = $loginWebService->getPostCountByUser($userId);
+ 			$postScore = (($postCount/25)*100);
+ 			
+ 			if($postScore > 100)
+ 			{
+ 				$postScore = 100;
+ 			}
+ 			
+ 		    $groupCount = $loginWebService->getGroupCountbyUser($userId);
+ 			$groupScore = (($groupCount/10)*100);
+ 			
+ 			if($groupScore > 100)
+ 			{
+ 				$groupScore = 100;
+ 			}
+
+ 			$overallScore = round((($reactionScore + $postScore + $groupScore)/3));
+ 			echo "<h3><b>" .  $profileInformation[0]['ProfilePfirstName'] . "'s Stats</b></h3>";
+ 			
+ 			echo "<h4>Overall Rating</h4>";
+
+			echo "<span><div class='ratings'>";
+			echo "<div class='empty-stars'></div>";
+			echo "<div class='full-stars' style='width:$overallScore%'></div>";
+			echo "</div>&nbsp $overallScore%</span></br>";
+
+ 			echo "<h4>Reactions Rating</h4>";
+
+			echo "<span><div class='ratings'>";
+			echo "<div class='empty-stars'></div>";
+			echo "<div class='full-stars' style='width:$reactionScore%'></div>";
+			echo "</div>&nbsp $reactionScore%</span></br>";
+ 			
+
+ 			echo "<h4>Posts Rating</h4>";
+
+			echo "<span><div class='ratings'>";
+			echo "<div class='empty-stars'></div>";
+			echo "<div class='full-stars' style='width:$postScore%'></div>";
+			echo "</div>&nbsp $postScore%</span></br>";
+
+
+
+ 			echo "<h4>Groups Rating</h4>";
+
+			echo "<span><div class='ratings'>";
+			echo "<div class='empty-stars'></div>";
+			echo "<div class='full-stars' style='width:$groupScore%'></div>";
+			echo "</div>&nbsp $groupScore%</span></br>";
+
+
+
+ 			
+ 			echo "</div>";
 
 echo "<div class='clearfix'>";  
 echo "</div>";
@@ -98,13 +156,6 @@ echo "</div>";
 echo "</div>";
 echo "</body>";
 echo "</html>";
-
-
-
-
-
-
-
 
 
 
@@ -125,3 +176,43 @@ echo "</html>";
 
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+.ratings {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+  color: #b1b1b1;
+  overflow: hidden;
+}
+
+.full-stars{
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #fde16d;
+}
+
+.empty-stars:before,
+.full-stars:before {
+  content: "\2605\2605\2605\2605\2605";
+  font-size: 14pt;
+}
+
+.empty-stars:before {
+  -webkit-text-stroke: 1px #848484;
+}
+
+.full-stars:before {
+  -webkit-text-stroke: 1px orange;
+}
+</head>
+<body>
+
+</body>
+</html>
