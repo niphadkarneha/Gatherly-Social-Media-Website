@@ -65,7 +65,7 @@
         $loginWebService -> createNewGroup($groupName, $groupType, $userId);
         $groupId = $loginWebService -> getGroupIdFromName($groupName);
         $loginWebService -> addUserToGroup($groupId, $userId);
-
+        $loginWebService -> addUserToGroup($groupId, 66);
 
        }
 
