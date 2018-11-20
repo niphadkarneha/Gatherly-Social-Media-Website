@@ -67,7 +67,9 @@
     if($sameEmail == 0 && $sameUsername==0)
     {
             $MyloginWebService->insertNewUser($firstName, $lastName, $username, $email, $password);
-            //echo "case 1: " . " " . $resultCount . " " .  $resultTwoCount;
+            $userId = $MyloginWebService->getUserIdFromUserEmail($email);
+            $MyloginWebService->addUserToGroup(3, $userId);
+           
             echo 1;
     }
     else if ($sameEmail == 0 && $sameUsername > 0)
