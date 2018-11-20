@@ -1,6 +1,20 @@
 
 $(document).ready(function(){
 
+    function validate(url) {
+        //var url = document.getElementById("url").value;
+        var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+        if (pattern.test(url)) {
+            //alert("Url is valid");
+            return true;
+        } 
+            //alert("Url is not valid!");
+            return false;
+ 
+    }
+
+
+
 
   	var displayMessages = "displayMessages";
     var welcomeMessage = "<h1><center> Welcome to the Global Group!</center> </h1>";
@@ -73,7 +87,6 @@ function loadMessages(page, groupId){
   
   $(".allPostsClass").empty();
   $(".groupPostsClass").empty();
- // $(".loadMoreGroup").hide();
   $(".loadMore").show();
   
   var groupStatus = 0;
@@ -137,41 +150,6 @@ function loadMessages(page, groupId){
     var str = "";
     var strf = "";
     str += "<input id = 'groupIdForPagination' type = 'hidden' value = '" + groupId + "'>"; 
-    //alert(groupStatus);
-     // str += "<div class='w3-row-padding'>";
-     //      str += "<div class='w3-col m12'>";
-     //      str += "<div class='w3-card w3-round w3-white'>";
-     //      str += " <div class='w3-container w3-padding'>";
-     //      str += "<h6 class='w3-opacity'>Share something with the world</h6>";         
-          
-          
-     //        if(groupStatus == 0)
-     //        {
-          
-     //      str += "<form >";
-     //         str += "<input type='text' id='groupPostMessage' name='groupPostMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
-     //         str += "<input type = 'hidden' id='groupIdPostedTo' class'groupIdPosted' value = '" + groupId + "'>";
-     //         str += "<button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postGroupMessage'><i class='fa fa-pencil'></i>Post</button>";
-     //      str += "</form>";
-     //        str += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-unlock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
-     //        }
-     //        else
-     //        {
-     //          str += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-lock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
-     //        }
-
-         
-
-     //      str += "</div>";  
-
-     //      str += "</div>";
-           
-     //      str +=  "</div>";
-       
-     //      str += "</div>";
-     //      $('#groupPostForumOne').html(str);
-     //      $('#groupPostForumOne').empty();
-
 
 
      $.ajax({
@@ -246,23 +224,7 @@ function loadMessages(page, groupId){
                       }
                       else
                       {
-                        // var UserType = 0;
 
-                        //       $.ajax({
-
-                        //               url : 'server/controller.php',
-                        //               type : 'POST',
-                        //               async: false,
-                        //               data : {
-                        //                   'getUserType' : 'getUserType'
-                        //               },
-                                      
-                        //               success : function(data) {   
-                        //                    UserType = parseInt(data);
-                                       
-
-                        //               }
-                        //       }); 
 
                            strf += "<div class='w3-row-padding'>";
           strf += "<div class='w3-col m12'>";
@@ -279,7 +241,74 @@ function loadMessages(page, groupId){
              strf += "<input type = 'hidden' id='groupIdPostedTo' class'groupIdPosted' value = '" + groupId + "'>";
              strf += "<button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postGroupMessage'><i class='fa fa-pencil'></i>Post</button>";
           strf += "</form>";
+           strf += "<form >";
             
+          strf += "<form id = 'uploadImage'>";
+            strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal3'>Upload an image</button>";
+          strf += "</form>";
+
+          // strf += "<form id = 'uploadFile'>";
+          //   strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal2'>Upload a file</button>";
+          // strf+="</form>";
+         
+          strf += "<form id = 'uploadCode'>";
+            strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal1'>Code</button>";
+
+          strf +="</form>";
+
+        strf += "<div class='modal fade' id='myModal3' role='dialog'>";
+    strf += "<div class='modal-dialog'>";
+    
+      strf += "<div class='modal-content'>";
+      strf += "<div class='modal-header'>";
+          strf += "<button type='button' class='close' data-dismiss='modal'>&times;</button>";
+          strf += "<h4 class='modal-title'>Share a picture</h4>";
+        strf += "</div>";
+           strf += "<div class='modal-body'>";
+            strf += "<form action = '#' method='POST' enctype='multipart/form-data'>";
+              strf += "<label><input id = 'file' type='file' name='file' accept='.png, .jpg, .jpeg'/></label>";
+              
+              strf += "<span id='basic-addon1'><i class = 'fa fa-link postingOptionMendu' aria-hidden='true'></i>URL</span><input id='urlToUpload' aria-describedby='basic-addon1' placeholder='Image URL...' type='text'></label></br>";
+              
+
+              strf += "<input type='hidden' value = '" + groupId + "'>";
+              strf += "<button name = 'submit' class='btn btn-info uploadImageButton' type='submit'>Submit</button>";
+
+              strf += "<button type='button' class='btn btn-info modalClose' data-dismiss='modal'>Close</button>";
+              strf += "<button style = 'float: right;' name = 'submit' class='btn btn-info uploadImageButtonURL' type='submit'>Submit URL</button>";
+              strf += "</form>";
+            strf+="</div>";
+      strf+="</div>";
+    strf+="</div>";
+  strf+="</div>";
+
+
+  strf+="<div class='modal fade' id='myModal1' role='dialog'>";
+    strf+="<div class='modal-dialog'>";
+        strf+="<div class='modal-content'>";
+        strf+="<div class='modal-header'>";
+        strf+="<button type='button' class='close modalClose' data-dismiss='modal'>&times;</button>";
+        strf+="<h4 class='modal-title'>code posting Area</h4>";
+        strf+="</div>";
+        strf+="<div class='modal-body'>";
+          
+          strf+="<form action ='#' id= 'codeForm' method = 'post'>";
+          
+          strf+="<div class='form-group'>";
+          strf+="<label for='message-text' class='form-control-label'>code<i class='fa fa-code postingOptionMenu' aria-hidden='true'></i></label>";
+          strf+="<textarea id ='codeToUpload' rows='4' cols='59' ></textarea>";
+          strf+="<button type='button' class='btn btn-default modalClose' data-dismiss='modal'>Close</button>";
+              strf+="<button type='submit' name='submit' class='btn btn-success codeBtn submitCodeButton'>submit code</button>";
+          strf+="</div>";
+
+        strf+="</div>"; 
+         strf+="</div>";
+        strf+="</div>"; 
+         strf+="</div>";
+
+
+
+
             if(UserType == 1)
             {
                strf += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-unlock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
@@ -343,9 +372,23 @@ function loadMessages(page, groupId){
                             str += "</form>";
                       }
 
-	                    
-
-                        str+= "<p>" + e['message'] + "</p>";
+	                   //  console.log(e['messageId']);
+                        if (e['postType'] == "picture")
+                        {
+                          str+="<img src='upload/" + e['message'] + "' height='150' width='225' class='img-thubnail'/></br>";
+                        }
+                        else if(e['postType'] == "url")
+                        {
+                          str += "<img src='" + e['message'] + "' height='150' width='225'></br>";
+                        }
+                        else if(e['postType'] == "code")
+                        {
+                           str += "<blockquote ><pre><code>" + e['message'] + "</code></pre></blockquote></br>";
+                        }
+                        else
+                        {
+                          str +="<p>" + e['message'] + "</p>";
+                        }
                         
                            $.ajax({
 
@@ -602,6 +645,373 @@ function escapeHtml (string) {
 }
 
 
+$(document).on('click', '.submitCodeButton', function(e) {
+
+       e.preventDefault();
+       var groupId = document.getElementById("groupIdPostedTo").value;
+
+       var code = escapeHtml($('#codeToUpload').val());
+       //$('#codeToUpload').attr('value', "");
+
+       alert("groupId : " + groupId + "code " + code);
+
+
+       if(code == "")
+       {
+        alert("Source code top upload cannot be empty. Please try again.");
+       }
+       else
+       {
+
+          $.ajax({
+
+              url : 'server/controller.php',
+              type : 'POST',
+              async: false,
+              data : {
+                  'uploadSourceCode' : 'uploadSourceCode',
+                  'groupId' : groupId,
+                  'codeToUpload' : code
+              },
+              
+              success : function(data) {   
+
+               var latestPost = JSON.parse(data);
+               console.log(latestPost);
+              var UserType = 0;
+              var str = "";
+              
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getUserType' : 'getUserType'
+                    },
+                    
+                    success : function(data) {   
+                         UserType = parseInt(data);
+                        str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
+
+                    }
+                });             
+
+               var str = "";
+             str+= "<div id = '" + latestPost['latestPost'][0]['messageId'] + "globalMessage' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+              str+= "<div  >";
+              
+              if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
+                 
+                  str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+              else{
+
+                  str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+                        
+                       str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
+                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
+                       
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
+                       //str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
+                       str += "<blockquote><pre><code>" + latestPost['latestPost'][0]['message'] + "</code></pre></blockquote></br>";
+                       
+                       str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<span class='likes'> Likes:" + latestPost['latestPost'][0]['upVotes'] + " </span>";
+                       str += "<span class='dislikes'>Dislikes: " + latestPost['latestPost'][0]['downVotes'] + " </span>";
+
+                       str += "<button onclick= myFunction('" + latestPost['latestPost'][0]['messageId'] + "') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>"; 
+
+                        str += "<div id = '" + latestPost['latestPost'][0]['messageId'] + "' class = 'w3-hide w3-container'>";
+                             str += "<div class='a nocommentclass'>";
+                                str += "<p> no comments </p>";
+                             str += "</div>";
+                        str += "</div>";
+
+                        str += "<form id =  '" + latestPost['latestPost'][0]['messageId'] + "'  > ";
+                            str += "<aside><input name =" + latestPost['latestPost'][0]['ID'] + " placeholder='Type your comment'> </input>" ;
+                            str +=  "<button class='commentButton' value = '"  + latestPost['latestPost'][0]['messageId'] + "' type = 'submit'>Comment</button> </aside>";
+                        str += "</form>";
+                         str += "</div>";
+                        str += "</div>";
+                        $( "#allPosts" ).prepend(str);
+
+                
+
+
+
+
+
+
+
+
+
+              }
+          });  
+
+
+       }
+
+
+
+
+
+});
+
+$(document).on('click', '.uploadImageButtonURL', function(e) {
+
+  e.preventDefault();
+  //alert("upload image url clicked");
+ var groupId = document.getElementById("groupIdPostedTo").value;
+ var urlToUpload = document.getElementById("urlToUpload").value;
+ 
+ if(validate(urlToUpload) == false)
+ {
+    alert("URL is not valid, please try again.");
+ }
+ else
+ {
+            $.ajax({
+
+            url : 'server/controller.php',
+            type : 'POST',
+            async: false,
+            data : {
+                'writeUrlUpload' : 'writeUrlUpload',
+                'groupId' : groupId,
+                'urlToUpload': urlToUpload 
+            },
+            
+            success : function(data) {   
+                 
+                 var latestPost = JSON.parse(data);
+
+              var UserType = 0;
+              var str = "";
+              
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getUserType' : 'getUserType'
+                    },
+                    
+                    success : function(data) {   
+                         UserType = parseInt(data);
+                        str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
+
+                    }
+                });             
+
+               var str = "";
+             str+= "<div id = '" + latestPost['latestPost'][0]['messageId'] + "globalMessage' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+              str+= "<div  >";
+              
+              if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
+                 
+                  str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+              else{
+
+                  str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+                        
+                       str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
+                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
+                       
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
+                       //str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
+                       str += "<img src='" + latestPost['latestPost'][0]['message'] + "' height='150' width='225'></br>";
+                       str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<span class='likes'> Likes:" + latestPost['latestPost'][0]['upVotes'] + " </span>";
+                       str += "<span class='dislikes'>Dislikes: " + latestPost['latestPost'][0]['downVotes'] + " </span>";
+
+                       str += "<button onclick= myFunction('" + latestPost['latestPost'][0]['messageId'] + "') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>"; 
+
+                        str += "<div id = '" + latestPost['latestPost'][0]['messageId'] + "' class = 'w3-hide w3-container'>";
+                             str += "<div class='a nocommentclass'>";
+                                str += "<p> no comments </p>";
+                             str += "</div>";
+                        str += "</div>";
+
+                        str += "<form id =  '" + latestPost['latestPost'][0]['messageId'] + "'  > ";
+                            str += "<aside><input name =" + latestPost['latestPost'][0]['ID'] + " placeholder='Type your comment'> </input>" ;
+                            str +=  "<button class='commentButton' value = '"  + latestPost['latestPost'][0]['messageId'] + "' type = 'submit'>Comment</button> </aside>";
+                        str += "</form>";
+                         str += "</div>";
+                        str += "</div>";
+                        $( "#allPosts" ).prepend(str);
+
+
+             
+
+            }
+        }); 
+ }
+
+
+
+});
+
+$(document).on('click', '.uploadImageButton', function(e) {
+      e.preventDefault();
+
+      var groupId = document.getElementById("groupIdPostedTo").value;
+
+
+      var property = document.getElementById("file").files[0];
+      var image_name = property.name;
+      var image_extension = image_name.split('.').pop().toLowerCase();
+      if(jQuery.inArray(image_extension, ['gif', 'png', 'jpg', 'jpeg']) == -1)
+      {
+        alert("Invalid Image File");
+      }
+
+      var image_size = property.size;
+      if(image_size > 2000000)
+      {
+        alert("Image File Size is very big");
+      }
+      else
+      {
+        var form_data = new FormData();
+        form_data.append("file", property);
+        form_data.append("groupId", groupId);
+        form_data.append("uploadDisk", "uploadDisk");
+        $.ajax({
+          url : "server/uploadImage.php",
+          method: "POST",
+          data:form_data,
+          contentType:false,
+          cache:false,
+          processData:false,
+          beforeSend:function(){
+            $("#uploaded_image").html("<label class='text-success'>Image Uploading...</label>");
+          },
+          success:function(data)
+          {
+           
+              var latestPost = JSON.parse(data);
+
+              var UserType = 0;
+              var str = "";
+              
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getUserType' : 'getUserType'
+                    },
+                    
+                    success : function(data) {   
+                         UserType = parseInt(data);
+                      //   str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
+
+                    }
+                });             
+
+               var str = "";
+             str+= "<div id = '" + latestPost['latestPost'][0]['messageId'] + "globalMessage' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+              str+= "<div  >";
+              
+              if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
+                 
+                  str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+              else{
+
+                  str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
+                        
+                       str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
+                       str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
+                       
+                       if(UserType == 1)
+                        {
+                            str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
+                                str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
+                                str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
+                                str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
+                                str += "</button><br>";
+                            str += "</form>";
+                        }
+
+                       //str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
+                       str += "<img src='upload/" + latestPost['latestPost'][0]['message'] + "' height='150' width='225'></br>";
+                       str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
+                       str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                       str += "<span class='likes'> Likes:" + latestPost['latestPost'][0]['upVotes'] + " </span>";
+                       str += "<span class='dislikes'>Dislikes: " + latestPost['latestPost'][0]['downVotes'] + " </span>";
+
+                       str += "<button onclick= myFunction('" + latestPost['latestPost'][0]['messageId'] + "') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>"; 
+
+                        str += "<div id = '" + latestPost['latestPost'][0]['messageId'] + "' class = 'w3-hide w3-container'>";
+                             str += "<div class='a nocommentclass'>";
+                                str += "<p> no comments </p>";
+                             str += "</div>";
+                        str += "</div>";
+
+                        str += "<form id =  '" + latestPost['latestPost'][0]['messageId'] + "'  > ";
+                            str += "<aside><input name =" + latestPost['latestPost'][0]['ID'] + " placeholder='Type your comment'> </input>" ;
+                            str +=  "<button class='commentButton' value = '"  + latestPost['latestPost'][0]['messageId'] + "' type = 'submit'>Comment</button> </aside>";
+                        str += "</form>";
+                         str += "</div>";
+                        str += "</div>";
+                        $( "#allPosts" ).prepend(str);
+
+
+
+
+
+
+
+
+
+
+
+          }
+
+
+        });
+
+      }
+
+
+});
 
 $(document).on('click', '.deleteMessageBtn', function(e) {
   
@@ -630,6 +1040,8 @@ $(document).on('click', '.deleteMessageBtn', function(e) {
  
 
 });
+
+
 
 
 $(document).on('click', '.commentButton', function(e) {
@@ -701,128 +1113,14 @@ $(document).on('click', '.commentButton', function(e) {
 
 
 
-// $(document).on('click', '.postMessage', function(e) {
-//       e.preventDefault();
-
-//       var postMessage = escapeHtml(document.getElementById('postMessage').value);
-      
-//       $('#postMessage').val('');
-//       $('h1#nopostsClass').remove();
-
-//       if(postMessage == "")
-//       {
-//           alert("Posts cannot be empty. Please try again.");
-//       }
-//       else
-//       {
-//            $.ajax({
-
-//               url : 'server/controller.php',
-//               type : 'POST',
-//               async: false,
-//               data : {                         
-                 
-//                  'postMessage' : postMessage, 
-              
-//               },                           
-            
-//              success : function(data) {   
-              
-//               var latestPost = JSON.parse(data);
-
-//               var UserType = 0;
-//               var str = "";
-              
-//                 $.ajax({
-
-//                     url : 'server/controller.php',
-//                     type : 'POST',
-//                     async: false,
-//                     data : {
-//                         'getUserType' : 'getUserType'
-//                     },
-                    
-//                     success : function(data) {   
-//                          UserType = parseInt(data);
-//                          str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
-                     
-
-//                     }
-//                 });                                                                                                               
-              
-              
-//              // str+= "<div id = 'globalPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
-//               str+= "<div  >";
-              
-//               if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
-                 
-//                   str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-//               }
-//               else{
-
-//                   str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-//               }
-                        
-//                        str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
-//                        str+= "<h4>" + latestPost['latestPost'][0]['FirstName'] + " " + latestPost['latestPost'][0]['LastName'] + "</h4>";
-                     
-//                        if(UserType == 1)
-//                         {
-//                             str += "<form id = '" + latestPost["latestPost"][0]['messageId'] + "dButton" + "'>";
-//                                 str += "<button style ='float: right;' type='button' class='btn btn-default btn-sm deleteMessageBtn'>";
-//                                 str += "<input type = 'hidden' value = '" + latestPost["latestPost"][0]['messageId'] + "'>";
-//                                 str += "<span class='glyphicon glyphicon-trash'></span> Trash"; 
-//                                 str += "</button><br>";
-//                             str += "</form>";
-//                         }
-
-//                        str+= "<p>" + latestPost['latestPost'][0]['message'] + "</p>";
-
-//                        str += "<i class='fa fa-thumbs-o-up like-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
-//                        str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-//                        str += "<i class='fa fa-thumbs-o-down dislike-btn likeOrDislike' data-id= " + latestPost['latestPost'][0]['messageId'] + " ></i>";
-//                        str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-//                        str += "<span class='likes'> Likes:" + latestPost['latestPost'][0]['upVotes'] + " </span>";
-//                        str += "<span class='dislikes'>Dislikes: " + latestPost['latestPost'][0]['downVotes'] + " </span>";
-
-//                        str += "<button onclick= myFunction('" + latestPost['latestPost'][0]['messageId'] + "') class='w3-button w3-white w3-border w3-border-white'><i class='material-icons'>filter_list</i></button>"; 
-
-//                         str += "<div id = '" + latestPost['latestPost'][0]['messageId'] + "' class = 'w3-hide w3-container'>";
-//                              str += "<div class='a nocommentclass'>";
-//                                 str += "<p> no comments </p>";
-//                              str += "</div>";
-//                         str += "</div>";
-
-//                         str += "<form id =  '" + latestPost['latestPost'][0]['messageId'] + "'  > ";
-//                             str += "<aside><input name =" + latestPost['latestPost'][0]['ID'] + " placeholder='Type your comment'> </input>" ;
-//                             str +=  "<button class='commentButton' value = '"  + latestPost['latestPost'][0]['messageId'] + "' type = 'submit'>Comment</button> </aside>";
-//                         str += "</form>";
-
-
-//                         $( ".allPostsClass" ).prepend(str);
-
-
-
-//              }
-                    
-//            }); 
-
-//       }
-
-
-
-
-// });
-
-
-
 $(document).on('click', '.postGroupMessage', function(e) {
      
      e.preventDefault();
    
      var groupId = escapeHtml(document.getElementById('groupIdPostedTo').value);
-     var groupMessage = escapeHtml(document.getElementById('groupPostMessage').value);
+     var groupMessage = document.getElementById('groupPostMessage').value;
      
+  
      $('#groupPostMessage').val('');
 
      if(groupMessage == "")
@@ -863,14 +1161,14 @@ $(document).on('click', '.postGroupMessage', function(e) {
                     
                     success : function(data) {   
                          UserType = parseInt(data);
-                      //   str+= "<div id = '" + latestPost["latestPost"][0]['messageId'] + "globalMessage" + "' class='w3-container w3-card w3-white w3-round w3-margin'>";
+                     
                      
 
                     }
                 });             
 
                var str = "";
-             str+= "<div id = 'groupPosts' class='w3-container w3-card w3-white w3-round w3-margin'>";        
+             str+= "<div id = '" + latestPost['latestPost'][0]['messageId'] + "globalMessage' class='w3-container w3-card w3-white w3-round w3-margin'>";        
               str+= "<div  >";
               
               if (latestPost['latestPost'][0]['ProfilePicture'] == ""){

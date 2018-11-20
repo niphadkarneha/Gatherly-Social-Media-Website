@@ -111,6 +111,48 @@ form, table {
     color: white;
     text-align: center;
 }
+
+pre {
+    height: auto;
+    max-height: 200px;
+    overflow: auto;
+    background-color: #eeeeee;
+      border-left: 11px solid #ccc;
+  margin: 1.7em 0 1.7em 0.3em;
+    word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
+}​
+code, samp, kbd {
+  font-family: "Courier New", Courier, monospace, sans-serif;
+  text-align: left;
+  color: #555;
+  }
+pre code {
+  line-height: 1.6em;
+  font-size: 11px;
+  }
+/*pre {
+  padding: 0.1em 0.5em 0.3em 0.7em;
+  border-left: 11px solid #ccc;
+  margin: 1.7em 0 1.7em 0.3em;
+  overflow: auto;
+  width: 93%;
+  }*/
+/* target IE7 and IE6 */
+*:first-child+html pre {
+  padding-bottom: 2em;
+  overflow-y: hidden;
+  overflow: visible;
+  overflow-x: auto; 
+  }
+* html pre { 
+  padding-bottom: 2em;
+  overflow: visible;
+  overflow-x: auto;
+  }
+
+
 *{
   box-sizing:border-box;
 }
@@ -748,8 +790,8 @@ main footer a{
     <!-- Middle Column -->
     <div class="w3-col m7">
     
-<!--  <div id = 'globalPostForum'> 
-      <div class="w3-row-padding">
+ <!-- <div id = 'globalPostForum'>  -->
+<!--       <div class="w3-row-padding">
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
@@ -773,57 +815,47 @@ main footer a{
     </div>
      </div>
      </div>
-  </div>
-     </div>  -->
+  </div> -->
+<!--      </div>  -->
 
 
   <!-- Modal for code snippet -->
-  <div class="modal fade" id="myModal1" role="dialog">
-    <div class="modal-dialog">
+<!-- <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog"> -->
     
       <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Insert your code here</h4>
-        </div>
-                            <div class="modal-body">
-                              <form action ='#' id= "codeForm" method = "post">
-                              <div class="form-group">
- <!--                                  <select>
-                                    <option value="python">Python</option>
-                                    <option value="C++">C++</option>
-                                    <option value="Java">Java</option>
-                                    <option value="Matlab">Matlab</option>
-                                  </select> -->
-                                <textarea rows="8" cols="50" class="form-control codeArea" name = "message" id="code" placeholder= " Snippet" autofocus required ><code>
-x = 5;<br>
-y = 6;<br>
-z = x + y;
-</code></textarea>
 
-                              <input type='hidden' name='text' value='1'>
-                              </div>
-                              
-                              <div class="modal-footer">
-                              <button type="button" class="btn btn-default modalClose" data-dismiss="modal">Close</button>
-                               <button type="submit" name = "submit"  class="btn btn-success codeBtn" >submit code</button>
-                              </div>
-    
-                            </form>
-                            </div>
-      </div>
-    </div>
+<!-- <div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close modalClose" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">code posting Area</h4>
   </div>
+  <div class="modal-body">
+    
+    <form action ='#' id= "codeForm" method = "post">
+    
+    <div class="form-group">
+      <label for="message-text" class="form-control-label">code<i class='fa fa-code postingOptionMenu' aria-hidden='true'></i></label>
+      <textarea rows="4" cols="59" ></textarea>
+            <button type='button' class='btn btn-default modalClose' data-dismiss='modal'>Close</button>
+        <button type='submit' name='submit' class='btn btn-success codeBtn'>submit code</button>
+    </div> -->
+
+<!--   </div> 
+    </div>
+  </div> 
+    </div> 
+ -->
+
 
 
  <!-- Modal for File upload -->
-  <div class="modal fade" id="myModal2" role="dialog">
-    <div class="modal-dialog">
+<!--   <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog"> -->
     
       <!-- Modal content-->
       <!-- Modal content-->
-      <div class="modal-content">
+<!--       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="btn btn-info" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Share a file</h4>
@@ -837,28 +869,10 @@ z = x + y;
             </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
    <!-- Modal for File upload -->
-  <div class="modal fade" id="myModal3" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Share a picture</h4>
-        </div>
-           <div class="modal-body">
-            <form action = "#" method="POST" enctype="multipart/form-data">
-              <label><input type='file' name="image" accept=".png, .jpg, .jpeg"/></label>
-              <button name = "submit" class="btn btn-info" type="submit">Submit</button>
-              <button type="button" class="btn btn-info modalClose" data-dismiss="modal">Close</button>
-              </form>
-            </div>
-      </div>
-    </div>
-  </div>
+
 
      <div id = 'groupPostForumOne'>
 <!--  <div class="allPostsClass" id = "allPosts">
@@ -953,6 +967,8 @@ z = x + y;
         }
     }
 }
+
+
 
 
 

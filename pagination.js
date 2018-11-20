@@ -9,7 +9,8 @@ $(document).ready(function(){
   
   
     var start = pageTarget;
-
+    
+    
       var groupStatus = 0;
   
       $.ajax({
@@ -116,7 +117,22 @@ $(document).ready(function(){
 
 
 
-                       str+= "<p>" + e['message'] + "</p>";
+                        if (e['postType'] == "picture")
+                        {
+                          str+="<img src='upload/" + e['message'] + "' height='150' width='225' class='img-thubnail'/></br>";
+                        }
+                        else if(e['postType'] == "url")
+                        {
+                          str += "<img src='" + e['message'] + "' height='150' width='225'></br>";
+                        }
+                        else if(e['postType'] == "code")
+                        {
+                           str += "<blockquote ><pre><code>" + e['message'] + "</code></pre></blockquote></br>";
+                        }
+                        else
+                        {
+                          str +="<p>" + e['message'] + "</p>";
+                        }
 
                            $.ajax({
 
