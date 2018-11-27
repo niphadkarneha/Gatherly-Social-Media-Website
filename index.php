@@ -82,7 +82,8 @@ body {
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password" placeholder="Password" >
                                 </div>
-                                 <div class="captchaWrapper">
+                            </br>
+                                 <div style="margin-left:-40px;" class="captchaWrapper">
                                      <div class="g-recaptcha" data-sitekey="6LfpEHsUAAAAAEcSDva0UW5YEwF2n0qBdx3i1sYB" data-callback="reCaptchad"></div>
                                 </div>
                                  <div class="forgotPasswordWrapper">
