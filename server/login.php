@@ -28,52 +28,79 @@
 
   	$userName = clean_input($userName);
   	$password = clean_input($password);
+    $secret = "6LfpEHsUAAAAAJmkV6GzP3D0JmIHGyM213V9aGYJ";
+    $response = $_POST["captcha"];
+    
+    $verify=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$response}");
+    $captcha_success=json_decode($verify);
+    
+    if ($captcha_success->success==false) {
 
-  	$login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
+    //This user was not verified by recaptcha.
+      echo "failCaptcha";
+
+    }
+    else if ($captcha_success->success==true) {
+
+    //This user is verified by recaptcha
+        $login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
+    
+
+        if(!isset($_SESSION))
+        {
+          session_start();
+        }
+          if ($login == "fail")
+          {
+             
+                if ($userName=="" || $password=="")
+                {
+                 echo "empty";
+                }
+                else 
+                {
+                         echo "WrongCredentials";
+                }
+
+          }
+          else if ($login != "fail")
+          {
+            echo "success";
+              //echo $login;
+          }
+ 
+
+    }
+
+
   	
 
-    if(!isset($_SESSION))
-  {
-    session_start();
-  }
-    if ($login == "fail")
-    {
+
+  // $login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
+  	
+
+  // if(!isset($_SESSION))
+  // {
+  //   session_start();
+  // }
+  //   if ($login == "fail")
+  //   {
        
-          if ($userName=="" || $password=="")
-          {
-           echo " <script>
-                  var txt;
-                  var r = confirm('All fields are required, Please try again.');
-                  if(r==true || r==false)
-                  {
-                    window.location.href = '../index.php'; 
-                  }
-                 </script>
+  //         if ($userName=="" || $password=="")
+  //         {
+  //          echo "empty";
+  //         }
+  //         else 
+  //         {
+  //                  echo "WrongCredentials";
+  //         }
 
-
-          ";
-          }
-          else 
-          {
-                   echo " <script>
-                  var txt;
-                  var r = confirm('wrong credentials, please try again.');
-                  if(r==true || r==false)
-                  {
-                    window.location.href = '../index.php'; 
-                  }
-                 </script>
-
-
-          ";
-          }
-
-    }
-    else if ($login != "fail")
-    {
-      echo "<script> window.location.href = '../mainpage.php'</script>";
-        //echo $login;
-    }
+  //   }
+  //   else if ($login != "fail")
+  //   {
+  //     echo "success";
+  //       //echo $login;
+  //   }
         
 
 
