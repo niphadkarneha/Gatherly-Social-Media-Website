@@ -8,7 +8,9 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="./CSS/register_site.css">
  		<link rel="shortcut icon" type="image/jpg" href="g.jpg">
- 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>		
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>		
+        <script src="script.js"></script>
 <style>
 body {
     font-family: Arial;
@@ -69,7 +71,7 @@ body {
                     <div class="row">
                         <div class="col-sm-6 credentialsWrapper">
                             <h2>Sign In</h2>
-                            <form method="POST" action="./server/login.php">
+                            <form method="POST" id = "loginForum">
 
                                 <div class="input-group emailWrapper">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -80,15 +82,15 @@ body {
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password" placeholder="Password" >
                                 </div>
+                                 <div class="captchaWrapper">
+                                     <div class="g-recaptcha" data-sitekey="6LfpEHsUAAAAAEcSDva0UW5YEwF2n0qBdx3i1sYB" data-callback="reCaptchad"></div>
+                                </div>
                                  <div class="forgotPasswordWrapper">
                                     <a href="UhOh.html">Forgot password?</a>
                                 </div>
-                                <div class="captchaWrapper">
 
-                                     <div class="g-recaptcha" data-sitekey="6LfjejsUAAAAAAPDW7-tn-daogbbotzZclSiCLSD" data-callback="reCaptchad"></div>
-                                </div>
                                 <div class="buttonWrapper">
-                                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                    <button type="submit" class="btn btn-primary btn-block loginButton">Sign In</button>
                                 </div>
                             </form>
                         </div>

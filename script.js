@@ -5,14 +5,16 @@ function hasWhiteSpace(s) {
 $(document).ready(function(){
 
 
+var loginForm = $('#loginForum');
 
-
-$('.loginButton').on('click', function(e){
+//$('.loginButton').on('click', function(e){
+  loginForm.on("submit", function(e) {
+   e.preventDefault();
 
    var userName = escapeHtml($(this).closest("form").find("input[id='email']").val());
    var password = escapeHtml($(this).closest("form").find("input[id='password']").val());
 
-   var message = "<p>Email cannot be empty. Please try again.";
+  
 
    if(userName == "")
    {
@@ -34,26 +36,33 @@ $('.loginButton').on('click', function(e){
                                     type : 'POST',
                                     data : {
                                       'email'   : userName, 
-                                      'password'   : password 
+                                      'password'   : password,
+                                       captcha: grecaptcha.getResponse()
+
+
                                     },
                                     
                                     success : function(data) {   
                                       
-                                      if(data == 'fail')
+                                      if(data == 'empty')
                                       {
-                                           alert("Wrong Credentials, Please try again.");
+                                           alert("Username, Password, and Recaptcha need to be completed to log-in. Please try again.");
+                                      }
+                                      else if (data == 'failCaptcha')
+                                      {
+                                          alert("Recaptcha cannot be empty. Please try again.");
+                                      }
+                                      else if (data == 'WrongCredentials')
+                                      {
+                                           alert("Wrong credentials, Please try again.");
+                                      }
+                                      else if( data == 'success')
+                                      {
+                                          window.location.href = "mainpage.php"; 
                                       }
                                       else
                                       {
-                                          var obj = JSON.parse(data);
-
-                                          if(parseInt(obj[0]['userType']) == 0)
-                                          {
-                                            $( ".deleteMessageBtn" ).remove();
-                                          }
-
-
-                                          window.location.href = "mainpage.php"; 
+                                         alert("Server error while attempting to log-in. Please try again later.")
                                       }
 
 
