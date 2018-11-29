@@ -42,6 +42,41 @@
 
  }
 
+
+ if(isset($_POST['uploadDocument']))
+ {
+     if(!isset($_SESSION))
+       {
+           session_start();
+       }
+
+    if($_FILES["file"]["name"] != '')
+    {
+        $test = explode(".", $_FILES["file"]["name"]);
+        $extension = end($test);
+        $name = $test[0] . '.' . $extension;
+        $location = '../upload/' . $name;
+        move_uploaded_file($_FILES["file"]["tmp_name"], $location);
+        //echo "<img src='" . $location . "' height='150' width='225' class='img-thubnail'/>";
+
+        $groupId = $_POST['groupId'];
+        $userId = $_SESSION['UserId'];
+
+        $loginWebService = new LoginWebService();
+
+        $loginWebService -> writeUploadToDB($userId, $groupId, "document", $name);
+        $latestPost = $loginWebService ->  getLatestPost($userId, $groupId);
+
+        echo $latestPost;
+
+    }
+
+
+
+
+ }
+
+
  if(isset($_POST['unlockGroup']))
  {
     $groupId = $_POST['groupId'];
