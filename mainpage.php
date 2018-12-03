@@ -449,7 +449,7 @@ main footer a{
     <!-- Left Column -->
     <div class="w3-col m3">
       <!-- Accordion -->
-      <div class="w3-card w3-round">
+      <div class="w3-card w3-round" style="width: 18%; position: fixed;" >
         <div class="w3-white">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user fa-fw w3-margin-right"></i>Profile Picture</button>
           <div id="Demo1" class="w3-hide w3-container">
