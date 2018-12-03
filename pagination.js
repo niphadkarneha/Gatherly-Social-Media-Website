@@ -129,6 +129,22 @@ $(document).ready(function(){
                         {
                            str += "<blockquote ><pre><code>" + e['message'] + "</code></pre></blockquote></br>";
                         }
+                        else if (e['postType'] == "document")
+                        {
+
+                             var image_extension = e['message'].substr(e['message'].lastIndexOf('.') + 1);
+
+                            if(image_extension.toLowerCase() == "gif" || image_extension.toLowerCase() == "png" ||
+                            image_extension.toLowerCase() == "jpg" || image_extension.toLowerCase() =="jpeg")
+                            {
+                                str += "<img src='upload/" + e['message'] + "' height='150' width='225'></br>";
+                                str += "<a href='upload/" + e['message'] + "'>" + e['message'] + "</a></br>";
+                            }
+                           else
+                           {
+                              str += "<a href='upload/" + e['message'] + "'>" + e['message'] + "</a></br>";
+                           }
+                        }
                         else
                         {
                           str +="<p>" + e['message'] + "</p>";
