@@ -31,11 +31,6 @@ $(document).ready(function(){
       });
 
      
-
-
-
-
-
       $.ajax({
 
            url : 'server/controller.php',
@@ -93,13 +88,38 @@ $(document).ready(function(){
                 
                         str+= "<div  >";
 
-                        if (e['ProfilePicture'] == ""){
-                                
-                             str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-                         }
-                        else{
-                                 str += "<img src = '" + e['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-                        }
+
+              if(e['displayPic'] == '1')
+              {
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getGravatar' : 'getGravatar',
+                        'userEmail' : e['Email']
+                    },
+                    
+                    success : function(data) {   
+                       str += "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+
+                    }
+                }); 
+              }
+              else{
+
+                   if( e['ProfilePicture'] == "")
+                    {
+                      str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+                    else
+                    {
+                      str += "<img src = '" + e['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+
+                  //str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              }
                         
                        str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
                        str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
