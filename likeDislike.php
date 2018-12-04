@@ -47,9 +47,11 @@
        // echo $commentInput . " " . $messIdComment;
         
         $loginWebService -> addCommentToDB($commentInput, $userId, $messIdComment, $conn);
+        $userInfo = $loginWebService -> getUserInfo($userId);
 
+        echo $userInfo;
 
-        echo $_SESSION['FirstName'] . "|" .$_SESSION['LastName'] . "|" . $_SESSION['ProfilePicture'] . "|";
+        //echo $_SESSION['FirstName'] . "|" .$_SESSION['LastName'] . "|" . $_SESSION['ProfilePicture'] . "|";
 
        }
 
