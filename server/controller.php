@@ -227,6 +227,22 @@ if(isset($_POST['getAllGroups']))
     echo $url;
  }
 
+ if(isset($_POST['useDefaultPicture']))
+ {
+
+      $loginWebService = new LoginWebService();
+
+      if(!isset($_SESSION))
+      {
+           session_start();
+      }
+
+      $userId = $_SESSION['UserId'];
+      $loginWebService->updateDisplayPic($userId, 2);
+
+
+ }
+
 
  if(isset($_POST['pagination_data']))
  {
