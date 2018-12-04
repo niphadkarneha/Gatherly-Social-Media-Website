@@ -83,7 +83,7 @@ function loadMessages(page, groupId){
   
   $(".allPostsClass").empty();
   $(".groupPostsClass").empty();
-  $(".loadMore").show();
+  $(".loadMore").show().hide().fadeIn(200);
   
   var isUserMember = 0;
 
@@ -425,7 +425,6 @@ function loadMessages(page, groupId){
        
           strf += "</div>";
           $('#groupPostForumOne').html(strf);
-          //$('#groupPostForumOne').empty();
 
 
                       var obj = JSON.parse(data);
@@ -441,13 +440,36 @@ function loadMessages(page, groupId){
                 
 				            	  str+= "<div  >";
 
-                        if (e['ProfilePicture'] == ""){
-                                
-                             str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-                         }
-                        else{
-                                 str += "<img src = '" + e['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-                        }
+ 
+                    if(e['displayPic'] == '1')
+                    {
+                        $.ajax({
+
+                            url : 'server/controller.php',
+                            type : 'POST',
+                            async: false,
+                            data : {
+                               'getGravatar' : 'getGravatar',
+                               'userEmail' : e['Email']
+                            },  
+                            success : function(data) {   
+                              str += "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                            }
+                       }); 
+                  }
+                  else{
+
+                    if( e['ProfilePicture'] == "")
+                    {
+                      str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+                    else
+                    {
+                      str += "<img src = '" + e['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+
+                    
+                  }
                       	
 							         str+= "<span class='w3-right w3-opacity'>" + e['TimeOfPost'] + "</span>";
 	                     str+= "<h4>" + e['FirstName'] + " " + e['LastName'] + "</h4>";
@@ -563,7 +585,6 @@ function loadMessages(page, groupId){
               
                           }); 
 
-                           // console.log(e['messageId']);
                             var messageId = e['messageId'];
 
 
@@ -624,19 +645,35 @@ function loadMessages(page, groupId){
 
                                                         //   console.log(commenterObj);
 
+                                                          if(commenterObj['commenter'][0]["displayPic"] == '1')
+                                                          {
+                                                              $.ajax({
 
+                                                                  url : 'server/controller.php',
+                                                                  type : 'POST',
+                                                                  async: false,
+                                                                  data : {
+                                                                     'getGravatar' : 'getGravatar',
+                                                                     'userEmail' : commenterObj['commenter'][0]['Email']
+                                                                  },  
+                                                                  success : function(data) {   
+                                                                    str += "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                                                                  }
+                                                             }); 
+                                                        }
+                                                        else{
 
-                                                     if(commenterObj['commenter'][0]["FirstName"] == "")
-                                                     {
-                                                         str += "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
-                                                         
-                                                     }
-                                                     else
-                                                     {
-                                                         str += "<img src=" + commenterObj['commenter'][0]["ProfilePicture"] + " alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                                                          if( commenterObj['commenter'][0]['ProfilePicture'] == "")
+                                                          {
+                                                            str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                                                          }
+                                                          else
+                                                          {
+                                                            str += "<img src = '" + commenterObj['commenter'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                                                          }
+
                                                           
-                                                     }
-
+                                                        }
                                                           
                                                           
                                                           str += "<h6>" + commenterObj['commenter'][0]['FirstName'] + " " + commenterObj['commenter'][0]['LastName'] + "</h6>";
@@ -649,12 +686,13 @@ function loadMessages(page, groupId){
 
 
                                
-                                              //str += "<br/>";
+                                              str += "<br/>";
                                                str += "<div class='a'>";
                                              
-                                                str += "<p>" + commentsObj["comments"][i]['comment'] + "</p>";   
+                                                str += "<p class = 'a'>" + commentsObj["comments"][i]['comment'] + "</p>";   
                                              
                                               str += "</div>";
+                                              str += "<br/>";
 
                                         }
                                       
@@ -686,7 +724,7 @@ function loadMessages(page, groupId){
                             str += "</div>";
                             str += "</div>";
                                            
-                            $('#allPosts').html(str);
+                            $('#allPosts').html(str).hide().fadeIn(50);
 
                       });
                             
@@ -721,7 +759,7 @@ function loadMessages(page, groupId){
                                   
 
 
-                                  $('#Demo5').append(adminStr);
+                                  $('#Demo5').append(adminStr).hide().fadeIn(750);
 
                               }
                             }); 
@@ -729,6 +767,8 @@ function loadMessages(page, groupId){
         }
 
 	});
+
+// $(".loadMore").show();
 
 }
 
@@ -968,9 +1008,6 @@ $(document).on('click', '.uploadImageButtonURL', function(e) {
                          str += "</div>";
                         str += "</div>";
                         $( "#allPosts" ).prepend(str);
-
-
-             
 
             }
         }); 
@@ -1300,34 +1337,134 @@ $(document).on('click', '.commentButton', function(e) {
               },
               
               success : function(data) {   
-                var userInfo = data;
-                userInfo = data.split('|');
-                
-                if (userInfo[2] == "")
-                {
-                    $(".nocommentclass").remove();
-                    userInput = escapeHtml(userInput);
-                    var e = "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6> </br> <div class='a'> <p>" + userInput + "</p></div>";
-                     e += "<form id =  '" + messageIdCommentedAt + "'  > ";
-                         e += "<aside><input placeholder='Type your comment'> </input>" ;
-                         e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
-                     e += "</form>";
+                var userInfo = JSON.parse(data);
+                //alert(userInfo);
+                console.log(userInfo);
 
-                    $('#' + messageIdCommentedAt).append(e); 
-                
+                if(userInfo["userInfo"][0]["displayPic"] == '1')
+                {
+                   $.ajax({
+
+                      url : 'server/controller.php',
+                      type : 'POST',
+                      async: false,
+                      data : {
+                         'getGravatar' : 'getGravatar',
+                         'userEmail' : userInfo["userInfo"][0]['Email']
+                      },  
+                      success : function(data) {   
+                          $(".nocommentclass").remove();
+                          userInput = escapeHtml(userInput);
+                          var e = "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                          e += "<h6> " + userInfo["userInfo"][0]['FirstName']  + " " + userInfo["userInfo"][0]["LastName"] +"</h6>";
+                          e += " </br>";
+                          e += "<div class='a'>";
+                          e += " <p>" + userInput + "</p>";
+                          e += "</div>"
+                          e += "</br>";
+                          e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                          e += "<aside><input placeholder='Type your comment'> </input>" ;
+                          e += "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                          e += "</form>";
+                          $('#' + messageIdCommentedAt).append(e); 
+                      }
+                 }); 
                 }
-                else
-                {
-                    $(".nocommentclass").remove();
-                    userInput = escapeHtml(userInput);
-                     var e = "<img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6> </br> <div class='a'> <p>" + userInput + "</p></div>";
-                     e += "<form id =  '" + messageIdCommentedAt + "'  > ";
-                         e += "<aside><input placeholder='Type your comment'> </input>" ;
-                         e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
-                     e += "</form>";
+                else{
 
-                    $('#' + messageIdCommentedAt).append(e); 
-                } 
+                    if( userInfo["userInfo"][0]['ProfilePicture'] == "")
+                    {
+                          $(".nocommentclass").remove();
+                          userInput = escapeHtml(userInput);
+                        
+                          var e = "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                          e += "</br>";
+                          e += "<h6> " + userInfo["userInfo"][0]['FirstName']  + " " + userInfo["userInfo"][0]["LastName"] +"</h6>";
+
+                          e+=" </br>";
+                          e+="<div class='a'>";
+                          e+=" <p>" + userInput + "</p>";
+                          e+="</div>"
+                          e+="</br>";
+
+                          e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                          e += "<aside><input placeholder='Type your comment'> </input>" ;
+                          e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                          e += "</form>";
+
+                          $('#' + messageIdCommentedAt).append(e); 
+                    }
+                    else
+                    {
+                              $(".nocommentclass").remove();
+                              userInput = escapeHtml(userInput);
+                              var e = "<img src = '" + userInfo["userInfo"][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                              e += "</br>";
+                              e += "<h6> " + userInfo["userInfo"][0]['FirstName']  + " " + userInfo["userInfo"][0]["LastName"] +"</h6>";
+
+                              e+=" </br>";
+                              e+="<div class='a'>";
+                              e+=" <p>" + userInput + "</p>";
+                              e+="</div>"
+                              e+="</br>";
+
+                              e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                              e += "<aside><input placeholder='Type your comment'> </input>" ;
+                              e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                              e += "</form>";
+
+                              $('#' + messageIdCommentedAt).append(e); 
+
+
+                    }
+
+                    
+                  }
+
+
+
+
+
+
+
+                
+                // if (userInfo[2] == "")
+                // {
+                //     $(".nocommentclass").remove();
+                //     userInput = escapeHtml(userInput);
+                //     var e = "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6>";
+                      
+                //       e+=" </br>";
+                //       e+="<div class='a'>";
+                //       e+=" <p>" + userInput + "</p>";
+                //       e+="</div>"
+                //       e+="</br>";
+
+                //      e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                //          e += "<aside><input placeholder='Type your comment'> </input>" ;
+                //          e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                //      e += "</form>";
+
+                //     $('#' + messageIdCommentedAt).append(e); 
+                
+                // }
+                // else
+                // {
+                //     $(".nocommentclass").remove();
+                //     userInput = escapeHtml(userInput);
+                //      var e = "<img src='" + userInfo[2] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'><h6> " + userInfo[0] + " " + userInfo[1] +"</h6>";
+                //          e += " </br>";
+                //          e += " <div class='a'>";
+                //          e += " <p>" + userInput + "</p>";
+                //          e += "</div>";
+                //          e += " </br>";
+                //      e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                //          e += "<aside><input placeholder='Type your comment'> </input>" ;
+                //          e +=  "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                //      e += "</form>";
+
+                //     $('#' + messageIdCommentedAt).append(e); 
+                // } 
 
                
               }
@@ -1400,13 +1537,36 @@ $(document).on('click', '.postGroupMessage', function(e) {
              str+= "<div id = '" + latestPost['latestPost'][0]['messageId'] + "globalMessage' class='w3-container w3-card w3-white w3-round w3-margin'>";        
               str+= "<div  >";
               
-              if (latestPost['latestPost'][0]['ProfilePicture'] == ""){
-                 
-                  str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+              if(latestPost['latestPost'][0]['displayPic'] == '1')
+              {
+                $.ajax({
+
+                    url : 'server/controller.php',
+                    type : 'POST',
+                    async: false,
+                    data : {
+                        'getGravatar' : 'getGravatar',
+                        'userEmail' : latestPost['latestPost'][0]['Email']
+                    },
+                    
+                    success : function(data) {   
+                       str += "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+
+                    }
+                }); 
               }
               else{
 
-                  str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                   if( latestPost['latestPost'][0]['ProfilePicture'] == "")
+                    {
+                      str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+                    else
+                    {
+                      str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                    }
+
+                  //str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
               }
                         
                        str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
@@ -1551,6 +1711,33 @@ $(document).on('click', '.arcUnarcGroup', function () {
 
 
 });
+
+
+// jQuery(document).ready( function(){
+//     jQuery('#groupPostForumOne').fadeIn(1000);
+//     $(".loadMore").show();
+// } );
+
+// jQuery(document).ready( function(){
+//     jQuery('#pagination_data').fadeIn(1000);
+//     $(".loadMore").show();
+// } );
+
+// jQuery(document).ready( function(){
+//     jQuery('#allPosts').fadeIn(1000);
+//     $(".loadMore").show();
+// } );
+
+// jQuery(document).ready( function(){
+//     jQuery('#groupPosts').fadeIn(1000);
+//     $(".loadMore").show();
+// } );
+
+// jQuery(document).ready( function(){
+//     jQuery('#groupPosts').fadeIn(1000);
+//     $(".loadMore").show();
+// } );
+
 
 $(document).on('click', '.likeOrDislike', function () {
     

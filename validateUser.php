@@ -66,7 +66,7 @@
 
     if($sameEmail == 0 && $sameUsername==0)
     {
-            $MyloginWebService->insertNewUser($firstName, $lastName, $username, $email, $password);
+            $MyloginWebService->insertNewUser($firstName, $lastName, $username, $email, $password, "http://gravatar.com/avatar");
             $userId = $MyloginWebService->getUserIdFromUserEmail($email);
             $MyloginWebService->addUserToGroup(3, $userId);
            

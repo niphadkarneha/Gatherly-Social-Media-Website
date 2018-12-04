@@ -449,7 +449,7 @@ main footer a{
     <!-- Left Column -->
     <div class="w3-col m3">
       <!-- Accordion -->
-      <div class="w3-card w3-round" style="width: 18%; position: fixed;" >
+      <div class="w3-card w3-round" style="width: 16%; position: fixed;" >
         <div class="w3-white">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user fa-fw w3-margin-right"></i>Profile Picture</button>
           <div id="Demo1" class="w3-hide w3-container">
@@ -457,7 +457,16 @@ main footer a{
               <label><input type='file' name="image" accept=".png, .jpg, .jpeg"/></label>
               <button name = "submit" type="submit">Upload your profile picture</button>
               </form>
+         
+         </br>
+         <label><center>Or</center></label></br>
+         <button class="useGravatarButton">Use Gravatar</button></br>
+
            </div> 
+
+
+
+
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo2" class="w3-hide w3-container">
             <h3>Groups you belong</h3>
@@ -488,7 +497,6 @@ main footer a{
              
               $count = count($userGroupIds);
               $i = 0;
-               //echo "<button onclick='globalClicked()' class='w3-button w3-block w3-theme-l1 w3-left-align'>Global</button> </br>";
            
               if(!empty($userGroupIds))
               {
@@ -502,7 +510,7 @@ main footer a{
                         echo "<input type='hidden' id='groupName' name='groupName' value='$userGroupIds[$i]'>";
                         echo "<button type='submit'  name='action' class='w3-button w3-block w3-theme-l1 w3-left-align groupsPage'>" . $groupName . "</button> </br>";
                         echo "</form>";
-              // echo $userGroupIds[$i];
+             
                         $i = $i + 1;
               }
               }
@@ -825,7 +833,7 @@ main footer a{
 
 
 
-      <button class ='loadMore'>Load More </button>   
+      <button style="display: none;" class ='loadMore'>Load More </button>   
 
       <!-- <button class ='loadMoreGroup'>Load More </button>  -->
 
