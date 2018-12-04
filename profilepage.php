@@ -7,12 +7,11 @@ if(isset($_GET['Id']))
   error_reporting(-1);
   session_start();
   include_once "./server/loginService.php";
-  //include_once "./server/loginSQL.php";
-  //include_once "./server/connect.php";
+
   $userId = $_GET['Id'];
 
   $loginWebService = new LoginWebService();
-  
+ 
   $profileInformation = $loginWebService->buildProfilePage($userId);
 
   if (empty($profileInformation))
@@ -21,8 +20,6 @@ if(isset($_GET['Id']))
   }
   else
   {
-  	//var_dump($profileInformation);
-  	
 
   	echo "<html>";
 	echo "<head>";
@@ -35,19 +32,32 @@ if(isset($_GET['Id']))
 	echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>";
 	echo "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
 	echo "</head>";
-echo "<body>";
+    echo "<body>";
 
 	echo "<div class = 'formDiv'>";
 		echo "<div class =''>";
 		echo "<a href='mainpage.php'><i class='fa fa-arrow-left arrowLeft' aria-hidden='true' style = 'margin-top: 3%;'></i></a>";
-		
-	     if($profileInformation[0]['ProfilePpicture'] == "")
+		$loginWebService = new LoginWebService();
+		$url = $loginWebService -> get_gravatar($profileInformation[0]['ProfilePemail']);
+	    
+	    if($profileInformation[0]['profileDisplayPic'] == "1")
 		{
-			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+
+			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $url . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+
 		}
 		else
 		{
-			echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+			if( $profileInformation[0]['ProfilePpicture'] == ""){
+
+              echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+            }
+            else{
+           	 
+           	 echo "<h2 style='margin-top: -3%;'>Welcome" . " " . $profileInformation[0]['ProfilePfirstName'] . " " . "<img src='" . $profileInformation[0]['ProfilePpicture'] . "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>" . "</h2>";
+
+            }
+
 		}
 	  
 	echo "</div>";
@@ -59,8 +69,8 @@ echo "<body>";
 			echo "<label><p>Username  : " . $profileInformation[0]['UserName'] . "</p><br>";
 			echo "<label><p>Email id  : " . $profileInformation[0]['ProfilePemail'] . "</p><br>";
 			echo "<label><p>Public Channel membership:</p><br>";
-			$loginWebService = new LoginWebService();
 
+            
 			$userGroupIds = $loginWebService->getUserGroups($userId);
 
 			if(empty($userGroupIds))
@@ -162,10 +172,6 @@ echo "</html>";
 
 
   }
-
-
-
-
 
 
 

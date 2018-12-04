@@ -45,7 +45,7 @@
          
          $loginWebService = new LoginWebService();
          $loginWebService->uploadProfilePicture($_SESSION['UserId'], $profilePicture);
-         
+         $loginWebService -> updateDisplayPic($_SESSION['UserId'], 0);
          echo "File successfully uploaded.";
          header("Location: mainpage.php ");
      
