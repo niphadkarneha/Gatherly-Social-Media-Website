@@ -193,9 +193,9 @@ class LoginSqlService{
     return $sql;
   }
 
-  public function insertNewUserSql($FirstName, $LastName, $username, $email, $password){
+  public function insertNewUserSql($FirstName, $LastName, $username, $email, $password, $profilePic){
 
-    $sql = "INSERT INTO fordFanatics.user (FirstName, LastName, UserName, Email, Password) VALUES ('$FirstName', '$LastName', '$username', '$email', '$password')";
+    $sql = "INSERT INTO fordFanatics.user (FirstName, LastName, UserName, Email, Password, ProfilePicture) VALUES ('$FirstName', '$LastName', '$username', '$email', '$password', '$profilePic')";
 
     return $sql;
   }
@@ -347,6 +347,12 @@ class LoginSqlService{
   public function getPostCount($groupId)
   {
     $sql = "SELECT * FROM fordFanatics.posts WHERE groupId = '$groupId'";
+    return $sql;
+  }
+
+  public function updateDisplayPicSql($userId, $displayId)
+  {
+    $sql = "UPDATE user SET displayPic = '$displayId' WHERE ID = '$userId'";
     return $sql;
   }
 

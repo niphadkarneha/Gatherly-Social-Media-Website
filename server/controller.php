@@ -12,6 +12,9 @@
   
  }
 
+
+
+
  if(isset($_POST['displayMessages']))
  {
  	 if(!isset($_SESSION))
@@ -26,6 +29,26 @@
       $login = $loginWebService -> getAllGlobalPosts();
 
       echo $login;
+
+ }
+
+ if(isset($_POST['useGravatar']))
+ {
+
+     if(!isset($_SESSION))
+       {
+           session_start();
+       }
+    
+     $userId = $_SESSION['UserId'];
+     $userEmail =  $_SESSION['Email'];
+     $size = 40;
+     $loginWebService = new LoginWebService();
+
+     $url = $loginWebService -> get_gravatar($userEmail);
+     $loginWebService -> updateDisplayPic($userId, 1);
+     $_SESSION['ProfilePicture'] = $url;
+    
 
  }
 
@@ -191,6 +214,17 @@ if(isset($_POST['getAllGroups']))
 
 
 
+ }
+
+ if(isset($_POST['getGravatar']))
+ {
+   $loginWebService = new LoginWebService();
+
+    $userEmail = $_POST['userEmail'];
+   
+    $url = $loginWebService -> get_gravatar($userEmail);
+
+    echo $url;
  }
 
 

@@ -33,6 +33,7 @@ class LoginWebService{
               $_SESSION['UserId'] = $row['ID'];
               $_SESSION['userType'] = $row['type'];
               $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
+              $_SESSION['displayPic'] = $row['displayPic'];
               $array[]= $_SESSION;
 
         }
@@ -73,6 +74,8 @@ class LoginWebService{
   }
 
 
+
+
   public function deleteMessage($messageId)
   { 
     $database_connection = new DatabaseConnection();
@@ -84,6 +87,21 @@ class LoginWebService{
     $result = $conn->query($deleteMessageSql);
 
     $conn->close();
+
+  }
+
+  public function updateDisplayPic($userId, $displayId)
+  {
+      $database_connection = new DatabaseConnection();
+      $conn = $database_connection->getConnection();
+      $sql_service = new LoginSqlService();
+      
+      $updateDisplayPicSql = $sql_service->updateDisplayPicSql($userId, $displayId);
+
+      $result = $conn->query($updateDisplayPicSql);
+
+      $conn->close();
+
 
   }
 
@@ -167,6 +185,31 @@ class LoginWebService{
   
   }
 
+   /**
+ * Get either a Gravatar URL or complete image tag for a specified email address.
+ *
+ * @param string $email The email address
+ * @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+ * @param string $d Default imageset to use [ 404 | mp | identicon | monsterid | wavatar ]
+ * @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
+ * @param boole $img True to return a complete IMG tag False for just the URL
+ * @param array $atts Optional, additional key/value attributes to include in the IMG tag
+ * @return String containing either just a URL or a complete image tag
+ * @source https://gravatar.com/site/implement/images/php/
+ */
+public function get_gravatar( $email, $d = 'mp', $r = 'g', $img = false, $atts = array() ) {
+    $url = 'https://www.gravatar.com/avatar/';
+    $url .= md5( strtolower( trim( $email ) ) );
+    $url .= "";
+    if ( $img ) {
+        $url = '<img src="' . $url . '"';
+        foreach ( $atts as $key => $val )
+            $url .= ' ' . $key . '="' . $val . '"';
+        $url .= ' />';
+    }
+    return $url;
+}
+
   public function sendInvitationToUser($groupId, $userIdInvited)
   {
       $database_connection = new DatabaseConnection();
@@ -200,10 +243,37 @@ class LoginWebService{
 
       }
 
+      $conn->close();
       return json_encode($data);
 
     }
 
+  }
+
+
+    public function getUserInfo($userId)
+    {
+       $database_connection = new DatabaseConnection();
+       $conn = $database_connection->getConnection();
+       $sql_service = new LoginSqlService();
+      
+       $getUserInfoSql = $sql_service -> getUserById($userId);
+
+       $result = $conn->query($getUserInfoSql);
+
+       if($result->num_rows > 0) {
+
+          while($row = $result->fetch_assoc()) {
+
+              $data['userInfo'][] = $row;
+          }
+
+          $conn->close();
+          return json_encode($data);
+
+       }
+
+    
   }
 
 
@@ -536,13 +606,13 @@ class LoginWebService{
 
   }
 
-  public function insertNewUser($FirstName, $LastName, $username, $email, $password)
+  public function insertNewUser($FirstName, $LastName, $username, $email, $password, $profilePic)
   {
     $database_connection = new DatabaseConnection();
     $conn = $database_connection->getConnection();
 
     $sql_service = new LoginSqlService();
-    $InsertNewUserSql = $sql_service->insertNewUserSql($FirstName, $LastName, $username, $email, $password);
+    $InsertNewUserSql = $sql_service->insertNewUserSql($FirstName, $LastName, $username, $email, $password, $profilePic);
 
     $result = $conn->query($InsertNewUserSql);
     
@@ -825,6 +895,7 @@ class LoginWebService{
               $_SESSION['ProfilePemail'] = $row['Email'];
               $_SESSION['ProfilePpicture'] = $row['ProfilePicture'];
               $_SESSION['ProfileUserName'] = $row['UserName'];
+              $_SESSION['profileDisplayPic'] = $row['displayPic'];
               $array[]= $_SESSION; 
 
         }

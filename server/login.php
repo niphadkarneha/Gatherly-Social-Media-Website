@@ -65,8 +65,23 @@
           }
           else if ($login != "fail")
           {
-            echo "success";
-              //echo $login;
+          
+           if(!isset($_SESSION))
+           {
+              session_start();
+           }
+    
+            $userId = $_SESSION['UserId'];
+            $userEmail =  $_SESSION['Email'];
+            $displayPic = $_SESSION['displayPic'];
+
+            if($displayPic == "1")
+            {
+               $url = $loginWebService -> get_gravatar($userEmail);
+               $_SESSION['gravatarProfilePicture'] = $url;
+            }
+           
+             echo "success";
           }
  
 
@@ -74,34 +89,6 @@
 
 
   	
-
-
-  // $login = $loginWebService -> checkLogingetUserDetails($userName, $password, $conn);
-  	
-
-  // if(!isset($_SESSION))
-  // {
-  //   session_start();
-  // }
-  //   if ($login == "fail")
-  //   {
-       
-  //         if ($userName=="" || $password=="")
-  //         {
-  //          echo "empty";
-  //         }
-  //         else 
-  //         {
-  //                  echo "WrongCredentials";
-  //         }
-
-  //   }
-  //   else if ($login != "fail")
-  //   {
-  //     echo "success";
-  //       //echo $login;
-  //   }
-        
 
 
 
