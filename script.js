@@ -7,7 +7,7 @@ $(document).ready(function(){
 
 var loginForm = $('#loginForum');
 
-//$('.loginButton').on('click', function(e){
+
   loginForm.on("submit", function(e) {
    e.preventDefault();
 
@@ -19,18 +19,20 @@ var loginForm = $('#loginForum');
    if(userName == "")
    {
      alert("Username cannot be empty. Please try again.");
+     location.reload();
    }
 
    if(password == "")
    {
     alert("Password cannot be empty. Please try again.");
+    location.reload();
    }
 
 
    if(userName != "" && password != "")
    {
 
-                                      $.ajax({
+                                   $.ajax({
 
                                     url : './server/login.php',
                                     type : 'POST',
@@ -47,22 +49,28 @@ var loginForm = $('#loginForum');
                                       if(data == 'empty')
                                       {
                                            alert("Username, Password, and Recaptcha need to be completed to log-in. Please try again.");
+                                           location.reload();
+
                                       }
                                       else if (data == 'failCaptcha')
                                       {
                                           alert("Recaptcha cannot be empty. Please try again.");
+                                          location.reload();
                                       }
                                       else if (data == 'WrongCredentials')
                                       {
                                            alert("Wrong credentials, Please try again.");
+                                           location.reload();
                                       }
                                       else if( data == 'success')
                                       {
                                           window.location.href = "mainpage.php"; 
+
                                       }
                                       else
                                       {
-                                         alert("Server error while attempting to log-in. Please try again later.")
+                                         alert("Server error while attempting to log-in. Please try again later.");
+                                         location.reload();
                                       }
 
 
@@ -105,6 +113,26 @@ function escapeHtml (string) {
   });
 }
    
+
+$('.useGravatarButton').on('click', function(e){
+
+  e.preventDefault();
+  $.ajax({
+
+              url : 'server/controller.php',
+              type : 'POST',
+              data : {
+               "useGravatar" : "useGravatar"
+              },
+              
+              success : function(data) {   
+                location.reload();
+                 
+              }
+        }) 
+
+});
+
 
 
 $('.acceptButton').on('click', function(e){
