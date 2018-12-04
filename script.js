@@ -129,7 +129,31 @@ $('.useGravatarButton').on('click', function(e){
                 location.reload();
                  
               }
-        }) 
+        }); 
+
+});
+
+
+
+$('.useDefaultButton').on('click', function(e){
+
+  e.preventDefault();
+  alert("defalut pic clicked.");
+  $.ajax({
+
+      url : 'server/controller.php',
+      type: 'POST',
+      data: {
+        'useDefaultPicture' : 'useDefaultPicture'
+      },
+
+      success : function(data) {
+        location.reload();
+      }
+
+
+
+  });
 
 });
 

@@ -457,6 +457,10 @@ function loadMessages(page, groupId){
                             }
                        }); 
                   }
+                  else if(e['displayPic'] == '2')
+                  {
+                      str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                  }
                   else{
 
                     if( e['ProfilePicture'] == "")
@@ -660,6 +664,10 @@ function loadMessages(page, groupId){
                                                                     str += "<img src = '" + data + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
                                                                   }
                                                              }); 
+                                                        }
+                                                        else if(commenterObj['commenter'][0]["displayPic"] == '2')
+                                                        {
+                                                          str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";                               
                                                         }
                                                         else{
 
@@ -1370,6 +1378,26 @@ $(document).on('click', '.commentButton', function(e) {
                       }
                  }); 
                 }
+                else if(userInfo["userInfo"][0]["displayPic"] == '2')
+                {
+
+                          $(".nocommentclass").remove();
+                          userInput = escapeHtml(userInput);
+                          var e = "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
+                          e += "<h6> " + userInfo["userInfo"][0]['FirstName']  + " " + userInfo["userInfo"][0]["LastName"] +"</h6>";
+                          e += " </br>";
+                          e += "<div class='a'>";
+                          e += " <p>" + userInput + "</p>";
+                          e += "</div>"
+                          e += "</br>";
+                          e += "<form id =  '" + messageIdCommentedAt + "'  > ";
+                          e += "<aside><input placeholder='Type your comment'> </input>" ;
+                          e += "<button class='commentButton' value = '"  + messageIdCommentedAt + "' type = 'submit'>Comment</button> </aside></br>";
+                          e += "</form>";
+                          $('#' + messageIdCommentedAt).append(e); 
+                   
+                }
+
                 else{
 
                     if( userInfo["userInfo"][0]['ProfilePicture'] == "")
@@ -1555,6 +1583,10 @@ $(document).on('click', '.postGroupMessage', function(e) {
                     }
                 }); 
               }
+              else if(latestPost['latestPost'][0]['displayPic'] == '2')
+              {
+                  str += "<img src = 'avatar.jpg' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";           
+              }
               else{
 
                    if( latestPost['latestPost'][0]['ProfilePicture'] == "")
@@ -1566,7 +1598,6 @@ $(document).on('click', '.postGroupMessage', function(e) {
                       str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
                     }
 
-                  //str += "<img src = '" + latestPost['latestPost'][0]['ProfilePicture'] + "' alt='avatar' class='w3-left w3-circle w3-margin-right' style='width:50px'>";
               }
                         
                        str+= "<span class='w3-right w3-opacity'>" + latestPost['latestPost'][0]['TimeOfPost'] + "</span>";
