@@ -6,7 +6,7 @@ function goToAuthUrl()
    		session_start();
 	}
 	$_SESSION['githubUser'] = "true";
-    $client_id = "88fa1801f3bc78bfaa64";
+    $client_id = "5227690da12e57200f41";
     $redirect_url = "d818de6a0f16e6204df59c53244f33116f766b81";
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $url = 'https://github.com/login/oauth/authorize?client_id='. $client_id. "&redirect_url=".$redirect_url."&scope=user";
@@ -17,7 +17,7 @@ function goToAuthUrl()
 
 function fetchData()
 {
-	$client_id = "88fa1801f3bc78bfaa64";
+	$client_id = "5227690da12e57200f41";
     $redirect_url = "d818de6a0f16e6204df59c53244f33116f766b81";
    
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -26,7 +26,7 @@ function fetchData()
             $post = http_build_query(array(
                     'client_id' => $client_id,
                     'redirect_url' => $redirect_url,
-                    'client_secret' => 'd818de6a0f16e6204df59c53244f33116f766b81',
+                    'client_secret' => '699afc56cd8236ae82347e1d54a592d7623d391f',
                     'code' => $code,
 
                 ));
