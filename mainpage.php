@@ -14,10 +14,68 @@
     return $data;
   
   }
-if(!isset($_SESSION['UserId']))
+if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
   {
     header('Location: ./index.php');
   }
+
+          if(isset($_SESSION['githubUser']))
+          {
+            require "init.php";
+            $loginWebService = new LoginWebService();
+            $githubUser = fetchData();
+            $githubEmail = $githubUser['email']['email'];
+            $githubUsername = $githubUser['username'];
+            $userExists = $loginWebService->checkIfUserExistsByEmail($githubEmail);
+
+            if($userExists == true)
+            {
+              //fetch existing user
+              if(!isset($_SESSION)){
+                session_start();
+              }
+              $_SESSION['UserId'] = $loginWebService->getUserIdFromUserEmail($githubEmail);
+              $githubUserInfo = $loginWebService->getUserInfo($_SESSION['UserId']);
+              $githubUserInfo = json_decode($githubUserInfo, true);
+                 $_SESSION['UserId'] = $githubUserInfo['userInfo'][0]['ID'];
+                 $_SESSION['FirstName'] = $githubUserInfo['userInfo'][0]['FirstName'];
+                 $_SESSION['LastName'] = $githubUserInfo['userInfo'][0]['LastName'];
+                 $_SESSION['Email'] = $githubUserInfo['userInfo'][0]['Email'];
+                 $_SESSION['ProfilePictureLoggedIn'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+                 $_SESSION['Password'] = $githubUserInfo['userInfo'][0]['Password'];
+              
+                 $_SESSION['UserName']=$githubUserInfo['userInfo'][0]['UserName'];
+                 $_SESSION['userType'] = $githubUserInfo['userInfo'][0]['type'];
+                 $_SESSION['ProfilePicture'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+                 $_SESSION['displayPic'] = $githubUserInfo['userInfo'][0]['displayPic'];
+                 unset ($_SESSION["githubUser"]);
+            }
+            else
+            {
+              $loginWebService->insertNewUser($githubUsername, "", $githubUsername, $githubEmail, "", "");
+              if(!isset($_SESSION)){
+                session_start();
+              }
+               $_SESSION['UserId'] = $loginWebService->getUserIdFromUserEmail($githubEmail);
+               $githubUserInfo = $loginWebService->getUserInfo($_SESSION['UserId']);
+               $githubUserInfo = json_decode($githubUserInfo, true);
+               $_SESSION['UserId'] = $githubUserInfo['userInfo'][0]['ID'];
+               $_SESSION['FirstName'] = $githubUserInfo['userInfo'][0]['FirstName'];
+               $_SESSION['LastName'] = $githubUserInfo['userInfo'][0]['LastName'];
+               $_SESSION['Email'] = $githubUserInfo['userInfo'][0]['Email'];
+               $_SESSION['ProfilePictureLoggedIn'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+               $_SESSION['Password'] = $githubUserInfo['userInfo'][0]['Password'];
+               $_SESSION['UserName']=$githubUserInfo['userInfo'][0]['UserName'];
+               $_SESSION['userType'] = $githubUserInfo['userInfo'][0]['type'];
+               $_SESSION['ProfilePicture'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+               $_SESSION['displayPic'] = $githubUserInfo['userInfo'][0]['displayPic'];
+               $loginWebService->addUserToGroup(3, $githubUserInfo['userInfo'][0]['ID']);
+               unset ($_SESSION["githubUser"]);
+            }
+
+
+          }
+
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $database_connection = new DatabaseConnection();
     $conn = $database_connection->getConnection();
@@ -487,11 +545,35 @@ main footer a{
               $userGroupIds = $MyloginWebService -> getUserGroups($userID);
               
               //checks if the user is logged in, if the user is logged in then a user id exists, if not redirect to login page
-              if (!isset($userID))
+              if (!isset($userID) && !isset($_SESSION['githubUser']))
               {
                  header("Location: index.php");
                  die();
               }
+
+              // if(isset($_SESSION['githubUser']))
+              // {
+              //   require "init.php";
+              //   $githubUser = fetchData();
+              //   $githubEmail = $githubUser['email']['email'];
+              //   $githubUsername = $githubUser['username'];
+              //   $userExists = $MyloginWebService->checkIfUserExistsByEmail($githubEmail);
+
+              //   if($userExists == true)
+              //   {
+              //     //fetch existing user
+              //     if(!isset($_SESSION)){
+              //       session_start();
+              //     }
+              //     $_SESSION['UserId'] = $MyloginWebService->getUserIdFromUserEmail($userEmail);
+              //   }
+              //   else
+              //   {
+              //     // add new user
+              //   }
+
+
+              // }
               
               //displaying the groups the user is part of
              

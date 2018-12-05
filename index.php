@@ -93,6 +93,10 @@ body {
                                 <div class="buttonWrapper">
                                     <button type="submit" class="btn btn-primary btn-block loginButton">Sign In</button>
                                 </div>
+                            </br>
+                                <a href="githubLogin.php" id="github-button" style="background: #6cc644;" class="btn btn-block btn-social btn-github">
+                                     <p  class="fa fa-github" style="color: white;">Sign in with Github</p>
+                                </a>
                             </form>
                         </div>
 
@@ -108,3 +112,9 @@ body {
 		</div>
 	</body>
 </html>
+
+
+
+
+
+
