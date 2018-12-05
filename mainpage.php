@@ -48,8 +48,8 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
                  $_SESSION['userType'] = $githubUserInfo['userInfo'][0]['type'];
                  $_SESSION['ProfilePicture'] = "https://avatars.githubusercontent.com/" . $githubUserInfo['userInfo'][0]['UserName'];
                  $_SESSION['displayPic'] = $githubUserInfo['userInfo'][0]['displayPic'];
-                 $loginWebService->updateDisplayPic($_SESSION['UserId'], 0);
-                 $loginWebService->uploadProfilePicture($_SESSION['UserId'], $_SESSION['ProfilePicture']);
+                 //$loginWebService->updateDisplayPic($_SESSION['UserId'], 0);
+                 //$loginWebService->uploadProfilePicture($_SESSION['UserId'], $_SESSION['ProfilePicture']);
                  unset ($_SESSION["githubUser"]);
             }
             else
