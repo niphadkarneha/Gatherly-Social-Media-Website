@@ -41,13 +41,15 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
                  $_SESSION['FirstName'] = $githubUserInfo['userInfo'][0]['FirstName'];
                  $_SESSION['LastName'] = $githubUserInfo['userInfo'][0]['LastName'];
                  $_SESSION['Email'] = $githubUserInfo['userInfo'][0]['Email'];
-                 $_SESSION['ProfilePictureLoggedIn'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+                 $_SESSION['ProfilePictureLoggedIn'] = "https://avatars.githubusercontent.com/AbelWeldaregay";
                  $_SESSION['Password'] = $githubUserInfo['userInfo'][0]['Password'];
               
                  $_SESSION['UserName']=$githubUserInfo['userInfo'][0]['UserName'];
                  $_SESSION['userType'] = $githubUserInfo['userInfo'][0]['type'];
-                 $_SESSION['ProfilePicture'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+                 $_SESSION['ProfilePicture'] = "https://avatars.githubusercontent.com/" . $githubUserInfo['userInfo'][0]['UserName'];
                  $_SESSION['displayPic'] = $githubUserInfo['userInfo'][0]['displayPic'];
+                 $loginWebService->updateDisplayPic($_SESSION['UserId'], 0);
+                 $loginWebService->uploadProfilePicture($_SESSION['UserId'], $_SESSION['ProfilePicture']);
                  unset ($_SESSION["githubUser"]);
             }
             else
@@ -67,9 +69,11 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
                $_SESSION['Password'] = $githubUserInfo['userInfo'][0]['Password'];
                $_SESSION['UserName']=$githubUserInfo['userInfo'][0]['UserName'];
                $_SESSION['userType'] = $githubUserInfo['userInfo'][0]['type'];
-               $_SESSION['ProfilePicture'] = $githubUserInfo['userInfo'][0]['ProfilePicture'];
+               $_SESSION['ProfilePicture'] = "https://avatars.githubusercontent.com/" . $githubUserInfo['userInfo'][0]['UserName'];
                $_SESSION['displayPic'] = $githubUserInfo['userInfo'][0]['displayPic'];
                $loginWebService->addUserToGroup(3, $githubUserInfo['userInfo'][0]['ID']);
+               $loginWebService->updateDisplayPic($_SESSION['UserId'], 0);
+               $loginWebService->uploadProfilePicture($_SESSION['UserId'], $_SESSION['ProfilePicture']);
                unset ($_SESSION["githubUser"]);
             }
 
