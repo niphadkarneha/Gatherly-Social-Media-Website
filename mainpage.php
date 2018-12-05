@@ -524,6 +524,7 @@ main footer a{
          <label><center>Or</center></label></br>
          <button class="useGravatarButton w3-button w3-block w3-theme-l1 w3-left-align">Use Gravatar</button></br>
           <button class="useDefaultButton w3-button w3-block w3-theme-l1 w3-left-align">Use Default</button></br>
+          <button class="useProfilePicture w3-button w3-block w3-theme-l1 w3-left-align">Use Profile Picture</button></br>
            </div> 
 
 

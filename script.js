@@ -134,6 +134,27 @@ $('.useGravatarButton').on('click', function(e){
 });
 
 
+$('.useProfilePicture').on('click', function(e){
+
+  e.preventDefault();
+  $.ajax({
+      url : 'server/controller.php',
+      type: 'POST',
+      data: {
+        'useProfilePicture' : 'useProfilePicture'
+      },
+      success : function(data) {
+        location.reload();
+      }
+
+
+  });
+
+
+
+});
+
+
 
 $('.useDefaultButton').on('click', function(e){
 
@@ -433,7 +454,7 @@ $('.declineButton').on('click', function(e){
                }
 
               }
-        })
+        });
 
 
 
@@ -490,7 +511,7 @@ $('.declineButton').on('click', function(e){
                }
 
               }
-        }) 
+        }); 
 
     }
 
@@ -498,43 +519,18 @@ $('.declineButton').on('click', function(e){
 
 
 
+   $('.githubLoginButton').on('click', function(){
 
-  // $('.commentButton').on('click', function(e){
-  //      e.preventDefault();  
-    
-  //   var userInput = $(this).closest("form").find("input").val();
-  //   var messageIdCommentedAt = $(this).val();
-  //   var userCommented = "usercommented";
+              $.ajax({
+              url : 'githublogin.php',
+              type : 'POST',              
+              success : function(data) {   
+              console.log(data);  
 
-  //   if (userInput == "")
-  //   {
-  //     alert("comments cannot be empty, please try again.");
-  //   }
-  //   else {
-     
-  //        $.ajax({
+              }
+              }); 
 
-  //             url : 'likeDislike.php',
-  //             type : 'POST',
-  //             data : {
-  //               'commentInput' : userInput, 
-  //               'messIdComment' : messageIdCommentedAt, 
-  //               'userCommented' : userCommented
-  //             },
-              
-  //             success : function(data) {   
-  //               var userInfo = data;
-  //               userInfo = data.split('|');
-  //                location.reload();
-               
-  //             }
-  //       })  
-
-  //   }
-
-
-  // });
-
+   });
 
 
 
