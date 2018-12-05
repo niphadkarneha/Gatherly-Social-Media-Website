@@ -52,6 +52,19 @@
 
  }
 
+ if(isset($_POST['useProfilePicture']))
+ {
+      if(!isset($_SESSION))
+      {
+        session_start();
+      }
+
+      $userId = $_SESSION['UserId'];
+      $loginWebService = new LoginWebService();
+      $loginWebService -> updateDisplayPic($userId, 0);
+
+ }
+
 
 
  if(isset($_POST['lockGroup']))
