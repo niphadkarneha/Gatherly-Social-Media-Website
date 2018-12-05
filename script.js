@@ -159,7 +159,7 @@ $('.useProfilePicture').on('click', function(e){
 $('.useDefaultButton').on('click', function(e){
 
   e.preventDefault();
-  alert("defalut pic clicked.");
+ 
   $.ajax({
 
       url : 'server/controller.php',
