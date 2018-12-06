@@ -19,7 +19,14 @@ if(isset($_POST['userIdTosendTo']))
 	  $loginWebService = new LoginWebService();
 	  
 	  $posterInfo = json_decode($loginWebService->getUserInfo($userIdFrom), true);
-	  
+	  $recieverInfo = json_decode($loginWebService->getUserInfo($userIdSendTo), true);
+	  // echo "<h1>send message to " . $recieverInfo['userInfo'][0]['FirstName'] . "</h1>";
+	  echo "<div class='topnav'>";
+ 	  echo "<a class='active' href='mainpage.php'>Back</a>";
+ 	  echo "<h2 style = 'color: white; margin-top: auto; margin-bottom: auto;'><center> " . $recieverInfo['userInfo'][0]['FirstName'] . " " . $recieverInfo['userInfo'][0]['LastName'] . "</center></h2>";
+	  echo "</div>";
+
+
 	  $directMessages = $loginWebService->getDirectMessages($userIdFrom, $userIdSendTo);
 
 	  $directMessages = json_decode($directMessages, true);
@@ -27,6 +34,7 @@ if(isset($_POST['userIdTosendTo']))
 	   if(!empty($directMessages))
        {
        	echo "<div class = 'allDirectMessages DivWithScroll DivToScroll'>";
+
           foreach($directMessages as $i => $item) {
           	$posterDetails = json_decode($loginWebService->getPosterDetails($directMessages[$i]['fromUserId']), true);
         	
@@ -166,6 +174,32 @@ input[type=submit] {
     overflow-x:hidden;
     margin-left: 476px;
     margin-right: 437px;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  margin-left: 25%;
+  margin-right: 23%;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
 }
 
 
