@@ -78,8 +78,9 @@ $(document).ready(function(){
   }
  });
 
-
+            
 function loadMessages(page, groupId){
+
   
   $(".allPostsClass").empty();
   $(".groupPostsClass").empty();
@@ -231,31 +232,31 @@ function loadMessages(page, groupId){
 
 
 
-        strf += "<div class='modal fade' id='myModal3' role='dialog'>";
-    strf += "<div class='modal-dialog'>";
+  //       strf += "<div class='modal fade' id='myModal3' role='dialog'>";
+  //   strf += "<div class='modal-dialog'>";
     
-      strf += "<div class='modal-content'>";
-      strf += "<div class='modal-header'>";
-          strf += "<button type='button' class='close' data-dismiss='modal'>&times;</button>";
-          strf += "<h4 class='modal-title'>Share a picture</h4>";
-        strf += "</div>";
-           strf += "<div class='modal-body'>";
-            strf += "<form action = '#' method='POST' enctype='multipart/form-data'>";
-              strf += "<label><input id = 'file' type='file' name='file' accept='.png, .jpg, .jpeg'/></label>";
+  //     strf += "<div class='modal-content'>";
+  //     strf += "<div class='modal-header'>";
+  //         strf += "<button type='button' class='close' data-dismiss='modal'>&times;</button>";
+  //         strf += "<h4 class='modal-title'>Share a picture</h4>";
+  //       strf += "</div>";
+  //          strf += "<div class='modal-body'>";
+  //           strf += "<form action = '#' method='POST' enctype='multipart/form-data'>";
+  //             strf += "<label><input id = 'file' type='file' name='file' accept='.png, .jpg, .jpeg'/></label>";
               
-              strf += "<span id='basic-addon1'><i class = 'fa fa-link postingOptionMendu' aria-hidden='true'></i>URL</span><input id='urlToUpload' aria-describedby='basic-addon1' placeholder='Image URL...' type='text'></label></br>";
+  //             strf += "<span id='basic-addon1'><i class = 'fa fa-link postingOptionMendu' aria-hidden='true'></i>URL</span><input id='urlToUpload' aria-describedby='basic-addon1' placeholder='Image URL...' type='text'></label></br>";
               
 
-              strf += "<input type='hidden' value = '" + groupId + "'>";
-              strf += "<button name = 'submit' class='btn btn-info uploadImageButton' type='submit'>Submit</button>";
+  //             strf += "<input type='hidden' value = '" + groupId + "'>";
+  //             strf += "<button name = 'submit' class='btn btn-info uploadImageButton' type='submit'>Submit</button>";
 
-              strf += "<button type='button' class='btn btn-info modalClose' data-dismiss='modal'>Close</button>";
-              strf += "<button style = 'float: right;' name = 'submit' class='btn btn-info uploadImageButtonURL' type='submit'>Submit URL</button>";
-              strf += "</form>";
-            strf+="</div>";
-      strf+="</div>";
-    strf+="</div>";
-  strf+="</div>";
+  //             strf += "<button type='button' class='btn btn-info modalClose' data-dismiss='modal'>Close</button>";
+  //             strf += "<button style = 'float: right;' name = 'submit' class='btn btn-info uploadImageButtonURL' type='submit'>Submit URL</button>";
+  //             strf += "</form>";
+  //           strf+="</div>";
+  //     strf+="</div>";
+  //   strf+="</div>";
+  // strf+="</div>";
 
 
   strf+="<div class='modal fade' id='myModal1' role='dialog'>";
@@ -328,18 +329,18 @@ function loadMessages(page, groupId){
             {
           
           strf += "<form >";
-             strf += "<input type='text' id='groupPostMessage' name='groupPostMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
-             strf += "<input type = 'hidden' id='groupIdPostedTo' class'groupIdPosted' value = '" + groupId + "'>";
-             strf += "<button id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postGroupMessage'><i class='fa fa-pencil'></i>Post</button>";
+             strf += "<input style='height: 48px;' type='text' id='groupPostMessage' name='groupPostMessage' placeholder='Whats on your mind' contenteditable='true' class='w3-border w3-padding'>";
+             strf += "<input type = 'hidden' id='groupIdPostedTo' class'groupIdPosted' value = '" + groupId + "'>&nbsp;&nbsp;";
+             strf += "<button style='height: 48px; margin-top: -3px;' id = 'postButton' name='postTheMessage' type='submit' class='w3-button w3-theme postGroupMessage'><i class='fa fa-pencil'></i>Post</button>";
           strf += "</form>";
            strf += "<form >";
             
           strf += "<form id = 'uploadImage'>";
-            strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal3'>Upload an image/Document</button>";
+            strf +="&nbsp;<button type='button' style='height: 48px; margin-top: -3px;' class='btn btn-info' data-toggle='modal' data-target='#myModal3'>Image or Document</button>";
           strf += "</form>";
      
           strf += "<form id = 'uploadCode'>";
-            strf +="<button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal1'>Code</button>";
+            strf +="&nbsp;<button type='button' style='height: 48px; margin-top: -3px;' class='btn btn-info' data-toggle='modal' data-target='#myModal1'>Code</button>";
 
           strf +="</form>";
 
@@ -356,8 +357,9 @@ function loadMessages(page, groupId){
         strf += "</div>";
            strf += "<div class='modal-body'>";
             strf += "<form action = '#' method='POST' enctype='multipart/form-data'>";
-              strf += "<label><input id = 'file' type='file' name='file' accept='.png, .jpg, .jpeg'/></label>";
-              
+              strf += "<label><input id = 'file' type='file' onchange='loadFile(event)' name='file' accept='image/*'/></label>";
+              strf += "<img width='20%' height='20%' id='output'/>&nbsp;&nbsp;";
+
               strf += "<span id='basic-addon1'><i class = 'fa fa-link postingOptionMendu' aria-hidden='true'></i>URL</span><input id='urlToUpload' aria-describedby='basic-addon1' placeholder='Image URL...' type='text'></label></br>";
               
 
@@ -401,7 +403,7 @@ function loadMessages(page, groupId){
 
             if(UserType == 1)
             {
-               strf += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-unlock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
+               strf += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-unlock arcUnarcGroup' style='float: right; font-size:48px; color:red height: 48px; margin-top: -3px; '></button>"; 
             }
            
            
@@ -410,7 +412,7 @@ function loadMessages(page, groupId){
             {
               if(UserType == 1)
               {
-                 strf += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-lock arcUnarcGroup' style='float: right; font-size:48px;color:red'></button>"; 
+                 strf += "<button value = '" + groupId + "' id = 'archiveGroup' class='fa fa-lock arcUnarcGroup' style='height: 48px; margin-top: -3px; float: right; font-size:48px; color:red'></button>"; 
               }
              
             }

@@ -130,6 +130,7 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="script.js"></script>
@@ -893,10 +894,7 @@ main footer a{
 
 
      <div id = 'groupPostForumOne'>
-<!--  <div class="allPostsClass" id = "allPosts">
 
-
-        </div> -->
 
 
      </div>
@@ -959,6 +957,27 @@ main footer a{
 </div> -->
 
 <script>
+
+    var loadFile = function(event) {
+            var output = document.getElementById('output');
+            $("#output").hide();
+            var property = document.getElementById("file").files[0];
+            var image_name = property.name;
+            var image_extension = image_name.split('.').pop().toLowerCase();
+            if(image_extension == "jpg" || image_extension == "png" || image_extension == "gif" 
+              || image_extension == "jpeg")
+            {
+              $("#output").show();
+               output.src = URL.createObjectURL(event.target.files[0]);
+            }
+            else
+            {
+              $("#output").hide();
+            }
+
+                   
+    };
+
       function myFunction(id) {
           var x = document.getElementById(id);
           if (x.className.indexOf("w3-show") == -1) {
