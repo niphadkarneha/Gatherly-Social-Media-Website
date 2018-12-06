@@ -276,6 +276,69 @@ public function get_gravatar( $email, $d = 'mp', $r = 'g', $img = false, $atts =
     
   }
 
+  public function getUserInfoDM()
+  {
+       $database_connection = new DatabaseConnection();
+       $conn = $database_connection->getConnection();
+       $sql_service = new LoginSqlService();
+      
+       $getUserInfoSql = $sql_service -> getAllUserIdSqls();
+
+       $result = $conn->query($getUserInfoSql);
+
+       if($result->num_rows > 0) {
+
+          while($row = $result->fetch_assoc()) {
+
+              $data[] = $row;
+          }
+
+          $conn->close();
+          return json_encode($data);
+
+       }  
+  }
+
+  public function getDirectMessages($fromUser, $toUser)
+  {
+       $database_connection = new DatabaseConnection();
+       $conn = $database_connection->getConnection();
+       $sql_service = new LoginSqlService();
+
+       $getDirectMessagesSql = $sql_service->getDirectMessagesSql($fromUser, $toUser);
+
+       $result = $conn->query($getDirectMessagesSql);
+
+       if($result->num_rows > 0) {
+
+        while($row = $result->fetch_assoc()) {
+
+          $data[] = $row;
+
+        }
+
+        $conn->close();
+        return json_encode($data);
+
+       }
+  }
+
+  public function  sendDirectMessage($messageFrom, $messageTo, $directMessage)
+  {
+       $database_connection = new DatabaseConnection();
+       $conn = $database_connection->getConnection();
+       $sql_service = new LoginSqlService();
+
+       $sendDirectMessageSql = $sql_service->sendDirectMessageSql($messageFrom, $messageTo, $directMessage);
+
+       $result = $conn->query($sendDirectMessageSql);
+
+       $conn->close();
+
+
+
+  }
+
 
   public function getLatestPost($userId, $groupId)
   {
@@ -1049,14 +1112,7 @@ public function get_gravatar( $email, $d = 'mp', $r = 'g', $img = false, $atts =
               }
               
               $data['commenter'][] = $row; 
-              // $_SESSION['PostFirstName']=$row['FirstName'];
-              // $_SESSION['PostLastName'] = $row['LastName'];
-              // $_SESSION['EachMessageUserId'] = $row['ID'];
-              // $_SESSION['ProfilePicture'] = $row['ProfilePicture'];
-              
-             
 
-              //$array[]= $_SESSION; 
 
 
         }
@@ -1233,6 +1289,8 @@ public function get_gravatar( $email, $d = 'mp', $r = 'g', $img = false, $atts =
     $conn->close();
 
   }
+
+
 
   public function getAllUsers()
   {

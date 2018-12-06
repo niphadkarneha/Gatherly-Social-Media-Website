@@ -32,6 +32,24 @@
 
  }
 
+ if(isset($_POST['sendDirectMessage']))
+ {
+    if(!isset($_SESSION))
+    {
+      session_start();
+    }
+    $database_connection = new DatabaseConnection();
+    $conn = $database_connection->getConnection();
+    $loginWebService = new LoginWebService();
+
+    $messageFrom = mysqli_real_escape_string($conn, $_POST["directMessageFrom"]);
+    $messageTo = mysqli_real_escape_string($conn, $_POST["directMessageTo"]);
+    $directMessage = mysqli_real_escape_string($conn, $_POST["directMessage"]);
+    $loginWebService -> sendDirectMessage($messageFrom, $messageTo, $directMessage);
+    echo "it made it here";
+
+ }
+
  if(isset($_POST['useGravatar']))
  {
 

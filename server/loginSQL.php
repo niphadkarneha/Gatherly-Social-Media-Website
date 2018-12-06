@@ -25,6 +25,13 @@ class LoginSqlService{
 
   }
 
+  public function getDirectMessagesSql($fromUser, $toUser){
+
+    $sql = "SELECT * FROM fordFanatics.directMessages WHERE (fromUserId = $fromUser AND toUserId = $toUser) OR (fromUserId = $toUser AND toUserId = $fromUser)";
+    return $sql;
+
+  }
+
   public function getAllLikesByUserSql($UserId){
 
     $sql = "SELECT * FROM userLikes WHERE userId = $UserId";
@@ -35,6 +42,12 @@ class LoginSqlService{
   public function lockGroupSql($groupId){
 
     $sql = "UPDATE fordFanatics.groups SET status = 1 WHERE groupId = $groupId";
+    return $sql;
+  }
+
+  public function sendDirectMessageSql($messageFrom, $messageTo, $directMessage)
+  {
+    $sql = "INSERT INTO fordFanatics.directMessages (fromUserId, toUserId, message) VALUES ($messageFrom, $messageTo, '$directMessage')";
     return $sql;
   }
 

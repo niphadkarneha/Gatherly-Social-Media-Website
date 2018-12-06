@@ -24,6 +24,7 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
             require "init.php";
             $loginWebService = new LoginWebService();
             $githubUser = fetchData();
+
             $githubEmail = $githubUser['email']['email'];
             $githubUsername = $githubUser['username'];
             $userExists = $loginWebService->checkIfUserExistsByEmail($githubEmail);
@@ -41,7 +42,7 @@ if(!isset($_SESSION['UserId']) && !isset($_SESSION['githubUser']))
                  $_SESSION['FirstName'] = $githubUserInfo['userInfo'][0]['FirstName'];
                  $_SESSION['LastName'] = $githubUserInfo['userInfo'][0]['LastName'];
                  $_SESSION['Email'] = $githubUserInfo['userInfo'][0]['Email'];
-                 $_SESSION['ProfilePictureLoggedIn'] = "https://avatars.githubusercontent.com/AbelWeldaregay";
+                 $_SESSION['ProfilePictureLoggedIn'] = "https://avatars.githubusercontent.com/". $githubUsername;
                  $_SESSION['Password'] = $githubUserInfo['userInfo'][0]['Password'];
               
                  $_SESSION['UserName']=$githubUserInfo['userInfo'][0]['UserName'];
@@ -511,7 +512,7 @@ main footer a{
     <!-- Left Column -->
     <div class="w3-col m3">
       <!-- Accordion -->
-      <div class="w3-card w3-round" style="width: 16%; position: fixed;" >
+      <div class="w3-card w3-round">
         <div class="w3-white">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-user fa-fw w3-margin-right"></i>Profile Picture</button>
           <div id="Demo1" class="w3-hide w3-container">
@@ -555,30 +556,6 @@ main footer a{
                  header("Location: index.php");
                  die();
               }
-
-              // if(isset($_SESSION['githubUser']))
-              // {
-              //   require "init.php";
-              //   $githubUser = fetchData();
-              //   $githubEmail = $githubUser['email']['email'];
-              //   $githubUsername = $githubUser['username'];
-              //   $userExists = $MyloginWebService->checkIfUserExistsByEmail($githubEmail);
-
-              //   if($userExists == true)
-              //   {
-              //     //fetch existing user
-              //     if(!isset($_SESSION)){
-              //       session_start();
-              //     }
-              //     $_SESSION['UserId'] = $MyloginWebService->getUserIdFromUserEmail($userEmail);
-              //   }
-              //   else
-              //   {
-              //     // add new user
-              //   }
-
-
-              // }
               
               //displaying the groups the user is part of
              
@@ -633,7 +610,7 @@ main footer a{
               echo "</ul>";
               }
               else {
-             // echo "<input type='text' id='myInput' onkeyup='myFunctionTwo()' placeholder='Search for public group names..' title='Type in a name'><button class = 'joinGroupBtn'>Join Group</button><br/>";
+
                 echo  "<ul id='myUL'>";
                 echo "<h6 id = 'therearenocomentsLabel' >There a no public groups available. Create one!</h6>";
                 echo "</ul>";
@@ -834,10 +811,38 @@ main footer a{
               {
                 echo "<h6> You do not have any invitations. </h6>";
               }
-                //var_dump($groupIdInvitations); 
-            //2.get the group name invitation from the group id from the invites table
-            //3.
+      
           ?>
+
+          </div>
+          <button onclick="myFunction('Demo6')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-paper-plane" aria-hidden="true" w3-margin-right"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Direct Message</button>
+
+            <div id="Demo6"class="w3-hide w3-container">
+
+              <?php
+
+                 $loginWebService = new LoginWebService();
+                 $usersToDm = json_decode($loginWebService->getUserInfoDM(), true);
+                 //echo $usersToDm['userInfo'][0]['FirstName'];
+                 
+                 if(!empty($usersToDm))
+                 {
+                     foreach($usersToDm as $i => $item) {
+                        
+                        echo "</br>";
+                        echo "<form method='POST' action='directMessage.php'>";
+                            echo "<input name='userIdTosendTo' type = 'hidden' value = '" . $usersToDm[$i]['ID'] . "'/>";
+                            echo "<button class = 'w3-button w3-block w3-theme-l1 w3-left-align'>" . $usersToDm[$i]['FirstName'] . " " . $usersToDm[$i]['LastName'] . "</button>";
+                        echo "</form>";
+                       
+                     }
+                     echo "</br>";
+
+                 }
+
+              
+
+              ?>
 
           </div>
 

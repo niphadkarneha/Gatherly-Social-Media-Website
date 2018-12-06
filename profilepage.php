@@ -192,7 +192,7 @@ echo "</html>";
 <html>
 <head>
 	<title></title>
-
+<style type="text/css">
 .ratings {
   position: relative;
   vertical-align: middle;
@@ -223,6 +223,7 @@ echo "</html>";
 .full-stars:before {
   -webkit-text-stroke: 1px orange;
 }
+</style>
 </head>
 <body>
 
