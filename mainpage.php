@@ -825,16 +825,22 @@ main footer a{
                  $loginWebService = new LoginWebService();
                  $usersToDm = json_decode($loginWebService->getUserInfoDM(), true);
                  //echo $usersToDm['userInfo'][0]['FirstName'];
-                 
+           
                  if(!empty($usersToDm))
                  {
                      foreach($usersToDm as $i => $item) {
                         
-                        echo "</br>";
-                        echo "<form method='POST' action='directMessage.php'>";
-                            echo "<input name='userIdTosendTo' type = 'hidden' value = '" . $usersToDm[$i]['ID'] . "'/>";
-                            echo "<button class = 'w3-button w3-block w3-theme-l1 w3-left-align'>" . $usersToDm[$i]['FirstName'] . " " . $usersToDm[$i]['LastName'] . "</button>";
-                        echo "</form>";
+                        if($usersToDm[$i]['ID'] != $_SESSION['UserId'])
+                        {
+                            echo "</br>";
+
+                            echo "<form method='POST' action='directMessage.php'>";
+                                echo "<input name='userIdTosendTo' type = 'hidden' value = '" . $usersToDm[$i]['ID'] . "'/>";
+                                echo "<button class = 'w3-button w3-block w3-theme-l1 w3-left-align'>" . $usersToDm[$i]['FirstName'] . " " . $usersToDm[$i]['LastName'] . "</button>";
+                            echo "</form>";
+                        }
+
+
                        
                      }
                      echo "</br>";
