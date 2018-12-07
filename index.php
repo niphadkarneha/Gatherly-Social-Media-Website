@@ -81,8 +81,10 @@ body {
                                 <div class="input-group passwordWrapper">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                     <input id="password" type="password" class="form-control" name="password" placeholder="Password" >
-                                </div>
-                            </br>
+                                </div> <br>
+                    
+                                
+                           
                                  <div style="margin-left:-40px;" class="captchaWrapper">
                                      <div class="g-recaptcha" data-sitekey="6LfpEHsUAAAAAEcSDva0UW5YEwF2n0qBdx3i1sYB" data-callback="reCaptchad"></div>
                                 </div>
@@ -92,8 +94,9 @@ body {
 
                                 <div class="buttonWrapper">
                                     <button type="submit" class="btn btn-primary btn-block loginButton">Sign In</button>
-                                </div>
-                            </br>
+                                </div><br>
+                      
+                            
                                 <a href="githubLogin.php" id="github-button" style="background: #6cc644;" class="btn btn-block btn-social btn-github">
                                      <p  class="fa fa-github" style="color: white;">Sign in with Github</p>
                                 </a>
@@ -106,7 +109,7 @@ body {
             <div class="col-xs-1"></div>
 		</div>
   </div>
-</div>
+<!-- </div> -->
 		<div class="footer row">
 			<small >&copy;fordFanatics</small>
 		</div>
