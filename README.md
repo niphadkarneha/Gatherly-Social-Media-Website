@@ -13,7 +13,7 @@
  - User profile search
  - Login with GitHub
  - Users have an option to use Gravatar image
-  - Sub Item 2
+
 
 
 
